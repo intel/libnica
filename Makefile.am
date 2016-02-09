@@ -47,7 +47,7 @@ TESTS = \
 check_PROGRAMS = $(TESTS)
 
 check_core_SOURCES = \
-	tests/check-array.c
+	tests/check-core.c
 
 check_core_CFLAGS = \
 	$(CHECK_CFLAGS) \
