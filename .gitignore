@@ -36,3 +36,4 @@ test-driver
 # Binary test suites
 check_core
 check_array
+check_hashmap

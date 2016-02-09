@@ -36,6 +36,8 @@ lib_LTLIBRARIES = libthingamabob.la
 libthingamabob_la_SOURCES = \
 	src/array.c \
 	src/array.h \
+	src/hashmap.c \
+	src/hashmap.h \
 	src/util.c \
 	src/util.h
 
@@ -45,10 +47,12 @@ libthingamabob_la_CFLAGS = \
 # Tests
 TESTS = \
 	check_core \
-	check_array
+	check_array \
+	check_hashmap
 
 check_PROGRAMS = $(TESTS)
 
+# Core tests
 check_core_SOURCES = \
 	tests/check-core.c
 
@@ -59,6 +63,7 @@ check_core_CFLAGS = \
 check_core_LDADD = \
 	$(CHECK_LIBS)
 
+# Test array
 check_array_SOURCES = \
 	tests/check-array.c
 
@@ -67,6 +72,17 @@ check_array_CFLAGS = \
 	$(AM_CFLAGS)
 
 check_array_LDADD = \
+	$(CHECK_LIBS)
+
+# Test hashmap
+check_hashmap_SOURCES = \
+	tests/check-hashmap.c
+
+check_hashmap_CFLAGS = \
+	$(CHECK_CFLAGS) \
+	$(AM_CFLAGS)
+
+check_hashmap_LDADD = \
 	$(CHECK_LIBS)
 
 @VALGRIND_CHECK_RULES@
