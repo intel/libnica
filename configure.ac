@@ -32,7 +32,8 @@ fi
 
 AM_CONDITIONAL([COVERAGE], [test "$have_coverage" = "yes"])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([data/libthingamabob.pc
+                 Makefile])
 
 AC_OUTPUT
 

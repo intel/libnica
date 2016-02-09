@@ -3,7 +3,8 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/LICENSE.LGPL2.1 \
 	     ${top_srcdir}/HACKING \
-	     ${top_srcdir}/findstatic.pl
+	     ${top_srcdir}/findstatic.pl \
+	     ${top_srcdir}/data/libthingamabob.pc.in
 
 NULL =
 CLEANFILES =
@@ -42,6 +43,11 @@ thingamabobinst_HEADERS = \
 # The main one you should include
 include_HEADERS = \
 	src/include/thingamabob.h
+
+# Pkgconfig file
+pcfiledir = $(libdir)/pkgconfig
+pcfile_DATA = \
+	data/libthingamabob.pc
 
 thingamabobinstdir = $(includedir)/libthingamabob
 

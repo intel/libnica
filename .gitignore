@@ -37,3 +37,6 @@ test-driver
 check_core
 check_array
 check_hashmap
+
+# pkgconfig
+/data/libthingamabob.pc
