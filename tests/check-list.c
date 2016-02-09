@@ -51,6 +51,8 @@ START_TEST(tb_list_append_check)
         fail_if(*((int *)(list->next->data)) != 2,
                 "list->next->data is incorrect after two list appends");
         fail_if(list->size != 2, "list->size not 2 after two list appends");
+
+        tb_list_free(&list);
 }
 END_TEST
 
@@ -84,6 +86,8 @@ START_TEST(tb_list_prepend_check)
         fail_if(*((int *)(list->next->data)) != 1,
                 "list->next->data is incorrect after two list prepends");
         fail_if(list->size != 2, "list->size not 2 after two list prepends");
+
+        tb_list_free(&list);
 }
 END_TEST
 
@@ -199,6 +203,8 @@ START_TEST(tb_list_foreach_check)
                         "Failed to iterate list");
                 c++;
         }
+
+        tb_list_free(&list);
 }
 END_TEST
 
@@ -255,9 +261,8 @@ START_TEST(tb_list_check)
         char *head2 = "<prepend should appear before head now>";
         char *data = "<middle element to be removed>";
 
-        /* Append a million strings. Results in about 3 million allocs
-         * due to asprintf, calloc of node, etc */
-        uint DEFAULT_SIZE = (10*1000)*100;
+        /* Append 10k strings. */
+        uint DEFAULT_SIZE = (10*1000);
         for (i = 0; i <= DEFAULT_SIZE; i++) {
                 if (i == 5) {
                         fail_if(tb_list_append(&list, data) == false,
