@@ -45,10 +45,10 @@ struct TbHashmap {
         int n_buckets;                  /**<Current number of buckets */
         TbHashmapEntry *buckets;     /**<Stores our bucket chains */
 
-        hash_create_func hash;         /**<Hash generation function */
-        hash_compare_func compare;     /**<Key comparison function */
-        hash_free_func key_free;        /**<Cleanup function for keys */
-        hash_free_func value_free;      /**<Cleanup function for values */
+        tb_hash_create_func hash;         /**<Hash generation function */
+        tb_hash_compare_func compare;     /**<Key comparison function */
+        tb_hash_free_func key_free;        /**<Cleanup function for keys */
+        tb_hash_free_func value_free;      /**<Cleanup function for values */
 };
 
 /**
@@ -74,7 +74,7 @@ static inline bool tb_hashmap_maybe_resize(TbHashmap *self)
         return false;
 }
 
-static TbHashmap *tb_hashmap_new_internal(hash_create_func create , hash_compare_func compare, hash_free_func key_free, hash_free_func value_free)
+static TbHashmap *tb_hashmap_new_internal(tb_hash_create_func create , tb_hash_compare_func compare, tb_hash_free_func key_free, tb_hash_free_func value_free)
 {
         TbHashmap *map = NULL;
         TbHashmapEntry *buckets = NULL;
@@ -102,12 +102,12 @@ static TbHashmap *tb_hashmap_new_internal(hash_create_func create , hash_compare
         return map;
 }
 
-TbHashmap *tb_hashmap_new(hash_create_func create, hash_compare_func compare)
+TbHashmap *tb_hashmap_new(tb_hash_create_func create, tb_hash_compare_func compare)
 {
         return tb_hashmap_new_internal(create, compare, NULL, NULL);
 }
 
-TbHashmap *tb_hashmap_new_full(hash_create_func create , hash_compare_func compare, hash_free_func key_free, hash_free_func value_free)
+TbHashmap *tb_hashmap_new_full(tb_hash_create_func create , tb_hash_compare_func compare, tb_hash_free_func key_free, tb_hash_free_func value_free)
 {
         return tb_hashmap_new_internal(create, compare, key_free, value_free);
 }

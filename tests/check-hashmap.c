@@ -35,24 +35,24 @@ START_TEST(tb_hashmap_simple_check)
         fail_if(!map, "Failed to allocate new hashmap");
 
         for (int i = 0; i < 1000; i++) {
-                b = tb_hashmap_put(map, HASH_KEY(i), HASH_VALUE(i));
+                b = tb_hashmap_put(map, TB_HASH_KEY(i), TB_HASH_VALUE(i));
                 fail_if(!b, "Failed to add integer to hashmap");
         }
         fail_if(tb_hashmap_size(map) != 1000, "Hashmap size invalid after 1000 elements");
 
         for (int i = 300; i < 700; i++) {
-                b = tb_hashmap_remove(map, HASH_KEY(i));
+                b = tb_hashmap_remove(map, TB_HASH_KEY(i));
                 fail_if(!b, "Failed to remove known integer from from hashmap");
         }
 
         fail_if(tb_hashmap_size(map) != 600, "Hashmap size invalid after 400 removals");
 
-        val = tb_hashmap_get(map, HASH_KEY(302));
+        val = tb_hashmap_get(map, TB_HASH_KEY(302));
         fail_if(val, "Value should not be returned from hashmap after removal");
 
-        val = tb_hashmap_get(map, HASH_KEY(802));
+        val = tb_hashmap_get(map, TB_HASH_KEY(802));
         fail_if(!val, "Value should be returned from hashmap for known key");
-        fail_if(UNHASH_VALUE(val) != 802, "Value returned from hashmap was incorrect");
+        fail_if(TB_UNHASH_VALUE(val) != 802, "Value returned from hashmap was incorrect");
         
         tb_hashmap_free(map);
         map = NULL;
@@ -70,30 +70,30 @@ START_TEST(tb_hashmap_string_check)
         map = tb_hashmap_new(string_hash, string_compare);
         fail_if(!map, "Failed to allocate new hashmap");
 
-        b = tb_hashmap_put(map, "John", HASH_VALUE(12));
+        b = tb_hashmap_put(map, "John", TB_HASH_VALUE(12));
         fail_if(!b, "Failed to put entry into map");
-        b = tb_hashmap_put(map, "Lucy", HASH_VALUE(42));
+        b = tb_hashmap_put(map, "Lucy", TB_HASH_VALUE(42));
         fail_if(!b, "Failed to put entry into map");
-        b = tb_hashmap_put(map, "Bob", HASH_VALUE(19012));
+        b = tb_hashmap_put(map, "Bob", TB_HASH_VALUE(19012));
         fail_if(!b, "Failed to put entry into map");
-        b = tb_hashmap_put(map, "Sarah", HASH_VALUE(83));
+        b = tb_hashmap_put(map, "Sarah", TB_HASH_VALUE(83));
         fail_if(!b, "Failed to put entry into map");
 
         val = tb_hashmap_get(map, "John");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(UNHASH_VALUE(val) != 12, "Failed to get correct value from hashmap");
+        fail_if(TB_UNHASH_VALUE(val) != 12, "Failed to get correct value from hashmap");
 
         val = tb_hashmap_get(map, "Lucy");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(UNHASH_VALUE(val) != 42, "Failed to get correct value from hashmap");
+        fail_if(TB_UNHASH_VALUE(val) != 42, "Failed to get correct value from hashmap");
 
         val = tb_hashmap_get(map, "Bob");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(UNHASH_VALUE(val) != 19012, "Failed to get correct value from hashmap");
+        fail_if(TB_UNHASH_VALUE(val) != 19012, "Failed to get correct value from hashmap");
 
         val = tb_hashmap_get(map, "Sarah");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(UNHASH_VALUE(val) != 83, "Failed to get correct value from hashmap");
+        fail_if(TB_UNHASH_VALUE(val) != 83, "Failed to get correct value from hashmap");
 
         tb_hashmap_free(map);
         
@@ -113,7 +113,7 @@ START_TEST(tb_hashmap_iter_check)
         fail_if(!map, "Failed to allocate new hashmap");
 
         for (int i = 0; i < 5000; i++) {
-                b = tb_hashmap_put(map, HASH_KEY(i), HASH_KEY(i));
+                b = tb_hashmap_put(map, TB_HASH_KEY(i), TB_HASH_KEY(i));
                 fail_if(!b, "Failed to insert key into hashmap");
         }
 
@@ -121,7 +121,7 @@ START_TEST(tb_hashmap_iter_check)
 
         tb_hashmap_iter_init(map, &iter);
         while (tb_hashmap_iter_next(&iter, (void**)&key, (void**)&value)) {
-                fail_if(UNHASH_KEY(key) != UNHASH_VALUE(value),
+                fail_if(TB_UNHASH_KEY(key) != TB_UNHASH_VALUE(value),
                         "Mismatched key/value pair in iteration");
                 ++count;
         }
@@ -129,15 +129,15 @@ START_TEST(tb_hashmap_iter_check)
 
         count = 0;
         for (int i = 2000; i < 4000; i++) {
-                b = tb_hashmap_remove(map, HASH_KEY(i));
+                b = tb_hashmap_remove(map, TB_HASH_KEY(i));
                 fail_if(!b, "Failed to remove known integer key from hashmap");
         }
 
         tb_hashmap_iter_init(map, &iter);
         key = value = NULL;
         while (tb_hashmap_iter_next(&iter, &key, &value)) {
-                unsigned int k = UNHASH_KEY(key);
-                fail_if(UNHASH_VALUE(value) != k,
+                unsigned int k = TB_UNHASH_KEY(key);
+                fail_if(TB_UNHASH_VALUE(value) != k,
                         "Mismatched post-removal key/value pair in iteration");
                 fail_if(k >= 2000 && k < 4000, "Key/value not removed from hashtable");
                 ++count;

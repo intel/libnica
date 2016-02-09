@@ -28,10 +28,10 @@
 #include <stdint.h>
 
 /* Convert between uint and void* */
-#define HASH_KEY(x) ((void*)((uintptr_t)(x)))
-#define HASH_VALUE(x) HASH_KEY(x)
-#define UNHASH_KEY(x) ((unsigned int)((uintptr_t)(x)))
-#define UNHASH_VALUE(x) UNHASH_KEY(x)
+#define TB_HASH_KEY(x) ((void*)((uintptr_t)(x)))
+#define TB_HASH_VALUE(x) TB_HASH_KEY(x)
+#define TB_UNHASH_KEY(x) ((unsigned int)((uintptr_t)(x)))
+#define TB_UNHASH_VALUE(x) TB_UNHASH_KEY(x)
 
 typedef struct TbHashmap TbHashmap;
 
@@ -53,7 +53,7 @@ typedef struct TbHashmapIter {
  *
  * @return true if l and r both match, otherwise false
  */
-typedef bool (*hash_compare_func)(const void *l, const void *r);
+typedef bool (*tb_hash_compare_func)(const void *l, const void *r);
 
 /**
  * Hash creation function definition
@@ -62,14 +62,14 @@ typedef bool (*hash_compare_func)(const void *l, const void *r);
  *
  * @return an unsigned integer hash result
  */
-typedef unsigned (*hash_create_func)(const void *key);
+typedef unsigned (*tb_hash_create_func)(const void *key);
 
 /**
  * Callback definition to free keys and values
  *
  * @param p Single-depth pointer to either a key or value that should be freed
  */
-typedef void (*hash_free_func)(void *p);
+typedef void (*tb_hash_free_func)(void *p);
 
 /**
  * Default hash/comparison functions
@@ -97,7 +97,7 @@ static inline unsigned string_hash(const void *key)
  */
 static inline unsigned simple_hash(const void *source)
 {
-        return UNHASH_KEY(source);
+        return TB_UNHASH_KEY(source);
 }
 
 /**
@@ -128,7 +128,7 @@ static inline bool simple_compare(const void *l, const void *r)
  *
  * @return A newly allocated TbHashmap
  */
-TbHashmap *tb_hashmap_new(hash_create_func hash, hash_compare_func compare);
+TbHashmap *tb_hashmap_new(tb_hash_create_func hash, tb_hash_compare_func compare);
 
 /**
  * Create a new TbHashmap with cleanup functions
@@ -140,7 +140,7 @@ TbHashmap *tb_hashmap_new(hash_create_func hash, hash_compare_func compare);
  *
  * @return A newly allocated TbHashmap
  */
-TbHashmap *tb_hashmap_new_full(hash_create_func hash, hash_compare_func compare, hash_free_func key_free, hash_free_func value_free);
+TbHashmap *tb_hashmap_new_full(tb_hash_create_func hash, tb_hash_compare_func compare, tb_hash_free_func key_free, tb_hash_free_func value_free);
 
 /**
  * Store a key/value pair in the hashmap
