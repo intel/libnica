@@ -28,3 +28,13 @@ coverage:
 	genhtml -o coverage/ coverage/report
 AM_CFLAGS += --coverage
 endif
+
+
+lib_LTLIBRARIES = libthingamabob.la
+
+libthingamabob_la_SOURCES = \
+	src/util.c \
+	src/util.h
+
+libthingamabob_la_CFLAGS = \
+	$(AM_CFLAGS)
