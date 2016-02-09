@@ -19,3 +19,19 @@ depcomp
 
 .deps
 .dirstamp
+
+# dyn linking
+.libs
+*.lo
+*.la
+*.o
+
+# test
+test*.log
+check*.log
+check*.trs
+test-driver
+
+
+# Binary test suites
+check_core

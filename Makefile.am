@@ -32,9 +32,28 @@ endif
 
 lib_LTLIBRARIES = libthingamabob.la
 
+# Main library
 libthingamabob_la_SOURCES = \
 	src/util.c \
 	src/util.h
 
 libthingamabob_la_CFLAGS = \
 	$(AM_CFLAGS)
+
+# Tests
+TESTS = \
+	check_core
+
+check_PROGRAMS = $(TESTS)
+
+check_core_SOURCES = \
+	tests/check-array.c
+
+check_core_CFLAGS = \
+	$(CHECK_CFLAGS) \
+	$(AM_CFLAGS)
+
+check_core_LDADD = \
+	$(CHECK_LIBS)
+
+@VALGRIND_CHECK_RULES@
