@@ -11,8 +11,8 @@
 
 #pragma once
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"
+#ifndef LIBTHINGAMABOB_INTERNAL
+#error You should only include <thingamabob.h>
 #endif
 
 #include <stdint.h>

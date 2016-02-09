@@ -14,10 +14,12 @@ AM_CFLAGS = \
 	-Werror-implicit-function-declaration \
 	-Wformat -Wformat-security -Werror=format-security \
 	-Wno-conversion -Wunused-variable -Wunreachable-code \
-	-Wall -W -D_FORTIFY_SOURCE=2 -std=c99 -Werror
+	-Wall -W -D_FORTIFY_SOURCE=2 -std=c99 -Werror \
+	-DLIBTHINGAMABOB_INTERNAL
 
 AM_CPPFLAGS = \
-	-I $(top_srcdir)/src
+	-I $(top_srcdir)/src \
+	-I $(top_srcdir)/src/include
 
 AUTOMAKE_OPTIONS = color-tests parallel-tests
 
@@ -32,12 +34,21 @@ endif
 
 lib_LTLIBRARIES = libthingamabob.la
 
+# Our main headers
+thingamabobinst_HEADERS = \
+	src/include/array.h \
+	src/include/hashmap.h
+
+# The main one you should include
+include_HEADERS = \
+	src/include/thingamabob.h
+
+thingamabobinstdir = $(includedir)/libthingamabob
+
 # Main library
 libthingamabob_la_SOURCES = \
 	src/array.c \
-	src/array.h \
 	src/hashmap.c \
-	src/hashmap.h \
 	src/util.c \
 	src/util.h
 
