@@ -31,7 +31,7 @@
 /**
  * Dump any leaked file descriptors
  */
-void dump_file_descriptor_leaks(void);
+void tb_dump_file_descriptor_leaks(void);
 
 #define streq(x,y) strcmp(x,y) == 0 ? true : false
 

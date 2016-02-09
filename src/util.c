@@ -26,7 +26,7 @@
 /**
  * Taken from swupd
  */
-void dump_file_descriptor_leaks(void)
+void tb_dump_file_descriptor_leaks(void)
 {
         DIR *dir = NULL;
         struct dirent *entry = NULL;
