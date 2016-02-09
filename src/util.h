@@ -33,6 +33,8 @@
  */
 void tb_dump_file_descriptor_leaks(void);
 
+void* greedy_realloc(void **p, size_t *allocated, size_t need);
+
 #define streq(x,y) strcmp(x,y) == 0 ? true : false
 
 
