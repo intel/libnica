@@ -39,6 +39,7 @@ lib_LTLIBRARIES = libthingamabob.la
 thingamabobinst_HEADERS = \
 	src/include/array.h \
 	src/include/hashmap.h \
+	src/include/list.h \
 	src/include/util.h
 
 # The main one you should include
@@ -56,6 +57,7 @@ thingamabobinstdir = $(includedir)/libthingamabob
 libthingamabob_la_SOURCES = \
 	src/array.c \
 	src/hashmap.c \
+	src/list.c \
 	src/util.c
 
 libthingamabob_la_CFLAGS = \
@@ -65,7 +67,8 @@ libthingamabob_la_CFLAGS = \
 TESTS = \
 	check_core \
 	check_array \
-	check_hashmap
+	check_hashmap \
+	check_list
 
 check_PROGRAMS = $(TESTS)
 
@@ -100,6 +103,17 @@ check_hashmap_CFLAGS = \
 	$(AM_CFLAGS)
 
 check_hashmap_LDADD = \
+	$(CHECK_LIBS)
+
+# Test list
+check_list_SOURCES = \
+	tests/check-list.c
+
+check_list_CFLAGS = \
+	$(CHECK_CFLAGS) \
+	$(AM_CFLAGS)
+
+check_list_LDADD = \
 	$(CHECK_LIBS)
 
 @VALGRIND_CHECK_RULES@
