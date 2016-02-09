@@ -18,6 +18,7 @@
 
 #include <libthingamabob/array.h>
 #include <libthingamabob/hashmap.h>
+#include <libthingamabob/util.h>
 
 
 #endif /* _THINGAMABOB_H_ */

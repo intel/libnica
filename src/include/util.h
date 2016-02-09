@@ -11,6 +11,10 @@
 
 #pragma once
 
+#ifndef LIBTHINGAMABOB_INTERNAL
+#error You should only include <thingamabob.h>
+#endif
+
 #define _GNU_SOURCE
 
 #include <string.h>

@@ -38,7 +38,8 @@ lib_LTLIBRARIES = libthingamabob.la
 # Our main headers
 thingamabobinst_HEADERS = \
 	src/include/array.h \
-	src/include/hashmap.h
+	src/include/hashmap.h \
+	src/include/util.h
 
 # The main one you should include
 include_HEADERS = \
@@ -55,8 +56,7 @@ thingamabobinstdir = $(includedir)/libthingamabob
 libthingamabob_la_SOURCES = \
 	src/array.c \
 	src/hashmap.c \
-	src/util.c \
-	src/util.h
+	src/util.c
 
 libthingamabob_la_CFLAGS = \
 	$(AM_CFLAGS)

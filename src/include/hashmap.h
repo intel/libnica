@@ -31,6 +31,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <libthingamabob/util.h>
+
 /* Convert between uint and void* */
 #define TB_HASH_KEY(x) ((void*)((uintptr_t)(x)))
 #define TB_HASH_VALUE(x) TB_HASH_KEY(x)
@@ -225,6 +227,8 @@ void tb_hashmap_iter_init(TbHashmap *map, TbHashmapIter *iter);
  * @return true if it's possible to iterate
  */
 bool tb_hashmap_iter_next(TbHashmapIter *iter, void **key, void **value);
+
+DEF_AUTOFREE(TbHashmap, tb_hashmap_free)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
