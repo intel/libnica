@@ -23,6 +23,9 @@
 
 #include "util.h"
 
+/**
+ * Taken from swupd
+ */
 void dump_file_descriptor_leaks(void)
 {
         DIR *dir = NULL;
