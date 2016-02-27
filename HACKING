@@ -1,4 +1,4 @@
-Hacking libthingamabob
+Hacking libnica
 ----------------------
 
 Indentation is strictly 8 spaces (set tab stops to 8 spaces) - No tabs
@@ -47,7 +47,7 @@ ensure *every* if/else, etc, even if single line, is wrapped in curly braces.
 
 Memory management:
 ------------------
-libthingamabob prefers a scope-based approach to memory management,
+libnica prefers a scope-based approach to memory management,
 employing a RAII-like system for allocations. Where possible, avoid
 explicit free's and reuse of unrelated variables.
 

@@ -1,18 +1,18 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  */
 
 #pragma once
 
-#ifndef LIBTHINGAMABOB_INTERNAL
-#error You should only include <thingamabob.h>
+#ifndef LIBNICA_INTERNAL
+#error You should only include <nica.h>
 #endif
 
 #define _GNU_SOURCE
@@ -35,9 +35,9 @@
 /**
  * Dump any leaked file descriptors
  */
-void tb_dump_file_descriptor_leaks(void);
+void nc_dump_file_descriptor_leaks(void);
 
-void* greedy_realloc(void **p, size_t *allocated, size_t need);
+void *greedy_realloc(void **p, size_t *allocated, size_t need);
 
 #define streq(x,y) strcmp(x,y) == 0 ? true : false
 

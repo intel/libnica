@@ -1,10 +1,10 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  *
@@ -22,8 +22,8 @@
 
 #pragma once
 
-#ifndef LIBTHINGAMABOB_INTERNAL
-#error You should only include <thingamabob.h>
+#ifndef LIBNICA_INTERNAL
+#error You should only include <nica.h>
 #endif
 
 #define _GNU_SOURCE
@@ -31,24 +31,24 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <libthingamabob/util.h>
+#include <nica/util.h>
 
 /* Convert between uint and void* */
-#define TB_HASH_KEY(x) ((void*)((uintptr_t)(x)))
-#define TB_HASH_VALUE(x) TB_HASH_KEY(x)
-#define TB_UNHASH_KEY(x) ((unsigned int)((uintptr_t)(x)))
-#define TB_UNHASH_VALUE(x) TB_UNHASH_KEY(x)
+#define NC_HASH_KEY(x) ((void*)((uintptr_t)(x)))
+#define NC_HASH_VALUE(x) NC_HASH_KEY(x)
+#define NC_UNHASH_KEY(x) ((unsigned int)((uintptr_t)(x)))
+#define NC_UNHASH_VALUE(x) NC_UNHASH_KEY(x)
 
-typedef struct TbHashmap TbHashmap;
+typedef struct NcHashmap NcHashmap;
 
 /**
  * Iteration object
  */
-typedef struct TbHashmapIter {
+typedef struct NcHashmapIter {
         int n0;
         void *n1;
         void *n2;
-} TbHashmapIter;
+} NcHashmapIter;
 
 
 /**
@@ -59,7 +59,7 @@ typedef struct TbHashmapIter {
  *
  * @return true if l and r both match, otherwise false
  */
-typedef bool (*tb_hash_compare_func)(const void *l, const void *r);
+typedef bool (*nc_hash_compare_func)(const void *l, const void *r);
 
 /**
  * Hash creation function definition
@@ -68,25 +68,25 @@ typedef bool (*tb_hash_compare_func)(const void *l, const void *r);
  *
  * @return an unsigned integer hash result
  */
-typedef unsigned (*tb_hash_create_func)(const void *key);
+typedef unsigned (*nc_hash_create_func)(const void *key);
 
 /**
  * Callback definition to free keys and values
  *
  * @param p Single-depth pointer to either a key or value that should be freed
  */
-typedef void (*tb_hash_free_func)(void *p);
+typedef void (*nc_hash_free_func)(void *p);
 
 /**
  * Default hash/comparison functions
  *
  * @note These are only used for comparison of *keys*, not values. Unless
  * explicitly using string keys, you should most likely stick with the default
- * simple_hash and simple_compare functions
+ * nc_simple_hash and nc_simple_compare functions
  */
 
 /* Default string hash */
-static inline unsigned string_hash(const void *key)
+static inline unsigned nc_string_hash(const void *key)
 {
         unsigned hash = 5381;
         const signed char *c;
@@ -101,15 +101,15 @@ static inline unsigned string_hash(const void *key)
 /**
  * Trivial pointer->uint hash
  */
-static inline unsigned simple_hash(const void *source)
+static inline unsigned nc_simple_hash(const void *source)
 {
-        return TB_UNHASH_KEY(source);
+        return NC_UNHASH_KEY(source);
 }
 
 /**
  * Comparison of string keys
  */
-static inline bool string_compare(const void *l, const void *r)
+static inline bool nc_string_compare(const void *l, const void *r)
 {
         if (!l || !r) {
                 return false;
@@ -120,33 +120,33 @@ static inline bool string_compare(const void *l, const void *r)
 /**
  * Trivial pointer comparison
  */
-static inline bool simple_compare(const void *l, const void *r)
+static inline bool nc_simple_compare(const void *l, const void *r)
 {
         return (l == r);
 }
 
 
 /**
- * Create a new TbHashmap
+ * Create a new NcHashmap
  *
  * @param hash Hash creation function
  * @param compare Key comparison function
  *
- * @return A newly allocated TbHashmap
+ * @return A newly allocated NcHashmap
  */
-TbHashmap *tb_hashmap_new(tb_hash_create_func hash, tb_hash_compare_func compare);
+NcHashmap *nc_hashmap_new(nc_hash_create_func hash, nc_hash_compare_func compare);
 
 /**
- * Create a new TbHashmap with cleanup functions
+ * Create a new NcHashmap with cleanup functions
  *
  * @param hash Hash creation function
  * @param compare Key comparison function
  * @param key_free Function to free keys when removed/destroyed
  * @param value_free Function to free values when removed/destroyed
  *
- * @return A newly allocated TbHashmap
+ * @return A newly allocated NcHashmap
  */
-TbHashmap *tb_hashmap_new_full(tb_hash_create_func hash, tb_hash_compare_func compare, tb_hash_free_func key_free, tb_hash_free_func value_free);
+NcHashmap *nc_hashmap_new_full(nc_hash_create_func hash, nc_hash_compare_func compare, nc_hash_free_func key_free, nc_hash_free_func value_free);
 
 /**
  * Store a key/value pair in the hashmap
@@ -159,7 +159,7 @@ TbHashmap *tb_hashmap_new_full(tb_hash_create_func hash, tb_hash_compare_func co
  *
  * @return true if the operation succeeded.
  */
-bool tb_hashmap_put(TbHashmap *map, const void *key, void *value);
+bool nc_hashmap_put(NcHashmap *map, const void *key, void *value);
 
 /**
  * Get the value associated with the unique key
@@ -167,20 +167,20 @@ bool tb_hashmap_put(TbHashmap *map, const void *key, void *value);
  * @param key Unique key to obtain a value for
  * @return The associated value if it exists, otherwise NULL
  */
-void *tb_hashmap_get(TbHashmap *map, const void *key);
+void *nc_hashmap_get(NcHashmap *map, const void *key);
 
 /**
- * Determine if the key has an associated value in the TbHashmap
+ * Determine if the key has an associated value in the NcHashmap
  *
  * @param key Unique key to check value for
  * @return True if the key exists in the hashmap
  */
-bool tb_hashmap_contains(TbHashmap *self, const void *key);
+bool nc_hashmap_contains(NcHashmap *self, const void *key);
 
 /**
- * Free the given TbHashmap, and all keys/values if appropriate
+ * Free the given NcHashmap, and all keys/values if appropriate
  */
-void tb_hashmap_free(TbHashmap *map);
+void nc_hashmap_free(NcHashmap *map);
 
 /**
  * Remove the value and key identified by key.
@@ -191,44 +191,44 @@ void tb_hashmap_free(TbHashmap *map);
  * @param key The unique key to remove
  * @return true if the key/value pair were removed
  */
-bool tb_hashmap_remove(TbHashmap *map, const void *key);
+bool nc_hashmap_remove(NcHashmap *map, const void *key);
 
 /**
  * Remove the value and key identified by key without freeing them
  *
  * @return true if the key/value pair were stolen
  */
-bool tb_hashmap_steal(TbHashmap *map, const void *key);
+bool nc_hashmap_steal(NcHashmap *map, const void *key);
 
 /**
  * Return the current size of the hashmap
  *
  * @return size of the current hashmap (element count)
  */
-int tb_hashmap_size(TbHashmap *map);
+int nc_hashmap_size(NcHashmap *map);
 
 /**
- * Initialise a TbHashmapIter for iteration purposes
+ * Initialise a NcHashmapIter for iteration purposes
  *
  * @note The iter *must* be re-inited to re-use, or if it becomes
  * exhausted from a previous iteration run
  *
- * @param iter pointer to a TbHashmapIter
+ * @param iter pointer to a NcHashmapIter
  */
-void tb_hashmap_iter_init(TbHashmap *map, TbHashmapIter *iter);
+void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *iter);
 
 /**
  * Iterate every key/value pair in the hashmap
  *
- * @param iter A correctly initialised TbHashmapIter
+ * @param iter A correctly initialised NcHashmapIter
  * @param key Pointers to store the key in, may be NULL to skip
  * @param value Pointer to store the value in, may be NULL to skip
  *
  * @return true if it's possible to iterate
  */
-bool tb_hashmap_iter_next(TbHashmapIter *iter, void **key, void **value);
+bool nc_hashmap_iter_next(NcHashmapIter *iter, void **key, void **value);
 
-DEF_AUTOFREE(TbHashmap, tb_hashmap_free)
+DEF_AUTOFREE(NcHashmap, nc_hashmap_free)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

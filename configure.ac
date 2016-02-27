@@ -1,4 +1,4 @@
-AC_INIT([libthingamabob], 1, [michael.i.doherty@intel.com], [libthingamabob], [https://github.com/ikeydoherty/libthingamabob])
+AC_INIT([libnica], 1, [michael.i.doherty@intel.com], [libnica], [https://github.com/ikeydoherty/libnica])
 AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz foreign subdir-objects])
 AC_PROG_CC
 AC_PROG_CC_STDC
@@ -32,13 +32,13 @@ fi
 
 AM_CONDITIONAL([COVERAGE], [test "$have_coverage" = "yes"])
 
-AC_CONFIG_FILES([data/libthingamabob.pc
+AC_CONFIG_FILES([data/nica.pc
                  Makefile])
 
 AC_OUTPUT
 
 AC_MSG_RESULT([
-        libthingamabob $VERSION
+        libnica $VERSION
         ========
 
         prefix:                 ${prefix}

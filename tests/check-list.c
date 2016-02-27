@@ -1,10 +1,10 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  */
@@ -22,14 +22,14 @@
 
 #include "list.c"
 
-START_TEST(tb_list_append_check)
+START_TEST(nc_list_append_check)
 {
-        TbList *list = NULL;
-        TbList *head = NULL;
+        NcList *list = NULL;
+        NcList *head = NULL;
         int data1 = 1;
         int data2 = 2;
 
-        fail_if(!tb_list_append(&list, &data1),
+        fail_if(!nc_list_append(&list, &data1),
                 "Append for new list failed");
         head = list;
         fail_if(list->tail != list,
@@ -39,7 +39,7 @@ START_TEST(tb_list_append_check)
                 "list->data is incorrect after new list append");
         fail_if(list->size != 1, "list->size not 1 after new list append");
 
-        fail_if(!tb_list_append(&list, &data2),
+        fail_if(!nc_list_append(&list, &data2),
                 "Append for existing list failed");
         fail_if(head != list, "Append switched list head");
         fail_if(list->tail != list->next,
@@ -52,18 +52,18 @@ START_TEST(tb_list_append_check)
                 "list->next->data is incorrect after two list appends");
         fail_if(list->size != 2, "list->size not 2 after two list appends");
 
-        tb_list_free(&list);
+        nc_list_free(&list);
 }
 END_TEST
 
-START_TEST(tb_list_prepend_check)
+START_TEST(nc_list_prepend_check)
 {
-        TbList *list = NULL;
-        TbList *tail = NULL;
+        NcList *list = NULL;
+        NcList *tail = NULL;
         int data1 = 1;
         int data2 = 2;
 
-        fail_if(!tb_list_prepend(&list, &data1),
+        fail_if(!nc_list_prepend(&list, &data1),
                 "Prepend for new list failed");
         tail = list;
         fail_if(list->tail != list,
@@ -73,7 +73,7 @@ START_TEST(tb_list_prepend_check)
                 "list->data is incorrect after new list prepend");
         fail_if(list->size != 1, "list->size not 1 after new list prepend");
 
-        fail_if(!tb_list_prepend(&list, &data2),
+        fail_if(!nc_list_prepend(&list, &data2),
                 "Prepend for existing list failed");
         fail_if(tail != list->next, "Prepend switched list next");
         fail_if(tail != list->tail, "Prepend switched list tail");
@@ -87,24 +87,24 @@ START_TEST(tb_list_prepend_check)
                 "list->next->data is incorrect after two list prepends");
         fail_if(list->size != 2, "list->size not 2 after two list prepends");
 
-        tb_list_free(&list);
+        nc_list_free(&list);
 }
 END_TEST
 
-START_TEST(tb_list_remove_check)
+START_TEST(nc_list_remove_check)
 {
-        TbList *list = NULL;
+        NcList *list = NULL;
         int data1 = 1;
         int data2 = 2;
         int data3 = 3;
         int *data4 = NULL;
         int *data5 = NULL;
 
-        fail_if(tb_list_remove(&list, &data1, false),
+        fail_if(nc_list_remove(&list, &data1, false),
                 "Removed from non existing list");
-        fail_if(!tb_list_prepend(&list, &data1),
+        fail_if(!nc_list_prepend(&list, &data1),
                 "Prepend for new list failed");
-        fail_if(tb_list_remove(&list, &data2, false),
+        fail_if(nc_list_remove(&list, &data2, false),
                 "Removed non existing element from list");
         fail_if(list->tail != list,
                 "list and list->tail do not match after new list prepend");
@@ -112,7 +112,7 @@ START_TEST(tb_list_remove_check)
         fail_if(*((int *)(list->data)) != 1,
                 "list->data is incorrect after new list prepend");
         fail_if(list->size != 1, "list->size not 1 after new list prepend");
-        fail_if(!tb_list_remove(&list, &data1, false),
+        fail_if(!nc_list_remove(&list, &data1, false),
                 "Unable to remove existing item from list");
         fail_if(list, "List not NULL after removal of only element");
 
@@ -121,20 +121,20 @@ START_TEST(tb_list_remove_check)
         fail_if(!data4 || !data5, "Failed to allocate");
         *data4 = 4;
         *data5 = 5;
-        fail_if(!tb_list_prepend(&list, &data1),
+        fail_if(!nc_list_prepend(&list, &data1),
                 "Prepend 1 for list failed");
-        fail_if(!tb_list_append(&list, &data2),
+        fail_if(!nc_list_append(&list, &data2),
                 "Append 1 for list failed");
-        fail_if(!tb_list_prepend(&list, &data3),
+        fail_if(!nc_list_prepend(&list, &data3),
                 "Prepend 2 for list failed");
-        fail_if(!tb_list_append(&list, data4),
+        fail_if(!nc_list_append(&list, data4),
                 "Append 2 for list failed");
-        fail_if(!tb_list_prepend(&list, data5),
+        fail_if(!nc_list_prepend(&list, data5),
                 "Prepend 3 for list failed");
         /* the list is = (*5, 3, 1, 2, *4) */
-        fail_if(!tb_list_remove(&list, &data1, false),
+        fail_if(!nc_list_remove(&list, &data1, false),
                 "Unable to remove data1 from list");
-        fail_if(tb_list_remove(&list, &data1, false),
+        fail_if(nc_list_remove(&list, &data1, false),
                 "Able to remove data1 from list again");
         /* the list is = (*5, 3, 2, *4) */
         fail_if(*((int *)(list->data)) != 5,
@@ -146,7 +146,7 @@ START_TEST(tb_list_remove_check)
                 "list->tail->data value incorrect");
         fail_if(list->tail != list->next->next->next,
                 "list->tail is incorrect");
-        fail_if(!tb_list_remove(&list, data4, true),
+        fail_if(!nc_list_remove(&list, data4, true),
                 "Failed to remove data4 from list");
         /* the list is = (*5, 3, 2) */
         fail_if(*((int *)(list->data)) != 5,
@@ -156,7 +156,7 @@ START_TEST(tb_list_remove_check)
                 "list->tail->data value incorrect");
         fail_if(list->tail != list->next->next,
                 "list->tail is incorrect");
-        fail_if(!tb_list_remove(&list, data5, true),
+        fail_if(!nc_list_remove(&list, data5, true),
                 "Failed to remove data5 from list");
         /* the list is = (3, 2) */
         fail_if(*((int *)(list->data)) != 3,
@@ -166,7 +166,7 @@ START_TEST(tb_list_remove_check)
                 "list->tail->data value incorrect");
         fail_if(list->tail != list->next,
                 "list->tail is incorrect");
-        fail_if(!tb_list_remove(&list, &data3, false),
+        fail_if(!nc_list_remove(&list, &data3, false),
                 "Failed to remove data3 from list");
         /* the list is = (2) */
         fail_if(*((int *)(list->data)) != 2,
@@ -176,85 +176,85 @@ START_TEST(tb_list_remove_check)
                 "list->tail->data value incorrect");
         fail_if(list->tail != list,
                 "list->tail is incorrect");
-        fail_if(!tb_list_remove(&list, &data2, false),
+        fail_if(!nc_list_remove(&list, &data2, false),
                 "Failed to remove data2 from list");
         /* the list is = () */
         fail_if(list, "list is not NULL");
 }
 END_TEST
 
-START_TEST(tb_list_foreach_check)
+START_TEST(nc_list_foreach_check)
 {
-        TbList *list = NULL;
-        TbList *i;
+        NcList *list = NULL;
+        NcList *i;
         int data1 = 1;
         int data2 = 2;
         int data3 = 3;
         int c = 1;
 
-        fail_if(!tb_list_append(&list, &data1),
+        fail_if(!nc_list_append(&list, &data1),
                 "Append 1 for list failed");
-        fail_if(!tb_list_append(&list, &data2),
+        fail_if(!nc_list_append(&list, &data2),
                 "Append 2 for list failed");
-        fail_if(!tb_list_append(&list, &data3),
+        fail_if(!nc_list_append(&list, &data3),
                 "Append 3 for list failed");
-        TB_LIST_FOREACH(list, i) {
+        NC_LIST_FOREACH(list, i) {
                 fail_if(*((int *)(i->data)) != c,
                         "Failed to iterate list");
                 c++;
         }
 
-        tb_list_free(&list);
+        nc_list_free(&list);
 }
 END_TEST
 
-START_TEST(tb_list_free_check)
+START_TEST(nc_list_free_check)
 {
-        TbList *list = NULL;
+        NcList *list = NULL;
         int data1 = 1;
         int data2 = 2;
         int data3 = 3;
 
-        tb_list_free(&list);
+        nc_list_free(&list);
         fail_if(list, "null list returned non null after free");
-        fail_if(!tb_list_append(&list, &data1),
+        fail_if(!nc_list_append(&list, &data1),
                 "Append 1 for list failed");
-        fail_if(!tb_list_append(&list, &data2),
+        fail_if(!nc_list_append(&list, &data2),
                 "Append 2 for list failed");
-        fail_if(!tb_list_append(&list, &data3),
+        fail_if(!nc_list_append(&list, &data3),
                 "Append 3 for list failed");
-        tb_list_free(&list);
+        nc_list_free(&list);
         fail_if(list, "non null list returned non null after free");
 }
 END_TEST
 
-START_TEST(tb_list_free_all_check)
+START_TEST(nc_list_free_all_check)
 {
-        TbList *list = NULL;
+        NcList *list = NULL;
         int *data1 = NULL;
         int *data2 = NULL;
         int *data3 = NULL;
 
-        tb_list_free(&list);
+        nc_list_free(&list);
         fail_if(list, "null list returned non null after free");
         data1 = malloc(sizeof(int));
         data2 = malloc(sizeof(int));
         data3 = malloc(sizeof(int));
         fail_if(!data1 || !data2 || !data3, "malloc failed");
-        fail_if(!tb_list_append(&list, data1),
+        fail_if(!nc_list_append(&list, data1),
                 "Append 1 for list failed");
-        fail_if(!tb_list_append(&list, data2),
+        fail_if(!nc_list_append(&list, data2),
                 "Append 2 for list failed");
-        fail_if(!tb_list_append(&list, data3),
+        fail_if(!nc_list_append(&list, data3),
                 "Append 3 for list failed");
-        tb_list_free_all(&list);
+        nc_list_free_all(&list);
         fail_if(list, "non null list returned non null after free");
 }
 END_TEST
 
-START_TEST(tb_list_check)
+START_TEST(nc_list_check)
 {
-        TbList *list = NULL;
+        NcList *list = NULL;
         uint i;
         char *tmp = NULL;
         char *head = "<head of the list>";
@@ -265,78 +265,78 @@ START_TEST(tb_list_check)
         uint DEFAULT_SIZE = (10*1000);
         for (i = 0; i <= DEFAULT_SIZE; i++) {
                 if (i == 5) {
-                        fail_if(tb_list_append(&list, data) == false,
-                                "Failed to append to TbList");
+                        fail_if(nc_list_append(&list, data) == false,
+                                "Failed to append to NcList");
                 } else {
                         int j = asprintf(&tmp, "i #%d", i);
                         fail_if(j < 0,
                                 "Failed to pass test due to allocation error");
-                        fail_if(tb_list_prepend(&list, tmp) == false,
-                                "Failed to prepend to TbList");
+                        fail_if(nc_list_prepend(&list, tmp) == false,
+                                "Failed to prepend to NcList");
                 }
         }
 
         fail_if(list->size != DEFAULT_SIZE+1, "List size invalid");
 
         /* Prepend head */
-        fail_if(tb_list_prepend(&list, head) != true, "Prepend head failed");
+        fail_if(nc_list_prepend(&list, head) != true, "Prepend head failed");
         fail_if(list->size != DEFAULT_SIZE+2, "Prepended head size invalid");
 
         /* Prepend head2 */
-        fail_if(tb_list_prepend(&list, head2) != true, "Prepend head2 failed");
+        fail_if(nc_list_prepend(&list, head2) != true, "Prepend head2 failed");
         fail_if(list->size != DEFAULT_SIZE+3, "Prepended head2 size invalid");
 
         /* Remove from middle */
-        fail_if(tb_list_remove(&list, data, false) != true,
+        fail_if(nc_list_remove(&list, data, false) != true,
                 "List removal from middle failed");
         fail_if(list->size != DEFAULT_SIZE+2, "List middle removal size invalid");
 
         /* Remove from end */
-        fail_if(tb_list_remove(&list, tmp, true) != true,
+        fail_if(nc_list_remove(&list, tmp, true) != true,
                 "List tail removal failed");
         fail_if(list->size != DEFAULT_SIZE+1, "List tail removal size invalid");
 
-        fail_if(tb_list_append(&list, "newend") != true,
+        fail_if(nc_list_append(&list, "newend") != true,
                 "List new tail append failed");
         fail_if(list->size != DEFAULT_SIZE+2, "List new tail size invalid");
-        fail_if(tb_list_remove(&list, "newend", false) != true,
+        fail_if(nc_list_remove(&list, "newend", false) != true,
                 "List new tail removal failed");
         fail_if(list->size != DEFAULT_SIZE+1,
                 "List new tail size invalid (post removal)");
 
         /* Fake remove */
-        fail_if(tb_list_remove(&list, "nonexistent", false) == true,
+        fail_if(nc_list_remove(&list, "nonexistent", false) == true,
                 "List non existent removal should fail");
         fail_if(list->size != DEFAULT_SIZE+1,
                 "List size invalid after no change");
 
         /* Remove head */
-        fail_if(tb_list_remove(&list, head, false) == false,
+        fail_if(nc_list_remove(&list, head, false) == false,
                 "List remove head failed");
-        fail_if(tb_list_remove(&list, head2, false) == false,
+        fail_if(nc_list_remove(&list, head2, false) == false,
                 "List remove head2 failed");
         fail_if(list->size != DEFAULT_SIZE-1,
                 "List post heads removal size invalid");
 
-        tb_list_free_all(&list);
+        nc_list_free_all(&list);
 }
 END_TEST
 
 static Suite *
-tb_list_suite(void)
+nc_list_suite(void)
 {
         Suite *s;
         TCase *tc;
 
-        s = suite_create("tb_list");
-        tc = tcase_create("tb_list_functions");
-        tcase_add_test(tc, tb_list_append_check);
-        tcase_add_test(tc, tb_list_prepend_check);
-        tcase_add_test(tc, tb_list_remove_check);
-        tcase_add_test(tc, tb_list_foreach_check);
-        tcase_add_test(tc, tb_list_free_check);
-        tcase_add_test(tc, tb_list_free_all_check);
-        tcase_add_test(tc, tb_list_check);
+        s = suite_create("nc_list");
+        tc = tcase_create("nc_list_functions");
+        tcase_add_test(tc, nc_list_append_check);
+        tcase_add_test(tc, nc_list_prepend_check);
+        tcase_add_test(tc, nc_list_remove_check);
+        tcase_add_test(tc, nc_list_foreach_check);
+        tcase_add_test(tc, nc_list_free_check);
+        tcase_add_test(tc, nc_list_free_all_check);
+        tcase_add_test(tc, nc_list_check);
         suite_add_tcase(s, tc);
 
         return s;
@@ -348,7 +348,7 @@ int main(void)
         Suite *s;
         SRunner *sr;
 
-        s = tb_list_suite();
+        s = nc_list_suite();
         sr = srunner_create(s);
         srunner_run_all(sr, CK_VERBOSE);
         number_failed = srunner_ntests_failed(sr);

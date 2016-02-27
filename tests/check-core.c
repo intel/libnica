@@ -1,10 +1,10 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  */
@@ -32,7 +32,7 @@ static void reaper(void *v)
 }
 DEF_AUTOFREE(memtestchar, reaper)
 
-START_TEST(tb_memory_test)
+START_TEST(nc_memory_test)
 {
         {
                 autofree(memtestchar) *tmp = NULL;
@@ -51,9 +51,9 @@ static Suite *core_suite(void)
         Suite *s = NULL;
         TCase *tc = NULL;
 
-        s = suite_create("tb_core");
-        tc = tcase_create("tb_core_functions");
-        tcase_add_test(tc, tb_memory_test);
+        s = suite_create("nc_core");
+        tc = tcase_create("nc_core_functions");
+        tcase_add_test(tc, nc_memory_test);
         suite_add_tcase(s, tc);
 
         return s;

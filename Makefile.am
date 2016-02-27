@@ -4,7 +4,7 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/LICENSE.LGPL2.1 \
 	     ${top_srcdir}/HACKING \
 	     ${top_srcdir}/findstatic.pl \
-	     ${top_srcdir}/data/libthingamabob.pc.in
+	     ${top_srcdir}/data/nica.pc.in
 
 NULL =
 CLEANFILES =
@@ -16,11 +16,12 @@ AM_CFLAGS = \
 	-Wformat -Wformat-security -Werror=format-security \
 	-Wno-conversion -Wunused-variable -Wunreachable-code \
 	-Wall -W -D_FORTIFY_SOURCE=2 -std=c99 -Werror \
-	-DLIBTHINGAMABOB_INTERNAL
+	-DLIBNICA_INTERNAL
 
 AM_CPPFLAGS = \
 	-I $(top_srcdir)/src \
-	-I $(top_srcdir)/src/include
+	-I $(top_srcdir)/src/include \
+	-I $(top_srcdir)/src/include/nica
 
 AUTOMAKE_OPTIONS = color-tests parallel-tests
 
@@ -33,34 +34,34 @@ AM_CFLAGS += --coverage
 endif
 
 
-lib_LTLIBRARIES = libthingamabob.la
+lib_LTLIBRARIES = libnica.la
 
 # Our main headers
-thingamabobinst_HEADERS = \
-	src/include/array.h \
-	src/include/hashmap.h \
-	src/include/list.h \
-	src/include/util.h
+nicainst_HEADERS = \
+	src/include/nica/array.h \
+	src/include/nica/hashmap.h \
+	src/include/nica/list.h \
+	src/include/nica/util.h
 
 # The main one you should include
 include_HEADERS = \
-	src/include/thingamabob.h
+	src/include/nica/nica.h
 
 # Pkgconfig file
 pcfiledir = $(libdir)/pkgconfig
 pcfile_DATA = \
-	data/libthingamabob.pc
+	data/nica.pc
 
-thingamabobinstdir = $(includedir)/libthingamabob
+nicainstdir = $(includedir)/nica
 
 # Main library
-libthingamabob_la_SOURCES = \
+libnica_la_SOURCES = \
 	src/array.c \
 	src/hashmap.c \
 	src/list.c \
 	src/util.c
 
-libthingamabob_la_CFLAGS = \
+libnica_la_CFLAGS = \
 	$(AM_CFLAGS)
 
 # Tests

@@ -1,10 +1,10 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  */
@@ -16,16 +16,16 @@
 
 #include "list.h"
 
-bool tb_list_append(TbList **list, void *data)
+bool nc_list_append(NcList **list, void *data)
 {
-        TbList *head = *list;
+        NcList *head = *list;
 
-        TbList *parent = NULL;
-        TbList *next = NULL;
+        NcList *parent = NULL;
+        NcList *next = NULL;
 
         if (!head) {
                 /* New list generation */
-                head = calloc(1, sizeof(TbList));
+                head = calloc(1, sizeof(NcList));
                 if (!head) {
                         return false;
                 }
@@ -36,7 +36,7 @@ bool tb_list_append(TbList **list, void *data)
                 *list = head;
         } else {
                 /* New tail generation */
-                next = calloc(1, sizeof(TbList));
+                next = calloc(1, sizeof(NcList));
                 if (!next) {
                         return false;
                 }
@@ -50,14 +50,14 @@ bool tb_list_append(TbList **list, void *data)
         return true;
 }
 
-bool tb_list_prepend(TbList **list, void *data)
+bool nc_list_prepend(NcList **list, void *data)
 {
-        TbList *head = *list;
-        TbList *prev = NULL;
+        NcList *head = *list;
+        NcList *prev = NULL;
 
         if (!head) {
                 /* New list generation */
-                head = calloc(1, sizeof(TbList));
+                head = calloc(1, sizeof(NcList));
                 if (!head) {
                         return false;
                 }
@@ -68,7 +68,7 @@ bool tb_list_prepend(TbList **list, void *data)
                 *list = head;
         } else {
                 /* New head generation */
-                prev = calloc(1, sizeof(TbList));
+                prev = calloc(1, sizeof(NcList));
                 if (!prev) {
                         return false;
                 }
@@ -84,11 +84,11 @@ bool tb_list_prepend(TbList **list, void *data)
         return true;
 }
 
-bool tb_list_remove(TbList **list, void *data, bool do_free)
+bool nc_list_remove(NcList **list, void *data, bool do_free)
 {
-        TbList *head = *list;
-        TbList *current = head;
-        TbList *prev = head;
+        NcList *head = *list;
+        NcList *current = head;
+        NcList *prev = head;
 
         /* Determine the node inside the list */
         while ((current != NULL) && (current->data != data)) {

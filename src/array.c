@@ -1,10 +1,10 @@
 /*
- * This file is part of libthingamabob.
+ * This file is part of libnica.
  *
  * Copyright (C) 2016 Intel Corporation
  *
- * libthingamabob is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
+ * libnica is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1
  * of the License, or (at your option) any later version.
  */
@@ -15,16 +15,16 @@
 #include "array.h"
 #include "util.h"
 
-TbArray *tb_array_new(void)
+NcArray *nc_array_new(void)
 {
-        TbArray *ret = NULL;
+        NcArray *ret = NULL;
         /* If this fails, we simply return NULL and allow the user
          * to deal with the error */
-        ret = calloc(1, sizeof(TbArray));
+        ret = calloc(1, sizeof(NcArray));
         return ret;
 }
 
-bool tb_array_add(TbArray *array, void *data)
+bool nc_array_add(NcArray *array, void *data)
 {
         uint16_t new_len;
         size_t curr, new_size;
@@ -58,7 +58,7 @@ bool tb_array_add(TbArray *array, void *data)
         return true;
 }
 
-void *tb_array_get(TbArray *array, uint16_t index)
+void *nc_array_get(NcArray *array, uint16_t index)
 {
         if (!array) {
                 return NULL;
@@ -70,7 +70,7 @@ void *tb_array_get(TbArray *array, uint16_t index)
 }
 
 
-void tb_array_free(TbArray **array, array_free_func free_method)
+void nc_array_free(NcArray **array, array_free_func free_method)
 {
         int i;
         if (!array || !*array) {
@@ -89,7 +89,7 @@ void tb_array_free(TbArray **array, array_free_func free_method)
         *array = NULL;
 }
 
-void tb_array_qsort(TbArray *self, __compar_fn_t func)
+void nc_array_qsort(NcArray *self, __compar_fn_t func)
 {
         qsort(self->data, self->len, sizeof(void*), func);
 }

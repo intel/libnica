@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libthingamabob
+Name: libnica
 Description: Common C library functions
 URL: @PACKAGE_URL@
 Version: @PACKAGE_VERSION@
-Libs: -L${libdir} -lthingamabob
+Libs: -L${libdir} -lnica
 Cflags: -I${includedir}
