@@ -68,6 +68,15 @@ bool nc_rm_rf(const char *path);
  */
 bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target);
 
+/**
+ * Gradually build up a valid path, which may point within an existing
+ * tree, to mitigate any case sensitivity issues on case-preserving
+ * filesystems
+ */
+__attribute__ ((sentinel(0))) char *build_case_correct_path(const char *c, ...);
+
+char *build_case_correct_path_va(const char *c, va_list ap);
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

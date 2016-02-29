@@ -18,6 +18,8 @@
 #include <ftw.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <dirent.h>
+#include <stdarg.h>
 
 #include "files.h"
 #include "util.h"
@@ -121,6 +123,106 @@ end:
         if (remove_target) {
                 sync();
         }
+
+        return ret;
+}
+
+/*
+ * The following functions are taken from Ikey Doherty's goofiboot
+ * project
+ */
+char *build_case_correct_path_va(const char *c, va_list ap)
+{
+        char *p = NULL;
+        char *root = NULL;
+        struct stat st = {0};
+        DIR *dirn = NULL;
+        struct dirent *ent = NULL;
+
+        p = (char*)c;
+
+        while (p) {
+                char *t = NULL;
+                char *sav = NULL;
+
+                if (!root) {
+                        root = strdup(p);
+                } else {
+                        sav = strdup(root);
+
+                        if (!asprintf(&t, "%s/%s", root, p)) {
+                                fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                va_end(ap);
+                                return NULL;
+                        }
+                        free(root);
+                        root = t;
+                        t = NULL;
+                }
+
+                char *dirp = strdup(root);
+                char *dir = dirname(dirp);
+
+                if (stat(dir, &st) != 0) {
+                        goto clean;
+                }
+                if (!S_ISDIR(st.st_mode)) {
+                        goto clean;
+                }
+                /* Iterate the directory and find the case insensitive name, using
+                 * this if it exists. Otherwise continue with the non existent
+                 * path
+                 */
+                dirn = opendir(dir);
+                if (!dirn) {
+                        goto clean;
+                }
+                while ((ent = readdir(dirn)) != NULL) {
+                        if (strncmp(ent->d_name, ".", 1) == 0 || strncmp(ent->d_name, "..", 2) == 0) {
+                                continue;
+                        }
+                        if (strcasecmp(ent->d_name, p) == 0) {
+                                if (sav) {
+                                        if (!asprintf(&t, "%s/%s", sav, ent->d_name)) {
+                                                fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                                return NULL;
+                                        }
+                                        free(root);
+                                        root = t;
+                                        t = NULL;
+                                } else {
+                                        free(root);
+                                        root = NULL;
+                                        root = strdup(sav);
+                                        if (!root) {
+                                                fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                                return NULL;
+                                        }
+                                }
+                                break;
+                        }
+                }
+                closedir(dirn);
+clean:
+
+                free(dirp);
+                if (sav) {
+                        free(sav);
+                }
+                p = va_arg(ap, char*);
+        }
+
+        return root;
+}
+
+char *build_case_correct_path(const char *c, ...)
+{
+        va_list ap;
+
+        char *ret = NULL;
+        va_start(ap, c);
+        ret = build_case_correct_path_va(c, ap);
+        va_end(ap);
 
         return ret;
 }
