@@ -41,6 +41,7 @@ nicainst_HEADERS = \
 	src/include/nica/array.h \
 	src/include/nica/hashmap.h \
 	src/include/nica/list.h \
+	src/include/nica/nc-string.h \
 	src/include/nica/util.h
 
 # The main one you should include
@@ -59,6 +60,7 @@ libnica_la_SOURCES = \
 	src/array.c \
 	src/hashmap.c \
 	src/list.c \
+	src/nc-string.c \
 	src/util.c
 
 libnica_la_CFLAGS = \
