@@ -9,6 +9,11 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 NULL =
 CLEANFILES =
 
+# set library version info
+LIBNICA_CURRENT=1
+LIBNICA_REVISION=0
+LIBNICA_AGE=0
+
 AM_CFLAGS = \
 	-fstack-protector -Wall -pedantic \
 	-Wstrict-prototypes -Wundef -fno-common \
@@ -67,6 +72,10 @@ libnica_la_SOURCES = \
 
 libnica_la_CFLAGS = \
 	$(AM_CFLAGS)
+
+libnica_la_LDFLAGS = \
+	$(AM_LDFLAGS) \
+	-version-info $(LIBNICA_CURRENT):$(LIBNICA_REVISION):$(LIBNICA_AGE)
 
 # Tests
 TESTS = \
