@@ -167,7 +167,7 @@ static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, i
         row->hash = (void*)key;
         row->value = value;
         row->occ = true;
-        if (parent != row) {
+        if (parent != row && parent) {
                 parent->next = row;
         }
 
