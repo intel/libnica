@@ -47,6 +47,11 @@ static char *lstrip(char *str, size_t len, size_t *out_len)
                 break;
         }
         *out_len = len-skip_len;
+        if (skip_len > 0) {
+                char *c = strdup(str+skip_len);
+                free(str);
+                return c;
+        }
         return str+skip_len;
 }
 
@@ -74,6 +79,45 @@ static char *rstrip(char *str, size_t len, size_t *out_len)
         return str;
 }
 
+
+static char *string_chew_terminated(char *inp)
+{
+        int skip_offset = 0;
+        int len = 0;
+        int end_len = 0;
+        bool count = true;
+
+        if (!inp) {
+                return NULL;
+        }
+
+        for (char *c = inp; *c; c++) {
+                if (count && (*c == ' ' || *c == '\t')) {
+                        ++skip_offset;
+                        continue;
+                } else {
+                        count = false;
+                }
+                ++len;
+        }
+        for (int i = len; i>skip_offset; i--) {
+                if (inp[i] == ' ' || inp[i] == '\t') {
+                        ++end_len;
+                        continue;
+                } else if (inp[i] == '\0') {
+                        continue;
+                }
+                break;
+        }
+
+        if (end_len > 0) {
+                inp[(len-end_len)] = '\0';
+        }
+        char *c = strdup(inp+skip_offset);
+        free(inp);
+        return c;
+}
+
 /**
  * Munch both ends of the string
  */
@@ -83,7 +127,9 @@ static char *string_strip(char *str, size_t len, size_t *out_len)
 
         char *c = lstrip(str, len, &mylen);
         c = rstrip(c, mylen, &mylen);
-        *out_len = mylen;
+        if (out_len) {
+                *out_len = mylen;
+        }
         return c;
 }
 
@@ -145,11 +191,25 @@ NcIniFile *nc_ini_file_parse(const char *path)
                         fprintf(stderr, "[inifile] Expected key=value notation on line %d\n", line_count);
                         goto next;
                 }
+
+                /* Can't have sectionless k->v */
                 if (!current_section) {
-                        /* Can't have sectionless k->v */
                         fprintf(stderr, "[inifile] Encountered key=value mapping without valid section on line %d\n", line_count);
                         goto next;
                 }
+
+                int offset = ch-buf;
+
+                char *value = strdup((buf+offset)+1);
+                buf[offset] = '\0';
+                char *key = strdup(buf);
+                key = string_chew_terminated(key);
+                value = string_chew_terminated(value);
+
+                /* TODO: Insert key->value into map */
+                //fprintf(stderr, "{%s} [%s] = [%s]\n", current_section, key, value);
+                free(key);
+                free(value);
 next:
                 if (buf) {
                         free(buf);
