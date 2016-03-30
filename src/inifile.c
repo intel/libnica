@@ -18,14 +18,6 @@
 #include "hashmap.h"
 
 /**
- * Hold each section in the map
- */
-typedef struct NcIniFileSection {
-        const char *name;
-        NcHashmap *values;
-} NcIniFileSection;
-
-/**
  * Our opaque NcIniFile
  */
 struct NcIniFile {
