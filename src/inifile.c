@@ -171,6 +171,7 @@ NcIniFile *nc_ini_file_parse(const char *path)
                         if (buf[str_len-1] != ']') {
                                 /* Throw error */
                                 fprintf(stderr, "[inifile] Expected closing ']' on line %d\n", line_count);
+                                goto next;
                         }
                         /* Grab the section name, and "close" last section */
                         buf[str_len-1] = '\0';
