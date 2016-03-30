@@ -37,6 +37,7 @@ test-driver
 check_core
 check_array
 check_hashmap
+check_inifile
 check_list
 
 # pkgconfig
