@@ -95,6 +95,7 @@ NcIniFile *nc_ini_file_parse(const char *path)
         ssize_t r = 0;
         size_t sn = 0;
         int line_count = 1;
+        char *current_section = NULL;
 
         file = fopen(path, "r");
         if (!file) {
@@ -126,6 +127,11 @@ NcIniFile *nc_ini_file_parse(const char *path)
                                 fprintf(stderr, "[inifile] Expected closing ']' on line %d\n", line_count);
                         }
                         /* Grab the section name, and "close" last section */
+                        buf[str_len-1] = '\0';
+                        if (current_section) {
+                                free(current_section);
+                        }
+                        current_section = strdup(buf+1);
                         goto next;
                 } else if (buf[0] == '#' || buf[0] == ';') {
                         /* Skip comment */;
@@ -137,6 +143,11 @@ NcIniFile *nc_ini_file_parse(const char *path)
                 if (!ch) {
                         /* Throw error? */
                         fprintf(stderr, "[inifile] Expected key=value notation on line %d\n", line_count);
+                        goto next;
+                }
+                if (!current_section) {
+                        /* Can't have sectionless k->v */
+                        fprintf(stderr, "[inifile] Encountered key=value mapping without valid section on line %d\n", line_count);
                         goto next;
                 }
 next:
@@ -151,6 +162,10 @@ next:
         if (buf) {
                 free(buf);
                 buf = NULL;
+        }
+        if (current_section) {
+                free(current_section);
+                current_section = NULL;
         }
 
         /* Return the object */
