@@ -142,11 +142,15 @@ NcIniFile *nc_ini_file_parse(const char *path)
         size_t sn = 0;
         int line_count = 1;
         char *current_section = NULL;
+        NcHashmap *root_map = NULL;
+        NcHashmap *section_map = NULL;
 
         file = fopen(path, "r");
         if (!file) {
                 return NULL;
         }
+
+        root_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, (nc_hash_free_func)nc_hashmap_free);
 
         /* This is all TODO stuff - not yet fully implemented */
         while ((r = getline(&buf, &sn, file)) != -1) {
@@ -179,9 +183,15 @@ NcIniFile *nc_ini_file_parse(const char *path)
                                 free(current_section);
                         }
                         current_section = strdup(buf+1);
+                        section_map = nc_hashmap_get(root_map, current_section);
+                        if (!section_map) {
+                                /* Create a new section dynamically */
+                                section_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, free);
+                                nc_hashmap_put(root_map, strdup(current_section), section_map);
+                        }
                         goto next;
                 } else if (buf[0] == '#' || buf[0] == ';') {
-                        /* Skip comment */;
+                        /* Skip comment */
                         goto next;
                 }
 
@@ -207,10 +217,18 @@ NcIniFile *nc_ini_file_parse(const char *path)
                 key = string_chew_terminated(key);
                 value = string_chew_terminated(value);
 
-                /* TODO: Insert key->value into map */
-                //fprintf(stderr, "{%s} [%s] = [%s]\n", current_section, key, value);
-                free(key);
-                free(value);
+                /* Ensure a section mapping exists */
+                section_map = nc_hashmap_get(root_map, current_section);
+                if (!section_map) {
+                        fprintf(stderr, "Fatal! No section map for named section: %s\n", current_section);
+                        abort();
+                }
+
+                /* Insert these guys into the map */
+                if (!nc_hashmap_put(section_map, key, value)) {
+                        fprintf(stderr, "Fatal! Out of memory\n");
+                        abort();
+                }
 next:
                 if (buf) {
                         free(buf);
@@ -224,10 +242,14 @@ next:
                 free(buf);
                 buf = NULL;
         }
+
         if (current_section) {
                 free(current_section);
                 current_section = NULL;
         }
+
+        /* TODO: Return this guy */
+        nc_hashmap_free(root_map);
 
         /* Return the object */
         ret = calloc(1, sizeof(struct NcIniFile));
