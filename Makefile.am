@@ -86,6 +86,7 @@ TESTS = \
 	check_core \
 	check_array \
 	check_hashmap \
+	check_inifile \
 	check_list
 
 check_PROGRAMS = $(TESTS)
@@ -121,6 +122,17 @@ check_hashmap_CFLAGS = \
 	$(AM_CFLAGS)
 
 check_hashmap_LDADD = \
+	$(CHECK_LIBS)
+
+# Test inifile
+check_inifile_SOURCES = \
+	tests/check-inifile.c
+
+check_inifile_CFLAGS = \
+	$(CHECK_CFLAGS) \
+	$(AM_CFLAGS)
+
+check_inifile_LDADD = \
 	$(CHECK_LIBS)
 
 # Test list
