@@ -16,18 +16,9 @@
 #endif
 
 #include <nica/util.h>
+#include <nica/hashmap.h>
 
-/**
- * An INI-format Configuration File
- */
-typedef struct NcIniFile NcIniFile;
-
-
-NcIniFile *nc_ini_file_parse(const char *path);
-
-void nc_ini_file_free(NcIniFile *file);
-
-DEF_AUTOFREE(NcIniFile, nc_ini_file_free)
+NcHashmap *nc_ini_file_parse(const char *path);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

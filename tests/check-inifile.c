@@ -15,9 +15,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "inifile.c"
+#include "hashmap.c"
+
 START_TEST(nc_inifile_open_test)
 {
-        autofree(NcIniFile) *f = NULL;
+        autofree(NcHashmap) *f = NULL;
         const char *t_path = TOP_DIR"/tests/ini/wellformed.ini";
 
         f = nc_ini_file_parse(t_path);

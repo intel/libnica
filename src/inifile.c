@@ -18,13 +18,6 @@
 #include "hashmap.h"
 
 /**
- * Our opaque NcIniFile
- */
-struct NcIniFile {
-        NcHashmap *sections;
-};
-
-/**
  * Strip leading whitespace from string (left)
  */
 static char *lstrip(char *str, size_t len, size_t *out_len)
@@ -125,9 +118,8 @@ static char *string_strip(char *str, size_t len, size_t *out_len)
         return c;
 }
 
-NcIniFile *nc_ini_file_parse(const char *path)
+NcHashmap *nc_ini_file_parse(const char *path)
 {
-        NcIniFile *ret = NULL;
         autofree(FILE) *file = NULL;
         char *buf = NULL;
         ssize_t r = 0;
@@ -136,6 +128,7 @@ NcIniFile *nc_ini_file_parse(const char *path)
         char *current_section = NULL;
         NcHashmap *root_map = NULL;
         NcHashmap *section_map = NULL;
+        bool failed = false;
 
         file = fopen(path, "r");
         if (!file) {
@@ -167,7 +160,7 @@ NcIniFile *nc_ini_file_parse(const char *path)
                         if (buf[str_len-1] != ']') {
                                 /* Throw error */
                                 fprintf(stderr, "[inifile] Expected closing ']' on line %d\n", line_count);
-                                goto next;
+                                goto fail;
                         }
                         /* Grab the section name, and "close" last section */
                         buf[str_len-1] = '\0';
@@ -192,13 +185,13 @@ NcIniFile *nc_ini_file_parse(const char *path)
                 if (!ch) {
                         /* Throw error? */
                         fprintf(stderr, "[inifile] Expected key=value notation on line %d\n", line_count);
-                        goto next;
+                        goto fail;
                 }
 
                 /* Can't have sectionless k->v */
                 if (!current_section) {
                         fprintf(stderr, "[inifile] Encountered key=value mapping without valid section on line %d\n", line_count);
-                        goto next;
+                        goto fail;
                 }
 
                 int offset = ch-buf;
@@ -228,6 +221,10 @@ next:
                 }
                 ++line_count;
                 sn = 0;
+                continue;
+fail:
+                failed = true;
+                break;
         }
 
         if (buf) {
@@ -240,24 +237,13 @@ next:
                 current_section = NULL;
         }
 
-        /* TODO: Return this guy */
-        nc_hashmap_free(root_map);
-
-        /* Return the object */
-        ret = calloc(1, sizeof(struct NcIniFile));
-        if (!ret) {
+        if (failed) {
+                if (root_map) {
+                        nc_hashmap_free(root_map);
+                }
                 return NULL;
         }
-
-        return ret;
-}
-
-void nc_ini_file_free(NcIniFile *file)
-{
-        if (!file) {
-                return;
-        }
-        free(file);
+        return root_map;
 }
 
 /*
