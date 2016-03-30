@@ -43,6 +43,7 @@ void *greedy_realloc(void **p, size_t *allocated, size_t need);
 
 
 DEF_AUTOFREE(char, free)
+DEF_AUTOFREE(FILE, fclose)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

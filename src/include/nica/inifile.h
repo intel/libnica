@@ -20,9 +20,7 @@
 /**
  * An INI-format Configuration File
  */
-typedef struct NcIniFile {
-        int __reserved1;
-} NcIniFile;
+typedef struct NcIniFile NcIniFile;
 
 
 NcIniFile *nc_ini_file_parse(const char *path);
