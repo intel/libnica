@@ -4,7 +4,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/LICENSE.LGPL2.1 \
 	     ${top_srcdir}/HACKING \
 	     ${top_srcdir}/findstatic.pl \
-	     ${top_srcdir}/data/nica.pc.in
+	     ${top_srcdir}/data/nica.pc.in \
+	     ${top_srcdir}/tests/ini/wellformed.ini
 
 NULL =
 CLEANFILES =
@@ -26,7 +27,8 @@ AM_CFLAGS = \
 AM_CPPFLAGS = \
 	-I $(top_srcdir)/src \
 	-I $(top_srcdir)/src/include \
-	-I $(top_srcdir)/src/include/nica
+	-I $(top_srcdir)/src/include/nica \
+	-DTOP_DIR=\"$(abs_top_srcdir)\"
 
 AUTOMAKE_OPTIONS = color-tests parallel-tests
 
