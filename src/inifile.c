@@ -92,8 +92,8 @@ NcIniFile *nc_ini_file_parse(const char *path)
         NcIniFile *ret = NULL;
         autofree(FILE) *file = NULL;
         char *buf = NULL;
-        size_t r = -1;
-        size_t sn = -1;
+        ssize_t r = 0;
+        size_t sn = 0;
         int line_count = 1;
 
         file = fopen(path, "r");
@@ -102,12 +102,18 @@ NcIniFile *nc_ini_file_parse(const char *path)
         }
 
         /* This is all TODO stuff - not yet fully implemented */
-        while ((r = getline(&buf, &sn, file)) > 0) {
+        while ((r = getline(&buf, &sn, file)) != -1) {
                 char *ch = NULL;
-                size_t str_len;
+                size_t str_len = r;
 
-                buf = string_strip(buf, sn, &str_len);
+                /* Fix newline */
+                if (buf[r-1] == '\n') {
+                        buf[r-1] = '\0';
+                        --r;
+                }
+                str_len = r;
 
+                buf = string_strip(buf, r, &str_len);
                 /* Empty lines are fine */
                 if (streq(buf, "")) {
                         goto next;
@@ -115,7 +121,7 @@ NcIniFile *nc_ini_file_parse(const char *path)
 
                 if (buf[0] == '[') {
                         /* Validate section start */
-                        if (buf[str_len] != ']') {
+                        if (buf[str_len-1] != ']') {
                                 /* Throw error */
                                 fprintf(stderr, "[inifile] Expected closing ']' on line %d\n", line_count);
                         }
@@ -131,13 +137,17 @@ NcIniFile *nc_ini_file_parse(const char *path)
                 if (!ch) {
                         /* Throw error? */
                         fprintf(stderr, "[inifile] Expected key=value notation on line %d\n", line_count);
-                        continue;
+                        goto next;
                 }
 next:
-                free(buf);
-                buf = NULL;
+                if (buf) {
+                        free(buf);
+                        buf = NULL;
+                }
                 ++line_count;
+                sn = 0;
         }
+
         if (buf) {
                 free(buf);
                 buf = NULL;
