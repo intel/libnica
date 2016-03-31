@@ -1,4 +1,4 @@
-AC_INIT([libnica], 1, [michael.i.doherty@intel.com], [libnica], [https://github.com/ikeydoherty/libnica])
+AC_INIT([libnica], 2, [michael.i.doherty@intel.com], [libnica], [https://github.com/ikeydoherty/libnica])
 AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz foreign subdir-objects])
 AC_PROG_CC
 AC_PROG_CC_STDC
