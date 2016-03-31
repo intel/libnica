@@ -77,6 +77,7 @@ START_TEST(nc_string_test)
         c = nc_string_strip(str);
         fail_if(!c, "Failed to strip string");
         fail_if(!streq(c, "spacey text"), "Failed to match stripped string");
+        nc_string_free(str);
 
         str = nc_string_dup_printf("Test String #%d", 2);
         fail_if(!str, "Failed to allocate string");
