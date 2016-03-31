@@ -13,9 +13,28 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 #include "inifile.h"
 #include "hashmap.h"
+
+static const char *_errors[] = {
+        [NC_INI_ERROR_FILE] = "",
+        [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
+        [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
+        [NC_INI_ERROR_NO_SECTION] = "Encountered key=value mapping without a valid section",
+        [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation"
+};
+
+const char *nc_ini_error(NcIniError error)
+{
+        int j = abs(error);
+        if (j < NC_INI_ERROR_FILE || j > NC_INI_ERROR_MAX) {
+                return "[Unknown Error]";
+        }
+        return _errors[j];
+}
 
 /**
  * Strip leading whitespace from string (left)
@@ -98,9 +117,12 @@ static char *string_chew_terminated(char *inp)
         if (end_len > 0) {
                 inp[(len-end_len)] = '\0';
         }
-        char *c = strdup(inp+skip_offset);
-        free(inp);
-        return c;
+        if (skip_offset > 0) {
+                char *c = strdup(inp+skip_offset);
+                free(inp);
+                return c;
+        }
+        return inp;
 }
 
 /**
@@ -120,6 +142,24 @@ static char *string_strip(char *str, size_t len, size_t *out_len)
 
 NcHashmap *nc_ini_file_parse(const char *path)
 {
+        NcHashmap *ret = NULL;
+        int error_line = 0;
+        int r = 0;
+
+        r = nc_ini_file_parse_full(path, &ret, &error_line);
+        if (r != 0) {
+                if (abs(r) == NC_INI_ERROR_FILE) {
+                        fprintf(stderr, "[inifile] %s: %s\n", strerror(errno), path);
+                } else {
+                        fprintf(stderr, "[inifile] %s [L%d]: %s\n", nc_ini_error(r), error_line, path);
+                }
+                return NULL;
+        }
+        return ret;
+}
+
+int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number)
+{
         autofree(FILE) *file = NULL;
         char *buf = NULL;
         ssize_t r = 0;
@@ -129,10 +169,16 @@ NcHashmap *nc_ini_file_parse(const char *path)
         NcHashmap *root_map = NULL;
         NcHashmap *section_map = NULL;
         bool failed = false;
+        int err_ret = 0;
 
         file = fopen(path, "r");
         if (!file) {
-                return NULL;
+                return -(NC_INI_ERROR_FILE);
+        }
+
+        if (!out_map) {
+                fprintf(stderr, "nc_ini_file_parse_full(): NcHashmap pointer invalid\n");
+                return -1;
         }
 
         root_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, (nc_hash_free_func)nc_hashmap_free);
@@ -159,7 +205,7 @@ NcHashmap *nc_ini_file_parse(const char *path)
                         /* Validate section start */
                         if (buf[str_len-1] != ']') {
                                 /* Throw error */
-                                fprintf(stderr, "[inifile] Expected closing ']' on line %d\n", line_count);
+                                err_ret = NC_INI_ERROR_NOT_CLOSED;
                                 goto fail;
                         }
                         /* Grab the section name, and "close" last section */
@@ -181,16 +227,16 @@ NcHashmap *nc_ini_file_parse(const char *path)
                 }
 
                 /* Look for key = value */
-                ch = memchr(buf, '=', sn);
+                ch = strchr(buf, '=');
                 if (!ch) {
                         /* Throw error? */
-                        fprintf(stderr, "[inifile] Expected key=value notation on line %d\n", line_count);
+                        err_ret = NC_INI_ERROR_INVALID_LINE;
                         goto fail;
                 }
 
                 /* Can't have sectionless k->v */
                 if (!current_section) {
-                        fprintf(stderr, "[inifile] Encountered key=value mapping without valid section on line %d\n", line_count);
+                        err_ret = NC_INI_ERROR_NO_SECTION;
                         goto fail;
                 }
 
@@ -203,7 +249,7 @@ NcHashmap *nc_ini_file_parse(const char *path)
                 value = string_chew_terminated(value);
 
                 if (streq(key, "")) {
-                        fprintf(stderr, "[inifile] Encountered empty key on line %d\n", line_count);
+                        err_ret = NC_INI_ERROR_EMPTY_KEY;
                         free(key);
                         free(value);
                         goto fail;
@@ -212,12 +258,14 @@ NcHashmap *nc_ini_file_parse(const char *path)
                 /* Ensure a section mapping exists */
                 section_map = nc_hashmap_get(root_map, current_section);
                 if (!section_map) {
+                        err_ret = 1;
                         fprintf(stderr, "[inifile] Fatal! No section map for named section: %s\n", current_section);
                         abort();
                 }
 
                 /* Insert these guys into the map */
                 if (!nc_hashmap_put(section_map, key, value)) {
+                        err_ret = 1;
                         fprintf(stderr, "[inifile] Fatal! Out of memory\n");
                         abort();
                 }
@@ -231,6 +279,9 @@ next:
                 continue;
 fail:
                 failed = true;
+                if (error_line_number) {
+                        *error_line_number = line_count;
+                }
                 break;
         }
 
@@ -248,9 +299,10 @@ fail:
                 if (root_map) {
                         nc_hashmap_free(root_map);
                 }
-                return NULL;
+                return -(err_ret);
         }
-        return root_map;
+        *out_map = root_map;
+        return 0;
 }
 
 /*

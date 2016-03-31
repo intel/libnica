@@ -18,7 +18,19 @@
 #include <nica/util.h>
 #include <nica/hashmap.h>
 
+typedef enum {
+        NC_INI_ERROR_MIN = 0,
+        NC_INI_ERROR_FILE,
+        NC_INI_ERROR_EMPTY_KEY,
+        NC_INI_ERROR_NOT_CLOSED,
+        NC_INI_ERROR_NO_SECTION,
+        NC_INI_ERROR_INVALID_LINE,
+        NC_INI_ERROR_MAX
+} NcIniError;
+
 NcHashmap *nc_ini_file_parse(const char *path);
+int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number);
+const char *nc_ini_error(NcIniError error);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
