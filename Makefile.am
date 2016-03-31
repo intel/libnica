@@ -12,7 +12,7 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/tests/ini/just_assign.ini \
 	     ${top_srcdir}/tests/ini/broken_section_start.ini \
 	     ${top_srcdir}/tests/ini/broken_section_end.ini \
-	     ${top_srcidr}/current_symbols
+	     ${top_srcdir}/current_symbols
 
 NULL =
 CLEANFILES =
