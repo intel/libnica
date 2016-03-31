@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include <nica/macros.h>
+
 /**
  * Safely represent and store a buffer as a string
  */
@@ -37,7 +39,7 @@ typedef struct nc_string_t {
  *
  * @return a new nc_string if allocation succeeded, otherwise NULL
  */ 
-nc_string *nc_string_dup_printf(const char *format, ...)
+_nica_public_ nc_string *nc_string_dup_printf(const char *format, ...)
 __attribute__ ((format (printf, 1, 2)));
 
 
@@ -47,7 +49,7 @@ __attribute__ ((format (printf, 1, 2)));
  * @param str Pointer to a string
  * @return a new nc_string if allocation succeeded, otherwise NULL
  */
-nc_string *nc_string_dup(const char *str);
+_nica_public_ nc_string *nc_string_dup(const char *str);
 
 /**
  * Free an existing string and its contents
@@ -73,7 +75,7 @@ static inline void nc_string_free(nc_string *str)
  *
  * @return a boolean value indicating success
  */
-bool nc_string_cat(nc_string *str, const char *append);
+_nica_public_ bool nc_string_cat(nc_string *str, const char *append);
 
 /**
  * Determine if string A is equal to string B

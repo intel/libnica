@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <nica/macros.h>
 #include <nica/util.h>
 
 /* Convert between uint and void* */
@@ -134,7 +135,7 @@ static inline bool nc_simple_compare(const void *l, const void *r)
  *
  * @return A newly allocated NcHashmap
  */
-NcHashmap *nc_hashmap_new(nc_hash_create_func hash, nc_hash_compare_func compare);
+_nica_public_ NcHashmap *nc_hashmap_new(nc_hash_create_func hash, nc_hash_compare_func compare);
 
 /**
  * Create a new NcHashmap with cleanup functions
@@ -146,7 +147,7 @@ NcHashmap *nc_hashmap_new(nc_hash_create_func hash, nc_hash_compare_func compare
  *
  * @return A newly allocated NcHashmap
  */
-NcHashmap *nc_hashmap_new_full(nc_hash_create_func hash, nc_hash_compare_func compare, nc_hash_free_func key_free, nc_hash_free_func value_free);
+_nica_public_ NcHashmap *nc_hashmap_new_full(nc_hash_create_func hash, nc_hash_compare_func compare, nc_hash_free_func key_free, nc_hash_free_func value_free);
 
 /**
  * Store a key/value pair in the hashmap
@@ -159,7 +160,7 @@ NcHashmap *nc_hashmap_new_full(nc_hash_create_func hash, nc_hash_compare_func co
  *
  * @return true if the operation succeeded.
  */
-bool nc_hashmap_put(NcHashmap *map, const void *key, void *value);
+_nica_public_ bool nc_hashmap_put(NcHashmap *map, const void *key, void *value);
 
 /**
  * Get the value associated with the unique key
@@ -167,7 +168,7 @@ bool nc_hashmap_put(NcHashmap *map, const void *key, void *value);
  * @param key Unique key to obtain a value for
  * @return The associated value if it exists, otherwise NULL
  */
-void *nc_hashmap_get(NcHashmap *map, const void *key);
+_nica_public_ void *nc_hashmap_get(NcHashmap *map, const void *key);
 
 /**
  * Determine if the key has an associated value in the NcHashmap
@@ -175,12 +176,12 @@ void *nc_hashmap_get(NcHashmap *map, const void *key);
  * @param key Unique key to check value for
  * @return True if the key exists in the hashmap
  */
-bool nc_hashmap_contains(NcHashmap *self, const void *key);
+_nica_public_ bool nc_hashmap_contains(NcHashmap *self, const void *key);
 
 /**
  * Free the given NcHashmap, and all keys/values if appropriate
  */
-void nc_hashmap_free(NcHashmap *map);
+_nica_public_ void nc_hashmap_free(NcHashmap *map);
 
 /**
  * Remove the value and key identified by key.
@@ -191,21 +192,21 @@ void nc_hashmap_free(NcHashmap *map);
  * @param key The unique key to remove
  * @return true if the key/value pair were removed
  */
-bool nc_hashmap_remove(NcHashmap *map, const void *key);
+_nica_public_ bool nc_hashmap_remove(NcHashmap *map, const void *key);
 
 /**
  * Remove the value and key identified by key without freeing them
  *
  * @return true if the key/value pair were stolen
  */
-bool nc_hashmap_steal(NcHashmap *map, const void *key);
+_nica_public_ bool nc_hashmap_steal(NcHashmap *map, const void *key);
 
 /**
  * Return the current size of the hashmap
  *
  * @return size of the current hashmap (element count)
  */
-int nc_hashmap_size(NcHashmap *map);
+_nica_public_ int nc_hashmap_size(NcHashmap *map);
 
 /**
  * Initialise a NcHashmapIter for iteration purposes
@@ -215,7 +216,7 @@ int nc_hashmap_size(NcHashmap *map);
  *
  * @param iter pointer to a NcHashmapIter
  */
-void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *iter);
+_nica_public_ void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *iter);
 
 /**
  * Iterate every key/value pair in the hashmap
@@ -226,7 +227,7 @@ void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *iter);
  *
  * @return true if it's possible to iterate
  */
-bool nc_hashmap_iter_next(NcHashmapIter *iter, void **key, void **value);
+_nica_public_ bool nc_hashmap_iter_next(NcHashmapIter *iter, void **key, void **value);
 
 DEF_AUTOFREE(NcHashmap, nc_hashmap_free)
 

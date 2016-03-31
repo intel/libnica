@@ -18,6 +18,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <search.h>
+#include <nica/macros.h>
 
 /**
  * A dynamic array
@@ -38,7 +39,7 @@ typedef void (*array_free_func) (void* p);
  * Create a new NcArray
  * @returns NcArray a newly allocated NcArray
  */
-NcArray *nc_array_new(void)
+_nica_public_ NcArray *nc_array_new(void)
 	__attribute__((warn_unused_result));
 
 /**
@@ -47,7 +48,7 @@ NcArray *nc_array_new(void)
  * @param data Pointer to add to this array
  * @returns bool true if the data was added to the array
  */
-bool nc_array_add(NcArray *array,
+_nica_public_ bool nc_array_add(NcArray *array,
                    void *data)
 	__attribute__((warn_unused_result));
 
@@ -56,7 +57,7 @@ bool nc_array_add(NcArray *array,
  * @param array valid NcArray reference
  * @param free_func Function to call to free all members, or NULL to leave allocated
  */
-void nc_array_free(NcArray **array,
+_nica_public_ void nc_array_free(NcArray **array,
 		    array_free_func free_method);
 
 
@@ -66,7 +67,7 @@ void nc_array_free(NcArray **array,
  * @param index index of the element in the array
  * @return a data pointer refered to by index, or NULL
  */
-void *nc_array_get(NcArray *array, uint16_t index)
+_nica_public_ void *nc_array_get(NcArray *array, uint16_t index)
 	__attribute__((warn_unused_result));
 
 /**
@@ -75,7 +76,7 @@ void *nc_array_get(NcArray *array, uint16_t index)
  * @param array valid NcArray reference
  * @param cmp a comparison_fn_t pointer
  */
-void nc_array_qsort(NcArray *array, __compar_fn_t cmp);
+_nica_public_ void nc_array_qsort(NcArray *array, __compar_fn_t cmp);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

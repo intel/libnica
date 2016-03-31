@@ -17,6 +17,7 @@
 
 #include <nica/util.h>
 #include <nica/hashmap.h>
+#include <nica/macros.h>
 
 /**
  * The Nica INI Parser focuses on simplicity and ease of use, therefore it
@@ -78,7 +79,7 @@ typedef enum {
  * Convenience wrapper for nc_ini_file_parse_full, reports errors to stderrr and
  * returns an NcHashmap if the parsing succeeded
  */
-NcHashmap *nc_ini_file_parse(const char *path);
+_nica_public_ NcHashmap *nc_ini_file_parse(const char *path);
 
 /**
  * Parse an INI file into a hash of hashes.
@@ -89,7 +90,7 @@ NcHashmap *nc_ini_file_parse(const char *path);
  *
  * @return 0 if the call was succesful, or a negative integer. See nc_ini_error
  */
-int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number);
+_nica_public_ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number);
 
 /**
  * Return a string representation for a given @NcIniError
@@ -97,7 +98,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
  * @param error Valid NcIniError code
  * @return a static string owned by the implementation
  */
-const char *nc_ini_error(NcIniError error);
+_nica_public_ const char *nc_ini_error(NcIniError error);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

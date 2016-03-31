@@ -82,12 +82,13 @@ libnica_la_SOURCES = \
 	src/util.c
 
 libnica_la_CFLAGS = \
-	$(AM_CFLAGS)
+	$(AM_CFLAGS) \
+	-fvisibility=hidden
 
 libnica_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-version-info $(LIBNICA_CURRENT):$(LIBNICA_REVISION):$(LIBNICA_AGE) \
-	-Wl,--version-script=$(top_srcdir)/src/libnica.sym
+	-export-dynamic
 
 # Tests
 TESTS = \

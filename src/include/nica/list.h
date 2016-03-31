@@ -16,6 +16,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <nica/macros.h>
+
 #define _cleanup_list_ __attribute__ ((cleanup(nc_list_free)))
 #define _cleanup_list_all_ __attribute__ ((cleanup(nc_list_free_all)))
 
@@ -41,7 +43,7 @@ typedef struct NcList {
  * @param data Data pointer to store in the list
  * @return a boolean value, indicating success of the operation
  */
-bool nc_list_append(NcList **list, void *data);
+_nica_public_ bool nc_list_append(NcList **list, void *data);
 
 /*
  * Prepend data to an existing list, or create a new list if NULL
@@ -52,7 +54,7 @@ bool nc_list_append(NcList **list, void *data);
  * @param data Data pointer to store in the list
  * @return a boolean value, indicating success of the operation
  */
-bool nc_list_prepend(NcList **list, void *data);
+_nica_public_ bool nc_list_prepend(NcList **list, void *data);
 
 /**
  * Remove the given element from the list
@@ -62,7 +64,7 @@ bool nc_list_prepend(NcList **list, void *data);
  * @param do_free Whether to free the item
  * @return a boolean value, indicating success of the operation
  */
-bool nc_list_remove(NcList **list, void *data, bool do_free);
+_nica_public_ bool nc_list_remove(NcList **list, void *data, bool do_free);
 
 /**
  * Free all items in the list

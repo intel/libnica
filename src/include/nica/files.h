@@ -17,13 +17,14 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <nica/macros.h>
 
 /**
  * Determine whether the given path exists in the filesystem
  *
  * @param path Path to the file we should check
  */
-bool nc_file_exists(const char *path);
+_nica_public_ bool nc_file_exists(const char *path);
 
 /**
  * Return the parent path for a given file
@@ -32,7 +33,7 @@ bool nc_file_exists(const char *path);
  * @param p Path to file
  * @return a newly allocated string
  */
-char *nc_get_file_parent(const char *path);
+_nica_public_ char *nc_get_file_parent(const char *path);
 
 /**
  * Recursively make the directories for the given path
@@ -42,7 +43,7 @@ char *nc_get_file_parent(const char *path);
  *
  * @return A boolean value, indicating success or failure
  */
-bool nc_mkdir_p(const char *path, mode_t mode);
+_nica_public_ bool nc_mkdir_p(const char *path, mode_t mode);
 
 /**
  * Recursively remove the tree at @path
@@ -51,7 +52,7 @@ bool nc_mkdir_p(const char *path, mode_t mode);
  *
  * @return A boolean value, indicating success or failure
  */
-bool nc_rm_rf(const char *path);
+_nica_public_ bool nc_rm_rf(const char *path);
 
 /**
  * Simple utility to copy path @src to path @dst, with mode @mode
@@ -66,16 +67,16 @@ bool nc_rm_rf(const char *path);
  *
  * @return True if this succeeded
  */
-bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target);
+_nica_public_ bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target);
 
 /**
  * Gradually build up a valid path, which may point within an existing
  * tree, to mitigate any case sensitivity issues on case-preserving
  * filesystems
  */
-__attribute__ ((sentinel(0))) char *nc_build_case_correct_path(const char *c, ...);
+_nica_public_ __attribute__ ((sentinel(0))) char *nc_build_case_correct_path(const char *c, ...);
 
-char *nc_build_case_correct_path_va(const char *c, va_list ap);
+_nica_public_ char *nc_build_case_correct_path_va(const char *c, va_list ap);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
