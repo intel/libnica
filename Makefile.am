@@ -5,7 +5,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/HACKING \
 	     ${top_srcdir}/findstatic.pl \
 	     ${top_srcdir}/data/nica.pc.in \
-	     ${top_srcdir}/tests/ini/wellformed.ini
+	     ${top_srcdir}/tests/ini/wellformed.ini \
+	     ${top_srcdir}/tests/ini/valid_padding.ini
 
 NULL =
 CLEANFILES =
