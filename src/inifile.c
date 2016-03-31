@@ -183,7 +183,6 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
 
         root_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, (nc_hash_free_func)nc_hashmap_free);
 
-        /* This is all TODO stuff - not yet fully implemented */
         while ((r = getline(&buf, &sn, file)) != -1) {
                 char *ch = NULL;
                 size_t str_len = r;
@@ -229,7 +228,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                 /* Look for key = value */
                 ch = strchr(buf, '=');
                 if (!ch) {
-                        /* Throw error? */
+                        /* Throw error */
                         err_ret = NC_INI_ERROR_INVALID_LINE;
                         goto fail;
                 }
