@@ -19,6 +19,9 @@
 #include "inifile.h"
 #include "hashmap.h"
 
+/**
+ * Mapping of @NcIniError to static strings
+ */
 static const char *_errors[] = {
         [NC_INI_ERROR_FILE] = "",
         [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
@@ -30,7 +33,7 @@ static const char *_errors[] = {
 const char *nc_ini_error(NcIniError error)
 {
         int j = abs(error);
-        if (j < NC_INI_ERROR_FILE || j > NC_INI_ERROR_MAX) {
+        if (j < NC_INI_ERROR_FILE || j >= NC_INI_ERROR_MAX) {
                 return "[Unknown Error]";
         }
         return _errors[j];
@@ -83,7 +86,12 @@ static char *rstrip(char *str, size_t len, size_t *out_len)
         return str;
 }
 
-
+/**
+ * Chew both ends of a null terminated string of whitespace
+ * If the left side is whitespace padded, this will always result
+ * in a new allocation due to fast-forwarding the pointer. Keep
+ * this in mind.
+ */
 static char *string_chew_terminated(char *inp)
 {
         int skip_offset = 0;
@@ -241,6 +249,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
 
                 int offset = ch-buf;
 
+                /* Grab the key->value from this assignment line */
                 char *value = strdup((buf+offset)+1);
                 buf[offset] = '\0';
                 char *key = strdup(buf);
@@ -268,6 +277,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                         fprintf(stderr, "[inifile] Fatal! Out of memory\n");
                         abort();
                 }
+                /* Progression + cleanup */
 next:
                 if (buf) {
                         free(buf);
@@ -276,6 +286,7 @@ next:
                 ++line_count;
                 sn = 0;
                 continue;
+                /* Parsing error, bail */
 fail:
                 failed = true;
                 if (error_line_number) {
