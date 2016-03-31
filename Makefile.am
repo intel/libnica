@@ -10,7 +10,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/tests/ini/sectionless.ini \
 	     ${top_srcdir}/tests/ini/empty_key.ini \
 	     ${top_srcdir}/tests/ini/just_assign.ini \
-	     ${top_srcdir}/tests/ini/broken_section_start.ini
+	     ${top_srcdir}/tests/ini/broken_section_start.ini \
+	     ${top_srcdir}/tests/ini/broken_section_end.ini
 
 NULL =
 CLEANFILES =

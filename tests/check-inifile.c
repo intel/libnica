@@ -83,6 +83,10 @@ START_TEST(nc_inifile_bad_test)
         t_path = TOP_DIR"/tests/ini/broken_section_start.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal broken-section-start INI File");
+
+        t_path = TOP_DIR"/tests/ini/broken_section_end.ini";
+        f = nc_ini_file_parse(t_path);
+        fail_if(f != NULL, "Parsed illegal broken-section-end INI File");
 }
 END_TEST
 
