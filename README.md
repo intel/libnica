@@ -9,7 +9,7 @@ time.
 
 **Note**:
 
-This library is not yet ready for use/integration into other projects.
+The ABI is currently being correctly stabilised for an initial full release.
 
 The Name
 --------
