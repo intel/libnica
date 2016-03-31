@@ -134,7 +134,7 @@ end:
  * The following functions are taken from Ikey Doherty's goofiboot
  * project
  */
-char *build_case_correct_path_va(const char *c, va_list ap)
+char *nc_build_case_correct_path_va(const char *c, va_list ap)
 {
         char *p = NULL;
         char *root = NULL;
@@ -154,7 +154,7 @@ char *build_case_correct_path_va(const char *c, va_list ap)
                         sav = strdup(root);
 
                         if (!asprintf(&t, "%s/%s", root, p)) {
-                                fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
                                 va_end(ap);
                                 if (sav) {
                                         free(sav);
@@ -190,7 +190,7 @@ char *build_case_correct_path_va(const char *c, va_list ap)
                         if (strcasecmp(ent->d_name, p) == 0) {
                                 if (sav) {
                                         if (!asprintf(&t, "%s/%s", sav, ent->d_name)) {
-                                                fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                                fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
                                                 return NULL;
                                         }
                                         free(root);
@@ -202,7 +202,7 @@ char *build_case_correct_path_va(const char *c, va_list ap)
                                                 free(root);
                                                 root = NULL;
                                                 if (!sav) {
-                                                        fprintf(stderr, "build_case_correct_path_va: Out of memory\n");
+                                                        fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
                                                         return NULL;
                                                 }
                                         }
@@ -220,13 +220,13 @@ clean:
         return root;
 }
 
-char *build_case_correct_path(const char *c, ...)
+char *nc_build_case_correct_path(const char *c, ...)
 {
         va_list ap;
 
         char *ret = NULL;
         va_start(ap, c);
-        ret = build_case_correct_path_va(c, ap);
+        ret = nc_build_case_correct_path_va(c, ap);
         va_end(ap);
 
         return ret;

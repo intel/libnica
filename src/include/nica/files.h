@@ -73,9 +73,9 @@ bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_tar
  * tree, to mitigate any case sensitivity issues on case-preserving
  * filesystems
  */
-__attribute__ ((sentinel(0))) char *build_case_correct_path(const char *c, ...);
+__attribute__ ((sentinel(0))) char *nc_build_case_correct_path(const char *c, ...);
 
-char *build_case_correct_path_va(const char *c, va_list ap);
+char *nc_build_case_correct_path_va(const char *c, va_list ap);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
