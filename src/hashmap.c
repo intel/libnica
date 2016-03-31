@@ -406,30 +406,33 @@ bool nc_hashmap_iter_next(NcHashmapIter *citer, void **key, void **value)
 {
         _NcHashmapIter *iter = NULL;
         NcHashmapEntry *item = NULL;
+        NcHashmap *map = NULL;
+        int n_buckets = 0;
 
         if (!citer) {
                 return false;
         }
 
         iter = (_NcHashmapIter*)citer;
-        if (!iter->map) {
+        map = iter->map;
+        if (!map) {
                 return false;
         }
-
+        n_buckets = map->n_buckets;
         item = iter->item;
 
         for (;;) {
-                if (iter->bucket >= iter->map->n_buckets) {
+                if (iter->bucket >= n_buckets) {
                         if (item && !item->next) {
                                 return false;
                         }
                 }
                 if (!item) {
                         iter->bucket++;
-                        if (iter->bucket > iter->map->n_buckets-1) {
+                        if (iter->bucket > n_buckets-1) {
                                 return false;
                         }
-                        item = &(iter->map->buckets[iter->bucket]);
+                        item = &(map->buckets[iter->bucket]);
                 }
                 if (item && item->occ) {
                         goto success;
