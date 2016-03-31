@@ -64,6 +64,16 @@ START_TEST(nc_inifile_good_test)
 }
 END_TEST
 
+START_TEST(nc_inifile_bad_test)
+{
+        const char *t_path = TOP_DIR"/tests/ini/sectionless.ini";
+        autofree(NcHashmap) *f = NULL;
+
+        f = nc_ini_file_parse(t_path);
+        fail_if(f != NULL, "Parsed illegal sectionless INI file");
+}
+END_TEST
+
 static Suite *core_suite(void)
 {
         Suite *s = NULL;
@@ -73,6 +83,7 @@ static Suite *core_suite(void)
         tc = tcase_create("nc_inifile_functions");
         tcase_add_test(tc, nc_inifile_open_test);
         tcase_add_test(tc, nc_inifile_good_test);
+        tcase_add_test(tc, nc_inifile_bad_test);
         suite_add_tcase(s, tc);
 
         return s;
