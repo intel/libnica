@@ -29,7 +29,7 @@ AM_CFLAGS = \
 	-Werror-implicit-function-declaration \
 	-Wformat -Wformat-security -Werror=format-security \
 	-Wno-conversion -Wunused-variable -Wunreachable-code \
-	-Wall -W -D_FORTIFY_SOURCE=2 -std=c99 -Werror \
+	-Wall -W -D_FORTIFY_SOURCE=2 -std=c99 \
 	-DLIBNICA_INTERNAL
 
 AM_CPPFLAGS = \
