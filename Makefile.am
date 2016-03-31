@@ -7,7 +7,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/data/nica.pc.in \
 	     ${top_srcdir}/tests/ini/wellformed.ini \
 	     ${top_srcdir}/tests/ini/valid_padding.ini \
-	     ${top_srcdir}/tests/ini/sectionless.ini
+	     ${top_srcdir}/tests/ini/sectionless.ini \
+	     ${top_srcdir}/tests/ini/empty_key.ini
 
 NULL =
 CLEANFILES =

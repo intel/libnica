@@ -202,16 +202,23 @@ NcHashmap *nc_ini_file_parse(const char *path)
                 key = string_chew_terminated(key);
                 value = string_chew_terminated(value);
 
+                if (streq(key, "")) {
+                        fprintf(stderr, "[inifile] Encountered empty key on line %d\n", line_count);
+                        free(key);
+                        free(value);
+                        goto fail;
+                }
+
                 /* Ensure a section mapping exists */
                 section_map = nc_hashmap_get(root_map, current_section);
                 if (!section_map) {
-                        fprintf(stderr, "Fatal! No section map for named section: %s\n", current_section);
+                        fprintf(stderr, "[inifile] Fatal! No section map for named section: %s\n", current_section);
                         abort();
                 }
 
                 /* Insert these guys into the map */
                 if (!nc_hashmap_put(section_map, key, value)) {
-                        fprintf(stderr, "Fatal! Out of memory\n");
+                        fprintf(stderr, "[inifile] Fatal! Out of memory\n");
                         abort();
                 }
 next:

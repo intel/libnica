@@ -71,6 +71,10 @@ START_TEST(nc_inifile_bad_test)
 
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal sectionless INI file");
+
+        t_path = TOP_DIR"/tests/ini/empty_key.ini";
+        f = nc_ini_file_parse(t_path);
+        fail_if(f != NULL, "Parsed illegal INI file with empty keys");
 }
 END_TEST
 
