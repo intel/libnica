@@ -11,7 +11,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/tests/ini/empty_key.ini \
 	     ${top_srcdir}/tests/ini/just_assign.ini \
 	     ${top_srcdir}/tests/ini/broken_section_start.ini \
-	     ${top_srcdir}/tests/ini/broken_section_end.ini
+	     ${top_srcdir}/tests/ini/broken_section_end.ini \
+	     ${top_srcdir}/src/libnica.sym
 
 NULL =
 CLEANFILES =
@@ -85,7 +86,8 @@ libnica_la_CFLAGS = \
 
 libnica_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
-	-version-info $(LIBNICA_CURRENT):$(LIBNICA_REVISION):$(LIBNICA_AGE)
+	-version-info $(LIBNICA_CURRENT):$(LIBNICA_REVISION):$(LIBNICA_AGE) \
+	-Wl,--version-script=$(top_srcdir)/src/libnica.sym
 
 # Tests
 TESTS = \
