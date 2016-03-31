@@ -79,6 +79,10 @@ START_TEST(nc_inifile_bad_test)
         t_path = TOP_DIR"/tests/ini/just_assign.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal assign-only INI file");
+
+        t_path = TOP_DIR"/tests/ini/broken_section_start.ini";
+        f = nc_ini_file_parse(t_path);
+        fail_if(f != NULL, "Parsed illegal broken-section-start INI File");
 }
 END_TEST
 
