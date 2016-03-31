@@ -75,6 +75,10 @@ START_TEST(nc_inifile_bad_test)
         t_path = TOP_DIR"/tests/ini/empty_key.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal INI file with empty keys");
+
+        t_path = TOP_DIR"/tests/ini/just_assign.ini";
+        f = nc_ini_file_parse(t_path);
+        fail_if(f != NULL, "Parsed illegal assign-only INI file");
 }
 END_TEST
 
