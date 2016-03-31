@@ -119,10 +119,6 @@ static inline unsigned nc_hashmap_get_hash(NcHashmap *self, const void *key)
 
 static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, int n_buckets, unsigned hash, const void *key, void *value)
 {
-        if (!self || !buckets) {
-                return false;
-        }
-
         NcHashmapEntry *row = &(buckets[hash % n_buckets]);
         NcHashmapEntry *head = NULL;
         NcHashmapEntry *parent = head = row;
@@ -284,7 +280,7 @@ static inline void nc_hashmap_free_bucket(NcHashmap *self, NcHashmapEntry *bucke
                         bk = tmp->next;
                 }
 
-                if (tmp->occ && nuke) {
+                if (nuke && tmp->occ) {
                         if (self->key_free) {
                                 self->key_free(tmp->hash);
                         }
