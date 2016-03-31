@@ -55,6 +55,7 @@ nicainst_HEADERS = \
 	src/include/nica/array.h \
 	src/include/nica/hashmap.h \
 	src/include/nica/files.h \
+	src/include/nica/macros.h \
 	src/include/nica/inifile.h \
 	src/include/nica/list.h \
 	src/include/nica/nc-string.h \
