@@ -32,7 +32,6 @@ check*.log
 check*.trs
 test-driver
 
-
 # Binary test suites
 check_core
 check_array
@@ -42,3 +41,8 @@ check_list
 
 # pkgconfig
 /data/nica.pc
+
+# coverage
+*.gcda
+*.gcno
+
