@@ -12,7 +12,8 @@ EXTRA_DIST = ${top_srcdir}/README.md \
 	     ${top_srcdir}/tests/ini/just_assign.ini \
 	     ${top_srcdir}/tests/ini/broken_section_start.ini \
 	     ${top_srcdir}/tests/ini/broken_section_end.ini \
-	     ${top_srcdir}/current_symbols
+	     ${top_srcdir}/current_symbols \
+	     ${top_srcdir}/abi.sh
 
 NULL =
 CLEANFILES =
@@ -47,6 +48,8 @@ coverage:
 AM_CFLAGS += --coverage
 endif
 
+install-exec-hook:
+	eval bash "$(top_srcdir)/abi.sh" "$(top_srcdir)" "$(top_builddir)"
 
 lib_LTLIBRARIES = libnica.la
 

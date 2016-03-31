@@ -16,8 +16,14 @@ function check_abi()
     nm -g $1 |grep " T "|awk '{print $3}'|grep -v "^_init" |grep -v "^_fini" |sort
 }
 
-check_abi .libs/*.so.*.* > newsyms
-diff -ruNb current_symbols newsyms
+if [[ ! -z "${1}" ]]; then
+    check_abi "${2}"/.libs/*.so.*.* > newsyms
+    diff -ruNb "${1}"/current_symbols newsyms
+else
+    check_abi .libs/*.so.*.* > newsyms
+    diff -ruNb current_symbols newsyms
+fi
+
 if [[ $? -eq 0 ]]; then
         rm newsyms
         exit 0
