@@ -1,5 +1,4 @@
 sudo: required
-dist: trusty
 
 compiler:
     - gcc
@@ -15,7 +14,7 @@ language: c
 addons:
     apt:
         sources:
-            - llvm-toolchain-trusty-3.8
+            - llvm-toolchain-precise-3.8
         packages:
             - check
             - valgrind
@@ -24,8 +23,14 @@ addons:
 
 before_install:
   - gem install coveralls-lcov
+  - wget -nc --no-check-certificate http://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz
+  - tar xzf lcov-1.10.tar.gz
+  - cd lcov-1.10 && make && sudo make install
+  - cd ..
 
-script: ./configure --enable-coverage && make && make check && make distcheck
+script:
+    - lcov --version | grep "1.10"
+    - ./configure --enable-coverage && make && make check && make distcheck
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
