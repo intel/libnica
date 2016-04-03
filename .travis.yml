@@ -15,11 +15,12 @@ addons:
         packages:
             - check
             - valgrind
-
-script: ./configure && make && make check
+            - clang-3.8
+        sources: &sources
+            - llvm-toolchain-precise
+            - llvm-toolchain-precise-3.8
 
 matrix:
-  include:
-    - addons: {apt: {sources: [ubuntu-toolchain-r-test, llvm-toolchain-precise-3.8], packages: [libclang-3.8-dev, clang-3.8]}}
-      env: LLVM_VERSION=3.8
-      rvm: "2.3.0"
+    include:
+        - env: CC=clang-3.8 ./configure && make && make check
+        - env: CC=gcc ./configure && make && make check
