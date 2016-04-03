@@ -1,26 +1,25 @@
 language: c
 
 dist: trusty
-
+sudo: required
 matrix:
     include:
         - compiler: gcc
-        - compiler: gcc
           env COMPILER=gcc-5
         - compiler: clang
-          env clang=y
+          env clang=y COMPILER=clang
         - compiler: clang
           env clang=y COMPILER=clang-3.8
 addons:
     apt:
+        sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise
         packages:
             - check
             - valgrind
             - clang-3.8
             - gcc-5
-        sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise
 
 before_script:
     - export CC=${COMPILER:-${CC}}
