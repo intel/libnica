@@ -20,9 +20,12 @@ addons:
             - lcov
 
 before_install:
-  - pip install --user cpp-coveralls
+  - gem install coveralls-lcov
 
 script: ./configure --enable-coverage && make && make check
 
 after_success:
-  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
+  - cd ${TRAVIS_BUILD_DIR}
+  - lcov --compat-libtool --directory . --capture --output-file coverage.info
+  - lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+  - coveralls-lcov coverage.info
