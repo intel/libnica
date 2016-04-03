@@ -1,0 +1,17 @@
+compiler:
+    - clang
+    - gcc
+
+os:
+    - linux
+
+before_script:
+    ./autogen.sh
+
+language: c
+
+addons:
+    apt:
+        packages:
+            - check
+            - valgrind
