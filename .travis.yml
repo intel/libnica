@@ -15,3 +15,5 @@ addons:
         packages:
             - check
             - valgrind
+
+script: ./configure && make && make check
