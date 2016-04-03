@@ -17,8 +17,7 @@
 
 #define _GNU_SOURCE
 
-#define _nica_public_ __attribute__ ((visibility("default")))
-
+#define _nica_public_ __attribute__((visibility("default")))
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

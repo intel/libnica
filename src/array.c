@@ -33,7 +33,7 @@ bool nc_array_add(NcArray *array, void *data)
                 return false;
         }
         if (!array->data) {
-                array->data = calloc(1, sizeof(void*));
+                array->data = calloc(1, sizeof(void *));
                 if (!array->data) {
                         return false;
                 }
@@ -43,18 +43,19 @@ bool nc_array_add(NcArray *array, void *data)
         if (!new_len) {
                 return false;
         }
-        curr = (size_t)(array->len*sizeof(void*));
-        new_size = curr + sizeof(void*);
+        curr = (size_t)(array->len * sizeof(void *));
+        new_size = curr + sizeof(void *);
         if (new_len >= array->len) {
                 /* Resize the array to hold one more pointer */
-                array->data = greedy_realloc((void**)&array->data, &curr, new_size);
+                array->data =
+                    greedy_realloc((void **)&array->data, &curr, new_size);
                 if (!array->data) {
                         return false;
                 }
         }
         /* Store the pointer at the end of the array */
         array->len = new_len;
-        array->data[array->len-1] = data;
+        array->data[array->len - 1] = data;
         return true;
 }
 
@@ -68,7 +69,6 @@ void *nc_array_get(NcArray *array, uint16_t index)
         }
         return array->data[index];
 }
-
 
 void nc_array_free(NcArray **array, array_free_func free_method)
 {
@@ -91,7 +91,7 @@ void nc_array_free(NcArray **array, array_free_func free_method)
 
 void nc_array_qsort(NcArray *self, __compar_fn_t func)
 {
-        qsort(self->data, self->len, sizeof(void*), func);
+        qsort(self->data, self->len, sizeof(void *), func);
 }
 
 /*

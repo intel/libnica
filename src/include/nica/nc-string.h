@@ -27,8 +27,8 @@
  * Safely represent and store a buffer as a string
  */
 typedef struct nc_string_t {
-        char *str;      /**<Buffer holding a NUL-terminated string */
-        int len;        /**<Current length of the string */
+        char *str; /**<Buffer holding a NUL-terminated string */
+        int len;   /**<Current length of the string */
 } nc_string;
 
 /**
@@ -38,10 +38,9 @@ typedef struct nc_string_t {
  * @param ... Variable arguments
  *
  * @return a new nc_string if allocation succeeded, otherwise NULL
- */ 
+ */
 _nica_public_ nc_string *nc_string_dup_printf(const char *format, ...)
-__attribute__ ((format (printf, 1, 2)));
-
+    __attribute__((format(printf, 1, 2)));
 
 /**
  * Duplicate a string into a new NUL-terminated nc_string
@@ -81,7 +80,7 @@ _nica_public_ bool nc_string_cat(nc_string *str, const char *append);
  * Determine if string A is equal to string B
  *
  * @note This function will not check beyond the length of string A
- * 
+ *
  * @param a string to check
  * @param b string to check against
  * @return a boolean value, true if the strings match, otherwise false
@@ -101,7 +100,7 @@ static inline bool nc_string_equal(nc_string *a, nc_string *b)
  * Determine if string A is equal to string B
  *
  * @note This function will not check beyond the length of string A
- * 
+ *
  * @param a string to check
  * @param b const char* string to check against
  * @return a boolean value, true if the strings match, otherwise false
@@ -139,7 +138,8 @@ static inline int ncstrlen(nc_string *str)
  *
  * @return True if @str has the given suffix
  */
-static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix, ssize_t len)
+static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix,
+                                              ssize_t len)
 {
         if (!str || !suffix) {
                 return false;
@@ -147,7 +147,7 @@ static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix, ssiz
         if (len > str->len || len <= 0) {
                 return false;
         }
-        return (strncmp(str->str+(str->len-(len)), suffix, len) == 0);
+        return (strncmp(str->str + (str->len - (len)), suffix, len) == 0);
 }
 
 /**
@@ -159,7 +159,8 @@ static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix, ssiz
  *
  * @return True if @str has the given prefix
  */
-static inline bool nc_string_has_prefix_const(nc_string *str, char *prefix, ssize_t len)
+static inline bool nc_string_has_prefix_const(nc_string *str, char *prefix,
+                                              ssize_t len)
 {
         if (!str || !prefix) {
                 return false;
@@ -188,21 +189,22 @@ static inline char *nc_string_strip(nc_string *str)
                         break;
                 }
         }
-        for (int j = str->len-1; j > i; j--) {
+        for (int j = str->len - 1; j > i; j--) {
                 if (str->str[j] != ' ') {
-                        str->str[j+1] = '\0';
+                        str->str[j + 1] = '\0';
                         break;
                 }
         }
 
-        return str->str+i;
+        return str->str + i;
 }
 /**
  * To be used only with compile time constants.
  */
-#define nc_string_has_suffix(a, suff) nc_string_has_suffix_const(a, suff, (sizeof(suff)-1))
-#define nc_string_has_prefix(a, pref) nc_string_has_prefix_const(a, pref, (sizeof(pref)-1))
-
+#define nc_string_has_suffix(a, suff)                                         \
+        nc_string_has_suffix_const(a, suff, (sizeof(suff) - 1))
+#define nc_string_has_prefix(a, pref)                                         \
+        nc_string_has_prefix_const(a, pref, (sizeof(pref) - 1))
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

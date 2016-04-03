@@ -24,15 +24,16 @@
 
 #include <nica/macros.h>
 
-#define DEF_AUTOFREE(N,C) \
-        static inline void _autofree_func_##N (void *p) {\
-                if (p && *(N**)p) { \
-                        C (*(N**)p);\
-                        (*(void**)p) = NULL;\
-                } \
+#define DEF_AUTOFREE(N, C)                                                    \
+        static inline void _autofree_func_##N(void *p)                        \
+        {                                                                     \
+                if (p && *(N **)p) {                                          \
+                        C(*(N **)p);                                          \
+                        (*(void **)p) = NULL;                                 \
+                }                                                             \
         }
 
-#define autofree(N) __attribute__ ((cleanup( _autofree_func_##N ))) N
+#define autofree(N) __attribute__((cleanup(_autofree_func_##N))) N
 
 /**
  * Dump any leaked file descriptors
@@ -41,8 +42,7 @@ _nica_public_ void nc_dump_file_descriptor_leaks(void);
 
 _nica_public_ void *greedy_realloc(void **p, size_t *allocated, size_t need);
 
-#define streq(x,y) strcmp(x,y) == 0 ? true : false
-
+#define streq(x, y) strcmp(x, y) == 0 ? true : false
 
 DEF_AUTOFREE(char, free)
 DEF_AUTOFREE(FILE, fclose)

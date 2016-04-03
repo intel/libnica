@@ -24,5 +24,4 @@
 #include <nica/nc-string.h>
 #include <nica/util.h>
 
-
 #endif /* _NICA_H_ */

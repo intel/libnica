@@ -34,8 +34,9 @@
  *      ; This person is alive
  *
  * The returned @NcHashmap will contain the key "Person", which corresponds to
- * another @NcHashmap. This @NcHashmap will contain the key "alive", which has the
- * value "true". Therefore we can access this variable using the @NcHashmap API:
+ * another @NcHashmap. This @NcHashmap will contain the key "alive", which has
+ * the value "true". Therefore we can access this variable using the @NcHashmap
+ * API:
  *
  *      char *alive = nc_hashmap_get(nc_hashmap_get(ini, "Person"), "alive");
  *
@@ -43,8 +44,8 @@
  *
  *      if (nc_hashmap_contains(ini, "Person"))
  *
- * As @NcHashmap returns NULL in nc_hashmap_get, you can happily pass NULL keys,
- * allowing quick key fetches without checking if the section exists.
+ * As @NcHashmap returns NULL in nc_hashmap_get, you can happily pass NULL
+ * keys, allowing quick key fetches without checking if the section exists.
  *
  * In our INI file, lines beginning with ";" or "#" are considered as comments
  * and are not processed. A line following the "key = value" notation is an
@@ -67,17 +68,17 @@
  */
 typedef enum {
         NC_INI_ERROR_MIN = 0,
-        NC_INI_ERROR_FILE,              /**< File based error, check strerror(errno) */
-        NC_INI_ERROR_EMPTY_KEY,         /**< Empty key in an assignment line */
-        NC_INI_ERROR_NOT_CLOSED,        /**< Encountered section start that wasn't closed with a ']' */
-        NC_INI_ERROR_NO_SECTION,        /**< Key assignment with no defined sections */
-        NC_INI_ERROR_INVALID_LINE,      /**< Encountered an invalid line (syntax) */
+        NC_INI_ERROR_FILE,      /**< File based error, check strerror(errno) */
+        NC_INI_ERROR_EMPTY_KEY, /**< Empty key in an assignment line */
+        NC_INI_ERROR_NOT_CLOSED, /**< Encountered section start that wasn't closed with a ']' */
+        NC_INI_ERROR_NO_SECTION, /**< Key assignment with no defined sections */
+        NC_INI_ERROR_INVALID_LINE, /**< Encountered an invalid line (syntax) */
         NC_INI_ERROR_MAX
 } NcIniError;
 
 /**
- * Convenience wrapper for nc_ini_file_parse_full, reports errors to stderrr and
- * returns an NcHashmap if the parsing succeeded
+ * Convenience wrapper for nc_ini_file_parse_full, reports errors to stderrr
+ * and returns an NcHashmap if the parsing succeeded
  */
 _nica_public_ NcHashmap *nc_ini_file_parse(const char *path);
 
@@ -86,11 +87,13 @@ _nica_public_ NcHashmap *nc_ini_file_parse(const char *path);
  *
  * @param path Path on the filesystem to parse, must be in INI syntax.
  * @param out_map Pointer to store the resulting root NcHashmap in
- * @param error_line_number If not null, then the erronous line number is stored.
+ * @param error_line_number If not null, then the erronous line number is
+ * stored.
  *
  * @return 0 if the call was succesful, or a negative integer. See nc_ini_error
  */
-_nica_public_ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number);
+_nica_public_ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map,
+                                         int *error_line_number);
 
 /**
  * Return a string representation for a given @NcIniError

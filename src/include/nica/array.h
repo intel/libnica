@@ -24,23 +24,21 @@
  * A dynamic array
  */
 typedef struct NcArray {
-        void **data; /**<Dynamic array contents */
+        void **data;  /**<Dynamic array contents */
         uint16_t len; /**<Length of the array */
 } NcArray;
-
 
 /**
  * Valid function prototype for 'free' method
  * @param p Pointer to free
  */
-typedef void (*array_free_func) (void* p);
+typedef void (*array_free_func)(void *p);
 
 /**
  * Create a new NcArray
  * @returns NcArray a newly allocated NcArray
  */
-_nica_public_ NcArray *nc_array_new(void)
-	__attribute__((warn_unused_result));
+_nica_public_ NcArray *nc_array_new(void) __attribute__((warn_unused_result));
 
 /**
  * Append data to NcArray
@@ -48,18 +46,16 @@ _nica_public_ NcArray *nc_array_new(void)
  * @param data Pointer to add to this array
  * @returns bool true if the data was added to the array
  */
-_nica_public_ bool nc_array_add(NcArray *array,
-                   void *data)
-	__attribute__((warn_unused_result));
+_nica_public_ bool nc_array_add(NcArray *array, void *data)
+    __attribute__((warn_unused_result));
 
 /**
  * Free an array, and optionally its members
  * @param array valid NcArray reference
- * @param free_func Function to call to free all members, or NULL to leave allocated
+ * @param free_func Function to call to free all members, or NULL to leave
+ * allocated
  */
-_nica_public_ void nc_array_free(NcArray **array,
-		    array_free_func free_method);
-
+_nica_public_ void nc_array_free(NcArray **array, array_free_func free_method);
 
 /**
  * Retrieve an element from the array by index
@@ -68,7 +64,7 @@ _nica_public_ void nc_array_free(NcArray **array,
  * @return a data pointer refered to by index, or NULL
  */
 _nica_public_ void *nc_array_get(NcArray *array, uint16_t index)
-	__attribute__((warn_unused_result));
+    __attribute__((warn_unused_result));
 
 /**
  * Sort the internal array using the qsort() function

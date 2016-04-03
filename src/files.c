@@ -36,14 +36,14 @@ bool nc_file_exists(const char *path)
 
 char *nc_get_file_parent(const char *path)
 {
-        autofree(char) *d = strdup(path);
+        autofree(char)*d = strdup(path);
         char *r = realpath(dirname(d), NULL);
         return r;
 }
 
 bool nc_mkdir_p(const char *path, mode_t mode)
 {
-        autofree(char) *cl = NULL;
+        autofree(char)*cl = NULL;
         char *cl_base = NULL;
 
         if (streq(path, ".") || streq(path, "/") || streq(path, "//")) {
@@ -63,7 +63,9 @@ bool nc_mkdir_p(const char *path, mode_t mode)
 /**
  * nftw callback
  */
-static int _rm_rf(const char *path, __attribute__ ((unused)) const struct stat *sb, int typeflag, __attribute__ ((unused)) struct FTW *ftwbuf)
+static int _rm_rf(const char *path,
+                  __attribute__((unused)) const struct stat *sb, int typeflag,
+                  __attribute__((unused)) struct FTW *ftwbuf)
 {
         if (typeflag == FTW_F) {
                 return unlink(path);
@@ -79,7 +81,8 @@ bool nc_rm_rf(const char *path)
         return ret;
 }
 
-bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target)
+bool nc_copy_file(const char *src, const char *dst, mode_t mode,
+                  bool remove_target)
 {
         int src_fd = -1;
         int dest_fd = -1;
@@ -99,7 +102,7 @@ bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_tar
                 return false;
         }
 
-        dest_fd = open(dst, O_WRONLY|O_TRUNC|O_APPEND|O_CREAT, mode);
+        dest_fd = open(dst, O_WRONLY | O_TRUNC | O_APPEND | O_CREAT, mode);
         if (dest_fd < 0) {
                 ret = false;
                 goto end;
@@ -138,10 +141,10 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
 {
         char *p = NULL;
         char *root = NULL;
-        struct stat st = {0};
+        struct stat st = { 0 };
         struct dirent *ent = NULL;
 
-        p = (char*)c;
+        p = (char *)c;
 
         while (p) {
                 char *t = NULL;
@@ -154,7 +157,9 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                         sav = strdup(root);
 
                         if (!asprintf(&t, "%s/%s", root, p)) {
-                                fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
+                                fprintf(stderr,
+                                        "nc_build_case_correct_path_va: Out "
+                                        "of memory\n");
                                 va_end(ap);
                                 if (sav) {
                                         free(sav);
@@ -166,7 +171,7 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                         t = NULL;
                 }
 
-                autofree(char) *dirp = strdup(root);
+                autofree(char)*dirp = strdup(root);
                 char *dir = dirname(dirp);
 
                 if (stat(dir, &st) != 0) {
@@ -175,7 +180,8 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                 if (!S_ISDIR(st.st_mode)) {
                         goto clean;
                 }
-                /* Iterate the directory and find the case insensitive name, using
+                /* Iterate the directory and find the case insensitive name,
+                 * using
                  * this if it exists. Otherwise continue with the non existent
                  * path
                  */
@@ -184,13 +190,20 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                         goto clean;
                 }
                 while ((ent = readdir(dirn)) != NULL) {
-                        if (strncmp(ent->d_name, ".", 1) == 0 || strncmp(ent->d_name, "..", 2) == 0) {
+                        if (strncmp(ent->d_name, ".", 1) == 0 ||
+                            strncmp(ent->d_name, "..", 2) == 0) {
                                 continue;
                         }
                         if (strcasecmp(ent->d_name, p) == 0) {
                                 if (sav) {
-                                        if (!asprintf(&t, "%s/%s", sav, ent->d_name)) {
-                                                fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
+                                        if (!asprintf(&t,
+                                                      "%s/%s",
+                                                      sav,
+                                                      ent->d_name)) {
+                                                fprintf(stderr,
+                                                        "nc_build_case_"
+                                                        "correct_path_va: Out "
+                                                        "of memory\n");
                                                 return NULL;
                                         }
                                         free(root);
@@ -202,7 +215,11 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                                                 free(root);
                                                 root = NULL;
                                                 if (!sav) {
-                                                        fprintf(stderr, "nc_build_case_correct_path_va: Out of memory\n");
+                                                        fprintf(stderr,
+                                                                "nc_build_"
+                                                                "case_correct_"
+                                                                "path_va: Out "
+                                                                "of memory\n");
                                                         return NULL;
                                                 }
                                         }
@@ -210,11 +227,11 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                                 break;
                         }
                 }
-clean:
+        clean:
                 if (sav) {
                         free(sav);
                 }
-                p = va_arg(ap, char*);
+                p = va_arg(ap, char *);
         }
 
         return root;

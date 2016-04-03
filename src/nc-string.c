@@ -94,4 +94,3 @@ bool nc_string_cat(nc_string *s, const char *append)
  * vi: set shiftwidth=8 tabstop=8 expandtab:
  * :indentSize=8:tabSize=8:noTabs=true:
  */
-
