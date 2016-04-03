@@ -1,6 +1,9 @@
 libnica
 -------
 
+[![Build Status](https://travis-ci.org/ikeydoherty/libnica.svg?branch=master)](https://travis-ci.org/ikeydoherty/libnica)
+[![Coverage Status](https://coveralls.io/repos/github/ikeydoherty/libnica/badge.svg?branch=master)](https://coveralls.io/github/ikeydoherty/libnica?branch=master)
+
 Common C library functions
 
 
