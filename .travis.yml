@@ -1,28 +1,13 @@
 language: c
+os: linux
 
-dist: trusty
-matrix:
-    include:
-        - compiler: gcc
-          env COMPILER=gcc-5
-        - compiler: clang
-          env clang=y COMPILER=clang
-        - compiler: clang
-          env clang=y COMPILER=clang-3.8
-addons:
     apt:
-        sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise
         packages:
             - check
             - valgrind
-            - clang-3.8
-            - gcc-5
 
 before_script:
-    - export CC=${COMPILER:-${CC}}
     - ./autogen.sh
 
 script:
-    - (./configure && make && make check)
+    - ./configure && make && make check
