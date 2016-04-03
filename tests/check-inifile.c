@@ -21,7 +21,7 @@
 START_TEST(nc_inifile_open_test)
 {
         autofree(NcHashmap) *f = NULL;
-        const char *t_path = TOP_DIR "/tests/ini/wellformed.ini";
+        const char *t_path = TOP_DIR "/tests/ini/wellformede.ini";
 
         f = nc_ini_file_parse(t_path);
         fail_if(f == NULL, "Failed to parse wellformed.ini");
