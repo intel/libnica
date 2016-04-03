@@ -1,7 +1,3 @@
-compiler:
-    - clang
-    - gcc
-
 os:
     - linux
 
@@ -22,5 +18,5 @@ addons:
 
 matrix:
     include:
-        - env: CC=clang-3.8 ./configure && make && make check
-        - env: CC=gcc ./configure && make && make check
+        - env: CC=clang-3.8 ./autogen.sh && make && make check
+        - env: CC=gcc ./autogen.sh && make && make check
