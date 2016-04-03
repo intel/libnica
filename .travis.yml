@@ -15,11 +15,14 @@ addons:
     apt:
         sources:
             - llvm-toolchain-precise-3.8
+            - llvm-toolchain-precise
+            - ubuntu-toolchain-r-test
         packages:
             - check
             - valgrind
             - lcov
             - clang-3.8
+            - llvm-3.8
 
 before_install:
   - gem install coveralls-lcov
