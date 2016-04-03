@@ -17,7 +17,6 @@
 #include "array.c"
 #include "util.c"
 
-
 START_TEST(nc_array_new_check)
 {
         NcArray *array = NULL;
@@ -42,12 +41,12 @@ START_TEST(nc_array_free_check)
         fail_if(!array, "Failed to allocate new array");
         nc_array_free(&array, NULL);
         fail_if(array, "Failed to set array to NULL");
-        }
+}
 END_TEST
 
 static inline void nc_array_free_fun(void *p)
 {
-	free(p);
+        free(p);
 }
 
 START_TEST(nc_array_add_check)
@@ -57,14 +56,11 @@ START_TEST(nc_array_add_check)
         int data2 = 2;
         int *data3 = NULL;
 
-        fail_if(nc_array_add(NULL, &data1),
-                "Added data to NULL array");
+        fail_if(nc_array_add(NULL, &data1), "Added data to NULL array");
         array = nc_array_new();
         fail_if(!array, "Failed to allocate new array");
-        fail_if(nc_array_add(array, NULL),
-                "Added NULL data to array");
-        fail_if(!nc_array_add(array, &data1),
-                "Failed to add data1 to array");
+        fail_if(nc_array_add(array, NULL), "Added NULL data to array");
+        fail_if(!nc_array_add(array, &data1), "Failed to add data1 to array");
         fail_if(!array->data, "Failed to allocate array->data");
         fail_if(array->len != 1,
                 "Failed to update array->len with the size of the array");
@@ -78,8 +74,7 @@ START_TEST(nc_array_add_check)
         fail_if(!nc_array_add(array, &data2),
                 "Failed to add second element to array");
         fail_if(!array->data, "Failed to keep array->data");
-        fail_if(array->len != 2,
-                "Failed to update array->len with new size");
+        fail_if(array->len != 2, "Failed to update array->len with new size");
         fail_if(*((int *)array->data[0]) != 1,
                 "Changed the first array element");
         fail_if(*((int *)array->data[1]) != 2,
@@ -91,8 +86,7 @@ START_TEST(nc_array_add_check)
         *data3 = 3;
         array = nc_array_new();
         fail_if(!array, "Failed to allocate new array");
-        fail_if(!nc_array_add(array, data3),
-                "Failed to add pointer data");
+        fail_if(!nc_array_add(array, data3), "Failed to add pointer data");
         fail_if(*((int *)array->data[0]) != 3,
                 "Failed to store correct pointer data value to array");
         nc_array_free(&array, nc_array_free_fun);
@@ -107,16 +101,12 @@ START_TEST(nc_array_get_check)
 
         array = nc_array_new();
         fail_if(!array, "Failed to allocate new array");
-        fail_if(nc_array_get(NULL, 0),
-                "Got data from NULL array");
-        fail_if(nc_array_get(array, 0),
-                "Got data from empty array");
-        fail_if(!nc_array_add(array, &data1),
-                "Failed to add data1 to array");
+        fail_if(nc_array_get(NULL, 0), "Got data from NULL array");
+        fail_if(nc_array_get(array, 0), "Got data from empty array");
+        fail_if(!nc_array_add(array, &data1), "Failed to add data1 to array");
         fail_if(*((int *)nc_array_get(array, 0)) != 1,
                 "Failed to get correct value for element 0");
-        fail_if(nc_array_get(array, 1),
-                "Got data past end of array");
+        fail_if(nc_array_get(array, 1), "Got data past end of array");
         nc_array_free(&array, NULL);
         fail_if(array, "Failed to set array to NULL");
 }
@@ -139,7 +129,7 @@ START_TEST(nc_array_check)
         r = nc_array_add(array, NULL);
         fail_if(r, "Added NULL element to array");
         r = nc_array_add(array, element);
-        fail_if(r  == false, "Failed to add element to NcArray");
+        fail_if(r == false, "Failed to add element to NcArray");
         fail_if(array->len != 1,
                 "Failed to get correct value for number of elements in array");
 
@@ -149,42 +139,39 @@ START_TEST(nc_array_check)
         fail_if(f, "Got value from index bigger than maximum index");
         value = (char *)nc_array_get(array, 0);
 
-        fail_if(value == NULL,
-                "Failed to get value from NcArray");
+        fail_if(value == NULL, "Failed to get value from NcArray");
 
         fail_if(strcmp(value, "test") != 0,
                 "Failed to retrieve the stored value");
 
         nc_array_free(&array, nc_array_free_fun);
-        fail_if(array != NULL,
-                "Failed to free NcArray");
+        fail_if(array != NULL, "Failed to free NcArray");
 }
 END_TEST
 
 int main(void)
 {
-	int number_failed;
-	Suite *s;
-	SRunner *sr;
-	TCase *tc;
+        int number_failed;
+        Suite *s;
+        SRunner *sr;
+        TCase *tc;
 
-	s = suite_create("nc_array");
-	tc = tcase_create("nc_array_functions");
-	tcase_add_test(tc, nc_array_new_check);
-	tcase_add_test(tc, nc_array_free_check);
-	tcase_add_test(tc, nc_array_add_check);
-	tcase_add_test(tc, nc_array_get_check);
-	tcase_add_test(tc, nc_array_check);
-	suite_add_tcase(s, tc);
+        s = suite_create("nc_array");
+        tc = tcase_create("nc_array_functions");
+        tcase_add_test(tc, nc_array_new_check);
+        tcase_add_test(tc, nc_array_free_check);
+        tcase_add_test(tc, nc_array_add_check);
+        tcase_add_test(tc, nc_array_get_check);
+        tcase_add_test(tc, nc_array_check);
+        suite_add_tcase(s, tc);
 
-	sr = srunner_create(s);
-	srunner_run_all(sr, CK_VERBOSE);
-	number_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
+        sr = srunner_create(s);
+        srunner_run_all(sr, CK_VERBOSE);
+        number_failed = srunner_ntests_failed(sr);
+        srunner_free(sr);
 
-	return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+        return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

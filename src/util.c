@@ -36,7 +36,7 @@ void nc_dump_file_descriptor_leaks(void)
         }
 
         while ((entry = readdir(dir)) != NULL) {
-                autofree(char) *filename = NULL;
+                autofree(char)*filename = NULL;
                 char buffer[PATH_MAX + 1] = { 0 };
                 size_t size;
 
@@ -63,14 +63,18 @@ void nc_dump_file_descriptor_leaks(void)
                         continue;
                 }
 
-                if (asprintf(&filename, "/proc/self/fd/%s", entry->d_name) <= 0) {
+                if (asprintf(&filename, "/proc/self/fd/%s", entry->d_name) <=
+                    0) {
                         abort();
                 }
 
                 memset(&buffer, 0, sizeof(buffer));
                 size = readlink(filename, buffer, PATH_MAX);
                 if (size) {
-                        fprintf(stderr, "Possible filedescriptor leak : %s (%s)\n", entry->d_name, buffer);
+                        fprintf(stderr,
+                                "Possible filedescriptor leak : %s (%s)\n",
+                                entry->d_name,
+                                buffer);
                 }
         }
 
@@ -80,7 +84,7 @@ void nc_dump_file_descriptor_leaks(void)
 /**
  * Ported from Buxton, in turn inspired by systemd
  */
-void* greedy_realloc(void **p, size_t *allocated, size_t need)
+void *greedy_realloc(void **p, size_t *allocated, size_t need)
 {
         size_t a;
         void *q;
@@ -102,7 +106,6 @@ void* greedy_realloc(void **p, size_t *allocated, size_t need)
         *allocated = a;
         return q;
 }
-
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

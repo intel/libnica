@@ -29,34 +29,34 @@
  * An bucket/chain within the hashmap
  */
 typedef struct NcHashmapEntry {
-        void *hash;                             /**<The key for this item */
-        void *value;                            /**<Value for this item */
-        struct NcHashmapEntry *next;         /**<Next item in the chain */
-        bool occ;                               /**<Whether this bucket is occupied */
+        void *hash;                  /**<The key for this item */
+        void *value;                 /**<Value for this item */
+        struct NcHashmapEntry *next; /**<Next item in the chain */
+        bool occ;                    /**<Whether this bucket is occupied */
 } NcHashmapEntry;
 
 /**
  * A NcHashmap
  */
 struct NcHashmap {
-        int size;                       /**<Current size of the hashmap */
-        int next_size;                  /**<Next size at which we need to resize */
-        int n_buckets;                  /**<Current number of buckets */
-        NcHashmapEntry *buckets;     /**<Stores our bucket chains */
+        int size;                /**<Current size of the hashmap */
+        int next_size;           /**<Next size at which we need to resize */
+        int n_buckets;           /**<Current number of buckets */
+        NcHashmapEntry *buckets; /**<Stores our bucket chains */
 
-        nc_hash_create_func hash;         /**<Hash generation function */
-        nc_hash_compare_func compare;     /**<Key comparison function */
-        nc_hash_free_func key_free;        /**<Cleanup function for keys */
-        nc_hash_free_func value_free;      /**<Cleanup function for values */
+        nc_hash_create_func hash;     /**<Hash generation function */
+        nc_hash_compare_func compare; /**<Key comparison function */
+        nc_hash_free_func key_free;   /**<Cleanup function for keys */
+        nc_hash_free_func value_free; /**<Cleanup function for values */
 };
 
 /**
  * Iteration object
  */
 typedef struct _NcHashmapIter {
-        int bucket;              /**<Current bucket position */
-        NcHashmap *map;        /**<Associated NcHashmap */
-        void *item;              /**<Current item in this iteration */
+        int bucket;     /**<Current bucket position */
+        NcHashmap *map; /**<Associated NcHashmap */
+        void *item;     /**<Current item in this iteration */
 } _NcHashmapIter;
 
 static void nc_hashmap_update_next_size(NcHashmap *self);
@@ -73,7 +73,10 @@ static inline bool nc_hashmap_maybe_resize(NcHashmap *self)
         return false;
 }
 
-static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create , nc_hash_compare_func compare, nc_hash_free_func key_free, nc_hash_free_func value_free)
+static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create,
+                                          nc_hash_compare_func compare,
+                                          nc_hash_free_func key_free,
+                                          nc_hash_free_func value_free)
 {
         NcHashmap *map = NULL;
         NcHashmapEntry *buckets = NULL;
@@ -84,7 +87,7 @@ static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create , nc_hash_c
         }
 
         buckets = calloc(INITIAL_SIZE, sizeof(NcHashmapEntry));
-        if (!buckets ) {
+        if (!buckets) {
                 free(map);
                 return NULL;
         }
@@ -101,12 +104,16 @@ static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create , nc_hash_c
         return map;
 }
 
-NcHashmap *nc_hashmap_new(nc_hash_create_func create, nc_hash_compare_func compare)
+NcHashmap *nc_hashmap_new(nc_hash_create_func create,
+                          nc_hash_compare_func compare)
 {
         return nc_hashmap_new_internal(create, compare, NULL, NULL);
 }
 
-NcHashmap *nc_hashmap_new_full(nc_hash_create_func create , nc_hash_compare_func compare, nc_hash_free_func key_free, nc_hash_free_func value_free)
+NcHashmap *nc_hashmap_new_full(nc_hash_create_func create,
+                               nc_hash_compare_func compare,
+                               nc_hash_free_func key_free,
+                               nc_hash_free_func value_free)
 {
         return nc_hashmap_new_internal(create, compare, key_free, value_free);
 }
@@ -117,7 +124,9 @@ static inline unsigned nc_hashmap_get_hash(NcHashmap *self, const void *key)
         return hash;
 }
 
-static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, int n_buckets, unsigned hash, const void *key, void *value)
+static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets,
+                                     int n_buckets, unsigned hash,
+                                     const void *key, void *value)
 {
         NcHashmapEntry *row = &(buckets[hash % n_buckets]);
         NcHashmapEntry *head = NULL;
@@ -160,7 +169,7 @@ static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, i
                 }
         }
 
-        row->hash = (void*)key;
+        row->hash = (void *)key;
         row->value = value;
         row->occ = true;
         if (parent != row && parent) {
@@ -183,7 +192,12 @@ bool nc_hashmap_put(NcHashmap *self, const void *key, void *value)
                 }
         }
         unsigned hash = nc_hashmap_get_hash(self, key);
-        inc = nc_hashmap_insert_bucket(self, self->buckets, self->n_buckets, hash, key, value);
+        inc = nc_hashmap_insert_bucket(self,
+                                       self->buckets,
+                                       self->n_buckets,
+                                       hash,
+                                       key,
+                                       value);
         if (inc > 0) {
                 self->size += inc;
                 return true;
@@ -223,7 +237,8 @@ void *nc_hashmap_get(NcHashmap *self, const void *key)
         return NULL;
 }
 
-static bool nc_hashmap_remove_internal(NcHashmap *self, const void *key, bool remove)
+static bool nc_hashmap_remove_internal(NcHashmap *self, const void *key,
+                                       bool remove)
 {
         if (!self) {
                 return false;
@@ -265,7 +280,8 @@ bool nc_hashmap_contains(NcHashmap *self, const void *key)
         return (nc_hashmap_get(self, key)) != NULL;
 }
 
-static inline void nc_hashmap_free_bucket(NcHashmap *self, NcHashmapEntry *bucket, bool nuke)
+static inline void nc_hashmap_free_bucket(NcHashmap *self,
+                                          NcHashmapEntry *bucket, bool nuke)
 {
         if (!self) {
                 return;
@@ -309,7 +325,6 @@ void nc_hashmap_free(NcHashmap *self)
         }
 
         free(self);
-
 }
 
 static void nc_hashmap_update_next_size(NcHashmap *self)
@@ -317,7 +332,7 @@ static void nc_hashmap_update_next_size(NcHashmap *self)
         if (!self) {
                 return;
         }
-        self->next_size = (int) (self->n_buckets * FULL_FACTOR);
+        self->next_size = (int)(self->n_buckets * FULL_FACTOR);
 }
 
 int nc_hashmap_size(NcHashmap *self)
@@ -354,8 +369,15 @@ static bool nc_hashmap_resize(NcHashmap *self)
                 entry = &(old_buckets[i]);
                 while (entry) {
                         if (entry->occ) {
-                                unsigned hash = nc_hashmap_get_hash(self, entry->hash);
-                                if ((incr = nc_hashmap_insert_bucket(self, new_buckets, new_size, hash, entry->hash, entry->value)) > 0) {
+                                unsigned hash =
+                                    nc_hashmap_get_hash(self, entry->hash);
+                                if ((incr = nc_hashmap_insert_bucket(
+                                         self,
+                                         new_buckets,
+                                         new_size,
+                                         hash,
+                                         entry->hash,
+                                         entry->value)) > 0) {
                                         items += incr;
                                 } else {
                                         /* Likely a memory issue */
@@ -365,7 +387,8 @@ static bool nc_hashmap_resize(NcHashmap *self)
                         entry = entry->next;
                 }
         }
-        /* Successfully resized - do this separately because we need to gaurantee old data is preserved */
+        /* Successfully resized - do this separately because we need to
+         * gaurantee old data is preserved */
         for (int i = 0; i < old_size; i++) {
                 nc_hashmap_free_bucket(self, &(old_buckets[i]), false);
         }
@@ -386,18 +409,15 @@ failure:
         return false;
 }
 
-
 void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *citer)
 {
         _NcHashmapIter *iter = NULL;
         if (!map || !citer) {
                 return;
         }
-        iter = (_NcHashmapIter*)citer;
+        iter = (_NcHashmapIter *)citer;
         _NcHashmapIter it = {
-               .bucket = -1,
-               .map = map,
-               .item = NULL,
+                .bucket = -1, .map = map, .item = NULL,
         };
         *iter = it;
 }
@@ -413,7 +433,7 @@ bool nc_hashmap_iter_next(NcHashmapIter *citer, void **key, void **value)
                 return false;
         }
 
-        iter = (_NcHashmapIter*)citer;
+        iter = (_NcHashmapIter *)citer;
         map = iter->map;
         if (!map) {
                 return false;
@@ -429,7 +449,7 @@ bool nc_hashmap_iter_next(NcHashmapIter *citer, void **key, void **value)
                 }
                 if (!item) {
                         iter->bucket++;
-                        if (iter->bucket > n_buckets-1) {
+                        if (iter->bucket > n_buckets - 1) {
                                 return false;
                         }
                         item = &(map->buckets[iter->bucket]);
@@ -451,7 +471,7 @@ success:
         }
 
         return true;
-}   
+}
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

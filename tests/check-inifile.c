@@ -21,7 +21,7 @@
 START_TEST(nc_inifile_open_test)
 {
         autofree(NcHashmap) *f = NULL;
-        const char *t_path = TOP_DIR"/tests/ini/wellformed.ini";
+        const char *t_path = TOP_DIR "/tests/ini/wellformed.ini";
 
         f = nc_ini_file_parse(t_path);
         fail_if(f == NULL, "Failed to parse wellformed.ini");
@@ -30,12 +30,11 @@ END_TEST
 
 START_TEST(nc_inifile_good_test)
 {
-        const char *wellformed[] = {
-                TOP_DIR"/tests/ini/wellformed.ini",
-                TOP_DIR"/tests/ini/valid_padding.ini"
-        };
+        const char *wellformed[] = { TOP_DIR "/tests/ini/wellformed.ini",
+                                     TOP_DIR "/tests/ini/valid_padding.ini" };
 
-        for (size_t i = 0; i < sizeof(wellformed) / sizeof(wellformed[0]); i++) {
+        for (size_t i = 0; i < sizeof(wellformed) / sizeof(wellformed[0]);
+             i++) {
                 autofree(NcHashmap) *f = NULL;
                 char *ret = NULL;
 
@@ -53,7 +52,8 @@ START_TEST(nc_inifile_good_test)
                         "INI File missing \"Alice\" section");
                 ret = nc_hashmap_get(nc_hashmap_get(f, "Alice"), "alive");
                 fail_if(!ret, "Failed to get known value from INI file");
-                fail_if(!streq(ret, "false"), "Incorrect value in INI file #2");
+                fail_if(!streq(ret, "false"),
+                        "Incorrect value in INI file #2");
 
                 ret = nc_hashmap_get(nc_hashmap_get(f, "John"), "Random");
                 fail_if(ret, "Got unexpected key in section");
@@ -66,25 +66,25 @@ END_TEST
 
 START_TEST(nc_inifile_bad_test)
 {
-        const char *t_path = TOP_DIR"/tests/ini/sectionless.ini";
+        const char *t_path = TOP_DIR "/tests/ini/sectionless.ini";
         autofree(NcHashmap) *f = NULL;
 
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal sectionless INI file");
 
-        t_path = TOP_DIR"/tests/ini/empty_key.ini";
+        t_path = TOP_DIR "/tests/ini/empty_key.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal INI file with empty keys");
 
-        t_path = TOP_DIR"/tests/ini/just_assign.ini";
+        t_path = TOP_DIR "/tests/ini/just_assign.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal assign-only INI file");
 
-        t_path = TOP_DIR"/tests/ini/broken_section_start.ini";
+        t_path = TOP_DIR "/tests/ini/broken_section_start.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal broken-section-start INI File");
 
-        t_path = TOP_DIR"/tests/ini/broken_section_end.ini";
+        t_path = TOP_DIR "/tests/ini/broken_section_end.ini";
         f = nc_ini_file_parse(t_path);
         fail_if(f != NULL, "Parsed illegal broken-section-end INI File");
 }

@@ -67,14 +67,16 @@ _nica_public_ bool nc_rm_rf(const char *path);
  *
  * @return True if this succeeded
  */
-_nica_public_ bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target);
+_nica_public_ bool nc_copy_file(const char *src, const char *dst, mode_t mode,
+                                bool remove_target);
 
 /**
  * Gradually build up a valid path, which may point within an existing
  * tree, to mitigate any case sensitivity issues on case-preserving
  * filesystems
  */
-_nica_public_ __attribute__ ((sentinel(0))) char *nc_build_case_correct_path(const char *c, ...);
+_nica_public_ __attribute__((sentinel(0))) char *nc_build_case_correct_path(
+    const char *c, ...);
 
 _nica_public_ char *nc_build_case_correct_path_va(const char *c, va_list ap);
 

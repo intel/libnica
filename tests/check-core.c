@@ -58,17 +58,18 @@ START_TEST(nc_string_test)
                 "Invalid formatted string");
         fail_if(ncstrlen(str) != 14, "Incorrect string length");
 
-        fail_if(!nc_string_has_suffix(str, "g #1"), "String has incorrect suffix");
-        fail_if(!nc_string_has_prefix(str, "T"), "String has incorrect prefix");
+        fail_if(!nc_string_has_suffix(str, "g #1"),
+                "String has incorrect suffix");
+        fail_if(!nc_string_has_prefix(str, "T"),
+                "String has incorrect prefix");
 
-        fail_if(!nc_string_cat(str, "append"),
-                "Failed to append string");
-        fail_if(ncstrlen(str) != 20,  "Incorrect string length after append");
+        fail_if(!nc_string_cat(str, "append"), "Failed to append string");
+        fail_if(ncstrlen(str) != 20, "Incorrect string length after append");
 
         str2 = nc_string_dup(str->str);
-        fail_if(!streq(str->str, str2->str),
-                "Strings do not match");
-        fail_if(ncstrlen(str) != ncstrlen(str2), "Invalid string length after dup");
+        fail_if(!streq(str->str, str2->str), "Strings do not match");
+        fail_if(ncstrlen(str) != ncstrlen(str2),
+                "Invalid string length after dup");
 
         nc_string_free(str);
         nc_string_free(str2);
@@ -91,7 +92,7 @@ START_TEST(nc_string_test)
         fail_if(!str2, "Failed to dup string");
         fail_if(!nc_string_equal(str, str2), "Identical strings not matching");
 
-        fail_if(!nc_string_const_equal(str2, (const char*)str->str),
+        fail_if(!nc_string_const_equal(str2, (const char *)str->str),
                 "Direct const compare fail!");
 
         nc_string_free(str);
@@ -102,12 +103,14 @@ START_TEST(nc_string_test)
         fail_if(nc_string_cat(NULL, NULL), "cat on NULL string");
 
         fail_if(nc_string_equal(NULL, NULL), "equal on NULL string");
-        fail_if(nc_string_const_equal(NULL, NULL), "const_equal on NULL string");
+        fail_if(nc_string_const_equal(NULL, NULL),
+                "const_equal on NULL string");
 
         /* Forced empty ->str tests */
-        nc_string st = { .len = 0 };
+        nc_string st = {.len = 0 };
         fail_if(nc_string_equal(&st, &st), "equal on NULL ->str");
-        fail_if(nc_string_const_equal(&st, "TEST"), "const_equal on NULL ->str");
+        fail_if(nc_string_const_equal(&st, "TEST"),
+                "const_equal on NULL ->str");
 }
 END_TEST
 

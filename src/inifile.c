@@ -22,13 +22,13 @@
 /**
  * Mapping of @NcIniError to static strings
  */
-static const char *_errors[] = {
-        [NC_INI_ERROR_FILE] = "",
-        [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
-        [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
-        [NC_INI_ERROR_NO_SECTION] = "Encountered key=value mapping without a valid section",
-        [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation"
-};
+static const char *_errors[] =
+    {[NC_INI_ERROR_FILE] = "",
+     [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
+     [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
+     [NC_INI_ERROR_NO_SECTION] =
+         "Encountered key=value mapping without a valid section",
+     [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation" };
 
 const char *nc_ini_error(NcIniError error)
 {
@@ -53,13 +53,13 @@ static char *lstrip(char *str, size_t len, size_t *out_len)
                 }
                 break;
         }
-        *out_len = len-skip_len;
+        *out_len = len - skip_len;
         if (skip_len > 0) {
-                char *c = strdup(str+skip_len);
+                char *c = strdup(str + skip_len);
                 free(str);
                 return c;
         }
-        return str+skip_len;
+        return str + skip_len;
 }
 
 /**
@@ -78,11 +78,11 @@ static char *rstrip(char *str, size_t len, size_t *out_len)
                 }
                 break;
         }
-        *out_len = len-skip_len;
+        *out_len = len - skip_len;
         if (len == skip_len) {
                 return str;
         }
-        str[(len-skip_len)] = '\0';
+        str[(len - skip_len)] = '\0';
         return str;
 }
 
@@ -112,7 +112,7 @@ static char *string_chew_terminated(char *inp)
                 }
                 ++len;
         }
-        for (int i = len; i>skip_offset; i--) {
+        for (int i = len; i > skip_offset; i--) {
                 if (inp[i] == ' ' || inp[i] == '\t') {
                         ++end_len;
                         continue;
@@ -123,10 +123,10 @@ static char *string_chew_terminated(char *inp)
         }
 
         if (end_len > 0) {
-                inp[(len-end_len)] = '\0';
+                inp[(len - end_len)] = '\0';
         }
         if (skip_offset > 0) {
-                char *c = strdup(inp+skip_offset);
+                char *c = strdup(inp + skip_offset);
                 free(inp);
                 return c;
         }
@@ -157,16 +157,24 @@ NcHashmap *nc_ini_file_parse(const char *path)
         r = nc_ini_file_parse_full(path, &ret, &error_line);
         if (r != 0) {
                 if (abs(r) == NC_INI_ERROR_FILE) {
-                        fprintf(stderr, "[inifile] %s: %s\n", strerror(errno), path);
+                        fprintf(stderr,
+                                "[inifile] %s: %s\n",
+                                strerror(errno),
+                                path);
                 } else {
-                        fprintf(stderr, "[inifile] %s [L%d]: %s\n", nc_ini_error(r), error_line, path);
+                        fprintf(stderr,
+                                "[inifile] %s [L%d]: %s\n",
+                                nc_ini_error(r),
+                                error_line,
+                                path);
                 }
                 return NULL;
         }
         return ret;
 }
 
-int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number)
+int nc_ini_file_parse_full(const char *path, NcHashmap **out_map,
+                           int *error_line_number)
 {
         autofree(FILE) *file = NULL;
         char *buf = NULL;
@@ -185,19 +193,24 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
         }
 
         if (!out_map) {
-                fprintf(stderr, "nc_ini_file_parse_full(): NcHashmap pointer invalid\n");
+                fprintf(
+                    stderr,
+                    "nc_ini_file_parse_full(): NcHashmap pointer invalid\n");
                 return -1;
         }
 
-        root_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, (nc_hash_free_func)nc_hashmap_free);
+        root_map = nc_hashmap_new_full(nc_string_hash,
+                                       nc_string_compare,
+                                       free,
+                                       (nc_hash_free_func)nc_hashmap_free);
 
         while ((r = getline(&buf, &sn, file)) != -1) {
                 char *ch = NULL;
                 size_t str_len = r;
 
                 /* Fix newline */
-                if (buf[r-1] == '\n') {
-                        buf[r-1] = '\0';
+                if (buf[r - 1] == '\n') {
+                        buf[r - 1] = '\0';
                         --r;
                 }
                 str_len = r;
@@ -210,22 +223,29 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
 
                 if (buf[0] == '[') {
                         /* Validate section start */
-                        if (buf[str_len-1] != ']') {
+                        if (buf[str_len - 1] != ']') {
                                 /* Throw error */
                                 err_ret = NC_INI_ERROR_NOT_CLOSED;
                                 goto fail;
                         }
                         /* Grab the section name, and "close" last section */
-                        buf[str_len-1] = '\0';
+                        buf[str_len - 1] = '\0';
                         if (current_section) {
                                 free(current_section);
                         }
-                        current_section = strdup(buf+1);
-                        section_map = nc_hashmap_get(root_map, current_section);
+                        current_section = strdup(buf + 1);
+                        section_map =
+                            nc_hashmap_get(root_map, current_section);
                         if (!section_map) {
                                 /* Create a new section dynamically */
-                                section_map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, free);
-                                nc_hashmap_put(root_map, strdup(current_section), section_map);
+                                section_map =
+                                    nc_hashmap_new_full(nc_string_hash,
+                                                        nc_string_compare,
+                                                        free,
+                                                        free);
+                                nc_hashmap_put(root_map,
+                                               strdup(current_section),
+                                               section_map);
                         }
                         goto next;
                 } else if (buf[0] == '#' || buf[0] == ';') {
@@ -247,10 +267,10 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                         goto fail;
                 }
 
-                int offset = ch-buf;
+                int offset = ch - buf;
 
                 /* Grab the key->value from this assignment line */
-                char *value = strdup((buf+offset)+1);
+                char *value = strdup((buf + offset) + 1);
                 buf[offset] = '\0';
                 char *key = strdup(buf);
                 key = string_chew_terminated(key);
@@ -267,7 +287,10 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                 section_map = nc_hashmap_get(root_map, current_section);
                 if (!section_map) {
                         err_ret = 1;
-                        fprintf(stderr, "[inifile] Fatal! No section map for named section: %s\n", current_section);
+                        fprintf(stderr,
+                                "[inifile] Fatal! No section map for named "
+                                "section: %s\n",
+                                current_section);
                         abort();
                 }
 
@@ -277,8 +300,8 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                         fprintf(stderr, "[inifile] Fatal! Out of memory\n");
                         abort();
                 }
-                /* Progression + cleanup */
-next:
+        /* Progression + cleanup */
+        next:
                 if (buf) {
                         free(buf);
                         buf = NULL;
@@ -286,8 +309,8 @@ next:
                 ++line_count;
                 sn = 0;
                 continue;
-                /* Parsing error, bail */
-fail:
+        /* Parsing error, bail */
+        fail:
                 failed = true;
                 if (error_line_number) {
                         *error_line_number = line_count;
