@@ -22,7 +22,7 @@ addons:
 before_install:
   - gem install coveralls-lcov
 
-script: ./configure --enable-coverage && make && make check
+script: ./configure --enable-coverage && make && make check && make distcheck
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
