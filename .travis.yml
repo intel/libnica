@@ -14,10 +14,13 @@ language: c
 
 addons:
     apt:
+        sources:
+            - llvm-toolchain-precise-3.8
         packages:
             - check
             - valgrind
             - lcov
+            - clang-3.8
 
 before_install:
   - gem install coveralls-lcov
