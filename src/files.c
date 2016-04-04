@@ -30,7 +30,7 @@ DEF_AUTOFREE(DIR, closedir)
 
 bool nc_file_exists(const char *path)
 {
-        struct stat st = { 0 };
+        struct stat st = {.st_ino = 0 };
         return (lstat(path, &st) == 0);
 }
 
@@ -141,7 +141,7 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
 {
         char *p = NULL;
         char *root = NULL;
-        struct stat st = { 0 };
+        struct stat st = {.st_ino = 0 };
         struct dirent *ent = NULL;
 
         p = (char *)c;
