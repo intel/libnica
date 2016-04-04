@@ -15,9 +15,9 @@
 #error You should only include <nica.h>
 #endif
 
-#include <stdint.h>
-#include <stdbool.h>
 #include <nica/macros.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 /**
  * Determine whether the given path exists in the filesystem

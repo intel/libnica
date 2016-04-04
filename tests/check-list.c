@@ -13,12 +13,12 @@
 
 #include <check.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <malloc.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 
 #include "list.c"
 

@@ -17,8 +17,8 @@
 #endif
 
 #include <nica/array.h>
-#include <nica/hashmap.h>
 #include <nica/files.h>
+#include <nica/hashmap.h>
 #include <nica/inifile.h>
 #include <nica/list.h>
 #include <nica/nc-string.h>

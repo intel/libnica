@@ -11,12 +11,12 @@
 
 #define _GNU_SOURCE
 #include <check.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include "inifile.c"
 #include "hashmap.c"
+#include "inifile.c"
 
 START_TEST(nc_inifile_open_test)
 {

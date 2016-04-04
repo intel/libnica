@@ -11,14 +11,14 @@
 
 #define _GNU_SOURCE
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+#include <assert.h>
 #include <dirent.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/param.h>
-#include <assert.h>
+#include <unistd.h>
 
 #include "util.h"
 
@@ -36,7 +36,7 @@ void nc_dump_file_descriptor_leaks(void)
         }
 
         while ((entry = readdir(dir)) != NULL) {
-                autofree(char)*filename = NULL;
+                autofree(char) *filename = NULL;
                 char buffer[PATH_MAX + 1] = { 0 };
                 size_t size;
 

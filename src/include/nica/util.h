@@ -17,10 +17,10 @@
 
 #define _GNU_SOURCE
 
-#include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <nica/macros.h>
 

@@ -17,9 +17,9 @@
 
 #define _GNU_SOURCE
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include <nica/macros.h>
 

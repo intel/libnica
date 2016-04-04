@@ -12,9 +12,9 @@
 #pragma once
 
 #define _GNU_SOURCE
-#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include <nica/macros.h>
 

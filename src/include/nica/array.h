@@ -15,10 +15,10 @@
 #error You should only include <nica.h>
 #endif
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <search.h>
 #include <nica/macros.h>
+#include <search.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 /**
  * A dynamic array

@@ -10,9 +10,9 @@
  */
 
 #define _GNU_SOURCE
+#include "hashmap.c"
 #include <check.h>
 #include <stdlib.h>
-#include "hashmap.c"
 
 START_TEST(nc_hashmap_new_check)
 {

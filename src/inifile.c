@@ -11,13 +11,13 @@
 
 #define _GNU_SOURCE
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "inifile.h"
 #include "hashmap.h"
+#include "inifile.h"
 
 /**
  * Mapping of @NcIniError to static strings

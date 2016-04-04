@@ -15,9 +15,9 @@
 #error You should only include <nica.h>
 #endif
 
-#include <nica/util.h>
 #include <nica/hashmap.h>
 #include <nica/macros.h>
+#include <nica/util.h>
 
 /**
  * The Nica INI Parser focuses on simplicity and ease of use, therefore it

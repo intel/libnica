@@ -11,15 +11,15 @@
 
 #define _GNU_SOURCE
 
-#include <sys/stat.h>
-#include <unistd.h>
-#include <libgen.h>
-#include <string.h>
-#include <ftw.h>
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <dirent.h>
+#include <ftw.h>
+#include <libgen.h>
 #include <stdarg.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "files.h"
 #include "util.h"
@@ -36,14 +36,14 @@ bool nc_file_exists(const char *path)
 
 char *nc_get_file_parent(const char *path)
 {
-        autofree(char)*d = strdup(path);
+        autofree(char) *d = strdup(path);
         char *r = realpath(dirname(d), NULL);
         return r;
 }
 
 bool nc_mkdir_p(const char *path, mode_t mode)
 {
-        autofree(char)*cl = NULL;
+        autofree(char) *cl = NULL;
         char *cl_base = NULL;
 
         if (streq(path, ".") || streq(path, "/") || streq(path, "//")) {
@@ -171,7 +171,7 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                         t = NULL;
                 }
 
-                autofree(char)*dirp = strdup(root);
+                autofree(char) *dirp = strdup(root);
                 char *dir = dirname(dirp);
 
                 if (stat(dir, &st) != 0) {
