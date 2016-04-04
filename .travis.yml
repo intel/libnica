@@ -22,6 +22,7 @@ addons:
             - valgrind
             - lcov
             - clang-3.8
+            - clang-format-3.8
             - llvm-3.8
 
 before_install:
@@ -34,6 +35,8 @@ before_install:
 script:
     - lcov --version | grep "1.10"
     - ./configure --enable-coverage && make && make check && make distcheck
+    - clang-format-3.8 -i $(find . -name '*.[ch]') && git diff --exit-code
+
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
