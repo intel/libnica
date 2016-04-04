@@ -21,8 +21,8 @@ if test "x$enable_coverage" = "xyes" ; then
         else
                 lcov_version_major="`lcov --version | cut -d ' ' -f 4 | cut -d '.' -f 1`"
                 lcov_version_minor="`lcov --version | cut -d ' ' -f 4 | cut -d '.' -f 2`"
-                if test "$lcov_version_major" -eq 1 -a "$lcov_version_minor" -lt 10; then
-                        AC_MSG_ERROR([*** lcov version is too old. 1.10 required])
+                if test "$lcov_version_major" -eq 1 -a "$lcov_version_minor" -lt 9; then
+                        AC_MSG_ERROR([*** lcov version is too old. 1.9 required])
                 else
 			have_coverage=yes
 			AC_DEFINE([COVERAGE], [1], [Coverage enabled])
