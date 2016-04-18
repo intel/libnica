@@ -16,10 +16,10 @@
 #endif
 
 #include <nica/macros.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>
-#include <stdarg.h>
 
 /**
  * Determine whether the given path exists in the filesystem
