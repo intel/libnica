@@ -47,8 +47,7 @@ bool nc_array_add(NcArray *array, void *data)
         new_size = curr + sizeof(void *);
         if (new_len >= array->len) {
                 /* Resize the array to hold one more pointer */
-                array->data =
-                    greedy_realloc((void **)&array->data, &curr, new_size);
+                array->data = greedy_realloc((void **)&array->data, &curr, new_size);
                 if (!array->data) {
                         return false;
                 }

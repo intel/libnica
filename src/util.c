@@ -63,8 +63,7 @@ void nc_dump_file_descriptor_leaks(void)
                         continue;
                 }
 
-                if (asprintf(&filename, "/proc/self/fd/%s", entry->d_name) <=
-                    0) {
+                if (asprintf(&filename, "/proc/self/fd/%s", entry->d_name) <= 0) {
                         abort();
                 }
 

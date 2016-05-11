@@ -24,13 +24,13 @@
 
 #include <nica/macros.h>
 
-#define DEF_AUTOFREE(N, C)                                                    \
-        static inline void _autofree_func_##N(void *p)                        \
-        {                                                                     \
-                if (p && *(N **)p) {                                          \
-                        C(*(N **)p);                                          \
-                        (*(void **)p) = NULL;                                 \
-                }                                                             \
+#define DEF_AUTOFREE(N, C)                                                                         \
+        static inline void _autofree_func_##N(void *p)                                             \
+        {                                                                                          \
+                if (p && *(N **)p) {                                                               \
+                        C(*(N **)p);                                                               \
+                        (*(void **)p) = NULL;                                                      \
+                }                                                                                  \
         }
 
 #define autofree(N) __attribute__((cleanup(_autofree_func_##N))) N

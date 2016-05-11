@@ -22,13 +22,12 @@
 /**
  * Mapping of @NcIniError to static strings
  */
-static const char *_errors[] =
-    {[NC_INI_ERROR_FILE] = "",
-     [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
-     [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
-     [NC_INI_ERROR_NO_SECTION] =
-         "Encountered key=value mapping without a valid section",
-     [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation" };
+static const char *_errors[] = {[NC_INI_ERROR_FILE] = "",
+                                [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
+                                [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
+                                [NC_INI_ERROR_NO_SECTION] =
+                                    "Encountered key=value mapping without a valid section",
+                                [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation" };
 
 const char *nc_ini_error(NcIniError error)
 {
@@ -157,10 +156,7 @@ NcHashmap *nc_ini_file_parse(const char *path)
         r = nc_ini_file_parse_full(path, &ret, &error_line);
         if (r != 0) {
                 if (abs(r) == NC_INI_ERROR_FILE) {
-                        fprintf(stderr,
-                                "[inifile] %s: %s\n",
-                                strerror(errno),
-                                path);
+                        fprintf(stderr, "[inifile] %s: %s\n", strerror(errno), path);
                 } else {
                         fprintf(stderr,
                                 "[inifile] %s [L%d]: %s\n",
@@ -173,8 +169,7 @@ NcHashmap *nc_ini_file_parse(const char *path)
         return ret;
 }
 
-int nc_ini_file_parse_full(const char *path, NcHashmap **out_map,
-                           int *error_line_number)
+int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_line_number)
 {
         autofree(FILE) *file = NULL;
         char *buf = NULL;
@@ -193,9 +188,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map,
         }
 
         if (!out_map) {
-                fprintf(
-                    stderr,
-                    "nc_ini_file_parse_full(): NcHashmap pointer invalid\n");
+                fprintf(stderr, "nc_ini_file_parse_full(): NcHashmap pointer invalid\n");
                 return -1;
         }
 
@@ -234,18 +227,14 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map,
                                 free(current_section);
                         }
                         current_section = strdup(buf + 1);
-                        section_map =
-                            nc_hashmap_get(root_map, current_section);
+                        section_map = nc_hashmap_get(root_map, current_section);
                         if (!section_map) {
                                 /* Create a new section dynamically */
-                                section_map =
-                                    nc_hashmap_new_full(nc_string_hash,
-                                                        nc_string_compare,
-                                                        free,
-                                                        free);
-                                nc_hashmap_put(root_map,
-                                               strdup(current_section),
-                                               section_map);
+                                section_map = nc_hashmap_new_full(nc_string_hash,
+                                                                  nc_string_compare,
+                                                                  free,
+                                                                  free);
+                                nc_hashmap_put(root_map, strdup(current_section), section_map);
                         }
                         goto next;
                 } else if (buf[0] == '#' || buf[0] == ';') {

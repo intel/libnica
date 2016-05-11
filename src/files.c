@@ -63,8 +63,7 @@ bool nc_mkdir_p(const char *path, mode_t mode)
 /**
  * nftw callback
  */
-static int _rm_rf(const char *path,
-                  __attribute__((unused)) const struct stat *sb, int typeflag,
+static int _rm_rf(const char *path, __attribute__((unused)) const struct stat *sb, int typeflag,
                   __attribute__((unused)) struct FTW *ftwbuf)
 {
         if (typeflag == FTW_F) {
@@ -81,8 +80,7 @@ bool nc_rm_rf(const char *path)
         return ret;
 }
 
-bool nc_copy_file(const char *src, const char *dst, mode_t mode,
-                  bool remove_target)
+bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_target)
 {
         int src_fd = -1;
         int dest_fd = -1;
@@ -196,10 +194,7 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                         }
                         if (strcasecmp(ent->d_name, p) == 0) {
                                 if (sav) {
-                                        if (!asprintf(&t,
-                                                      "%s/%s",
-                                                      sav,
-                                                      ent->d_name)) {
+                                        if (!asprintf(&t, "%s/%s", sav, ent->d_name)) {
                                                 fprintf(stderr,
                                                         "nc_build_case_"
                                                         "correct_path_va: Out "

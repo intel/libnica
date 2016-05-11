@@ -46,8 +46,7 @@ _nica_public_ NcArray *nc_array_new(void) __attribute__((warn_unused_result));
  * @param data Pointer to add to this array
  * @returns bool true if the data was added to the array
  */
-_nica_public_ bool nc_array_add(NcArray *array, void *data)
-    __attribute__((warn_unused_result));
+_nica_public_ bool nc_array_add(NcArray *array, void *data) __attribute__((warn_unused_result));
 
 /**
  * Free an array, and optionally its members

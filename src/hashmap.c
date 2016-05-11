@@ -73,10 +73,8 @@ static inline bool nc_hashmap_maybe_resize(NcHashmap *self)
         return false;
 }
 
-static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create,
-                                          nc_hash_compare_func compare,
-                                          nc_hash_free_func key_free,
-                                          nc_hash_free_func value_free)
+static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create, nc_hash_compare_func compare,
+                                          nc_hash_free_func key_free, nc_hash_free_func value_free)
 {
         NcHashmap *map = NULL;
         NcHashmapEntry *buckets = NULL;
@@ -104,16 +102,13 @@ static NcHashmap *nc_hashmap_new_internal(nc_hash_create_func create,
         return map;
 }
 
-NcHashmap *nc_hashmap_new(nc_hash_create_func create,
-                          nc_hash_compare_func compare)
+NcHashmap *nc_hashmap_new(nc_hash_create_func create, nc_hash_compare_func compare)
 {
         return nc_hashmap_new_internal(create, compare, NULL, NULL);
 }
 
-NcHashmap *nc_hashmap_new_full(nc_hash_create_func create,
-                               nc_hash_compare_func compare,
-                               nc_hash_free_func key_free,
-                               nc_hash_free_func value_free)
+NcHashmap *nc_hashmap_new_full(nc_hash_create_func create, nc_hash_compare_func compare,
+                               nc_hash_free_func key_free, nc_hash_free_func value_free)
 {
         return nc_hashmap_new_internal(create, compare, key_free, value_free);
 }
@@ -124,9 +119,8 @@ static inline unsigned nc_hashmap_get_hash(NcHashmap *self, const void *key)
         return hash;
 }
 
-static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets,
-                                     int n_buckets, unsigned hash,
-                                     const void *key, void *value)
+static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, int n_buckets,
+                                     unsigned hash, const void *key, void *value)
 {
         NcHashmapEntry *row = &(buckets[hash % n_buckets]);
         NcHashmapEntry *head = NULL;
@@ -192,12 +186,7 @@ bool nc_hashmap_put(NcHashmap *self, const void *key, void *value)
                 }
         }
         unsigned hash = nc_hashmap_get_hash(self, key);
-        inc = nc_hashmap_insert_bucket(self,
-                                       self->buckets,
-                                       self->n_buckets,
-                                       hash,
-                                       key,
-                                       value);
+        inc = nc_hashmap_insert_bucket(self, self->buckets, self->n_buckets, hash, key, value);
         if (inc > 0) {
                 self->size += inc;
                 return true;
@@ -237,8 +226,7 @@ void *nc_hashmap_get(NcHashmap *self, const void *key)
         return NULL;
 }
 
-static bool nc_hashmap_remove_internal(NcHashmap *self, const void *key,
-                                       bool remove)
+static bool nc_hashmap_remove_internal(NcHashmap *self, const void *key, bool remove)
 {
         if (!self) {
                 return false;
@@ -280,8 +268,7 @@ bool nc_hashmap_contains(NcHashmap *self, const void *key)
         return (nc_hashmap_get(self, key)) != NULL;
 }
 
-static inline void nc_hashmap_free_bucket(NcHashmap *self,
-                                          NcHashmapEntry *bucket, bool nuke)
+static inline void nc_hashmap_free_bucket(NcHashmap *self, NcHashmapEntry *bucket, bool nuke)
 {
         if (!self) {
                 return;
@@ -369,15 +356,13 @@ static bool nc_hashmap_resize(NcHashmap *self)
                 entry = &(old_buckets[i]);
                 while (entry) {
                         if (entry->occ) {
-                                unsigned hash =
-                                    nc_hashmap_get_hash(self, entry->hash);
-                                if ((incr = nc_hashmap_insert_bucket(
-                                         self,
-                                         new_buckets,
-                                         new_size,
-                                         hash,
-                                         entry->hash,
-                                         entry->value)) > 0) {
+                                unsigned hash = nc_hashmap_get_hash(self, entry->hash);
+                                if ((incr = nc_hashmap_insert_bucket(self,
+                                                                     new_buckets,
+                                                                     new_size,
+                                                                     hash,
+                                                                     entry->hash,
+                                                                     entry->value)) > 0) {
                                         items += incr;
                                 } else {
                                         /* Likely a memory issue */

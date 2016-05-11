@@ -31,22 +31,17 @@ START_TEST(nc_list_append_check)
 
         fail_if(!nc_list_append(&list, &data1), "Append for new list failed");
         head = list;
-        fail_if(list->tail != list,
-                "list and list->tail do not match after new list append");
+        fail_if(list->tail != list, "list and list->tail do not match after new list append");
         fail_if(list->next, "list->next is not NULL after new list append");
-        fail_if(*((int *)(list->data)) != 1,
-                "list->data is incorrect after new list append");
+        fail_if(*((int *)(list->data)) != 1, "list->data is incorrect after new list append");
         fail_if(list->size != 1, "list->size not 1 after new list append");
 
-        fail_if(!nc_list_append(&list, &data2),
-                "Append for existing list failed");
+        fail_if(!nc_list_append(&list, &data2), "Append for existing list failed");
         fail_if(head != list, "Append switched list head");
         fail_if(list->tail != list->next,
                 "list->next and list->tail do not match after two appends");
-        fail_if(list->next->next,
-                "list->next->next is not NULL after two appends");
-        fail_if(*((int *)(list->data)) != 1,
-                "list->data is incorrect after two list appends");
+        fail_if(list->next->next, "list->next->next is not NULL after two appends");
+        fail_if(*((int *)(list->data)) != 1, "list->data is incorrect after two list appends");
         fail_if(*((int *)(list->next->data)) != 2,
                 "list->next->data is incorrect after two list appends");
         fail_if(list->size != 2, "list->size not 2 after two list appends");
@@ -62,26 +57,20 @@ START_TEST(nc_list_prepend_check)
         int data1 = 1;
         int data2 = 2;
 
-        fail_if(!nc_list_prepend(&list, &data1),
-                "Prepend for new list failed");
+        fail_if(!nc_list_prepend(&list, &data1), "Prepend for new list failed");
         tail = list;
-        fail_if(list->tail != list,
-                "list and list->tail do not match after new list prepend");
+        fail_if(list->tail != list, "list and list->tail do not match after new list prepend");
         fail_if(list->next, "list->next is not NULL after new list prepend");
-        fail_if(*((int *)(list->data)) != 1,
-                "list->data is incorrect after new list prepend");
+        fail_if(*((int *)(list->data)) != 1, "list->data is incorrect after new list prepend");
         fail_if(list->size != 1, "list->size not 1 after new list prepend");
 
-        fail_if(!nc_list_prepend(&list, &data2),
-                "Prepend for existing list failed");
+        fail_if(!nc_list_prepend(&list, &data2), "Prepend for existing list failed");
         fail_if(tail != list->next, "Prepend switched list next");
         fail_if(tail != list->tail, "Prepend switched list tail");
         fail_if(list->tail != list->next,
                 "list->next and list->tail do not match after two prepends");
-        fail_if(list->next->next,
-                "list->next->next is not NULL after two prepends");
-        fail_if(*((int *)(list->data)) != 2,
-                "list->data is incorrect after two list prepends");
+        fail_if(list->next->next, "list->next->next is not NULL after two prepends");
+        fail_if(*((int *)(list->data)) != 2, "list->data is incorrect after two list prepends");
         fail_if(*((int *)(list->next->data)) != 1,
                 "list->next->data is incorrect after two list prepends");
         fail_if(list->size != 2, "list->size not 2 after two list prepends");
@@ -99,20 +88,14 @@ START_TEST(nc_list_remove_check)
         int *data4 = NULL;
         int *data5 = NULL;
 
-        fail_if(nc_list_remove(&list, &data1, false),
-                "Removed from non existing list");
-        fail_if(!nc_list_prepend(&list, &data1),
-                "Prepend for new list failed");
-        fail_if(nc_list_remove(&list, &data2, false),
-                "Removed non existing element from list");
-        fail_if(list->tail != list,
-                "list and list->tail do not match after new list prepend");
+        fail_if(nc_list_remove(&list, &data1, false), "Removed from non existing list");
+        fail_if(!nc_list_prepend(&list, &data1), "Prepend for new list failed");
+        fail_if(nc_list_remove(&list, &data2, false), "Removed non existing element from list");
+        fail_if(list->tail != list, "list and list->tail do not match after new list prepend");
         fail_if(list->next, "list->next is not NULL after new list prepend");
-        fail_if(*((int *)(list->data)) != 1,
-                "list->data is incorrect after new list prepend");
+        fail_if(*((int *)(list->data)) != 1, "list->data is incorrect after new list prepend");
         fail_if(list->size != 1, "list->size not 1 after new list prepend");
-        fail_if(!nc_list_remove(&list, &data1, false),
-                "Unable to remove existing item from list");
+        fail_if(!nc_list_remove(&list, &data1, false), "Unable to remove existing item from list");
         fail_if(list, "List not NULL after removal of only element");
 
         data4 = malloc(sizeof(int));
@@ -126,45 +109,33 @@ START_TEST(nc_list_remove_check)
         fail_if(!nc_list_append(&list, data4), "Append 2 for list failed");
         fail_if(!nc_list_prepend(&list, data5), "Prepend 3 for list failed");
         /* the list is = (*5, 3, 1, 2, *4) */
-        fail_if(!nc_list_remove(&list, &data1, false),
-                "Unable to remove data1 from list");
-        fail_if(nc_list_remove(&list, &data1, false),
-                "Able to remove data1 from list again");
+        fail_if(!nc_list_remove(&list, &data1, false), "Unable to remove data1 from list");
+        fail_if(nc_list_remove(&list, &data1, false), "Able to remove data1 from list again");
         /* the list is = (*5, 3, 2, *4) */
         fail_if(*((int *)(list->data)) != 5, "list->data value incorrect");
         fail_if(list->size != 4, "list->size incorrect");
-        fail_if(*((int *)(list->next->next->data)) != 2,
-                "list->next->next->data value incorrect");
-        fail_if(*((int *)(list->tail->data)) != 4,
-                "list->tail->data value incorrect");
-        fail_if(list->tail != list->next->next->next,
-                "list->tail is incorrect");
-        fail_if(!nc_list_remove(&list, data4, true),
-                "Failed to remove data4 from list");
+        fail_if(*((int *)(list->next->next->data)) != 2, "list->next->next->data value incorrect");
+        fail_if(*((int *)(list->tail->data)) != 4, "list->tail->data value incorrect");
+        fail_if(list->tail != list->next->next->next, "list->tail is incorrect");
+        fail_if(!nc_list_remove(&list, data4, true), "Failed to remove data4 from list");
         /* the list is = (*5, 3, 2) */
         fail_if(*((int *)(list->data)) != 5, "list->data value incorrect");
         fail_if(list->size != 3, "list->size incorrect");
-        fail_if(*((int *)(list->tail->data)) != 2,
-                "list->tail->data value incorrect");
+        fail_if(*((int *)(list->tail->data)) != 2, "list->tail->data value incorrect");
         fail_if(list->tail != list->next->next, "list->tail is incorrect");
-        fail_if(!nc_list_remove(&list, data5, true),
-                "Failed to remove data5 from list");
+        fail_if(!nc_list_remove(&list, data5, true), "Failed to remove data5 from list");
         /* the list is = (3, 2) */
         fail_if(*((int *)(list->data)) != 3, "list->data value incorrect");
         fail_if(list->size != 2, "list->size incorrect");
-        fail_if(*((int *)(list->tail->data)) != 2,
-                "list->tail->data value incorrect");
+        fail_if(*((int *)(list->tail->data)) != 2, "list->tail->data value incorrect");
         fail_if(list->tail != list->next, "list->tail is incorrect");
-        fail_if(!nc_list_remove(&list, &data3, false),
-                "Failed to remove data3 from list");
+        fail_if(!nc_list_remove(&list, &data3, false), "Failed to remove data3 from list");
         /* the list is = (2) */
         fail_if(*((int *)(list->data)) != 2, "list->data value incorrect");
         fail_if(list->size != 1, "list->size incorrect");
-        fail_if(*((int *)(list->tail->data)) != 2,
-                "list->tail->data value incorrect");
+        fail_if(*((int *)(list->tail->data)) != 2, "list->tail->data value incorrect");
         fail_if(list->tail != list, "list->tail is incorrect");
-        fail_if(!nc_list_remove(&list, &data2, false),
-                "Failed to remove data2 from list");
+        fail_if(!nc_list_remove(&list, &data2, false), "Failed to remove data2 from list");
         /* the list is = () */
         fail_if(list, "list is not NULL");
 }
@@ -242,12 +213,10 @@ START_TEST(nc_list_check)
         uint DEFAULT_SIZE = (10 * 1000);
         for (i = 0; i <= DEFAULT_SIZE; i++) {
                 if (i == 5) {
-                        fail_if(nc_list_append(&list, data) == false,
-                                "Failed to append to NcList");
+                        fail_if(nc_list_append(&list, data) == false, "Failed to append to NcList");
                 } else {
                         int j = asprintf(&tmp, "i #%d", i);
-                        fail_if(j < 0,
-                                "Failed to pass test due to allocation error");
+                        fail_if(j < 0, "Failed to pass test due to allocation error");
                         fail_if(nc_list_prepend(&list, tmp) == false,
                                 "Failed to prepend to NcList");
                 }
@@ -261,42 +230,30 @@ START_TEST(nc_list_check)
 
         /* Prepend head2 */
         fail_if(nc_list_prepend(&list, head2) != true, "Prepend head2 failed");
-        fail_if(list->size != DEFAULT_SIZE + 3,
-                "Prepended head2 size invalid");
+        fail_if(list->size != DEFAULT_SIZE + 3, "Prepended head2 size invalid");
 
         /* Remove from middle */
-        fail_if(nc_list_remove(&list, data, false) != true,
-                "List removal from middle failed");
-        fail_if(list->size != DEFAULT_SIZE + 2,
-                "List middle removal size invalid");
+        fail_if(nc_list_remove(&list, data, false) != true, "List removal from middle failed");
+        fail_if(list->size != DEFAULT_SIZE + 2, "List middle removal size invalid");
 
         /* Remove from end */
-        fail_if(nc_list_remove(&list, tmp, true) != true,
-                "List tail removal failed");
-        fail_if(list->size != DEFAULT_SIZE + 1,
-                "List tail removal size invalid");
+        fail_if(nc_list_remove(&list, tmp, true) != true, "List tail removal failed");
+        fail_if(list->size != DEFAULT_SIZE + 1, "List tail removal size invalid");
 
-        fail_if(nc_list_append(&list, "newend") != true,
-                "List new tail append failed");
+        fail_if(nc_list_append(&list, "newend") != true, "List new tail append failed");
         fail_if(list->size != DEFAULT_SIZE + 2, "List new tail size invalid");
-        fail_if(nc_list_remove(&list, "newend", false) != true,
-                "List new tail removal failed");
-        fail_if(list->size != DEFAULT_SIZE + 1,
-                "List new tail size invalid (post removal)");
+        fail_if(nc_list_remove(&list, "newend", false) != true, "List new tail removal failed");
+        fail_if(list->size != DEFAULT_SIZE + 1, "List new tail size invalid (post removal)");
 
         /* Fake remove */
         fail_if(nc_list_remove(&list, "nonexistent", false) == true,
                 "List non existent removal should fail");
-        fail_if(list->size != DEFAULT_SIZE + 1,
-                "List size invalid after no change");
+        fail_if(list->size != DEFAULT_SIZE + 1, "List size invalid after no change");
 
         /* Remove head */
-        fail_if(nc_list_remove(&list, head, false) == false,
-                "List remove head failed");
-        fail_if(nc_list_remove(&list, head2, false) == false,
-                "List remove head2 failed");
-        fail_if(list->size != DEFAULT_SIZE - 1,
-                "List post heads removal size invalid");
+        fail_if(nc_list_remove(&list, head, false) == false, "List remove head failed");
+        fail_if(nc_list_remove(&list, head2, false) == false, "List remove head2 failed");
+        fail_if(list->size != DEFAULT_SIZE - 1, "List post heads removal size invalid");
 
         nc_list_free_all(&list);
 }

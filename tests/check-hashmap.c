@@ -38,32 +38,26 @@ START_TEST(nc_hashmap_simple_check)
                 b = nc_hashmap_put(map, NC_HASH_KEY(i), NC_HASH_VALUE(i));
                 fail_if(!b, "Failed to add integer to hashmap");
         }
-        fail_if(nc_hashmap_size(map) != 1000,
-                "Hashmap size invalid after 1000 elements");
+        fail_if(nc_hashmap_size(map) != 1000, "Hashmap size invalid after 1000 elements");
 
         for (int i = 300; i < 700; i++) {
                 b = nc_hashmap_remove(map, NC_HASH_KEY(i));
-                fail_if(!b,
-                        "Failed to remove known integer from from hashmap");
+                fail_if(!b, "Failed to remove known integer from from hashmap");
         }
 
-        fail_if(nc_hashmap_size(map) != 600,
-                "Hashmap size invalid after 400 removals");
+        fail_if(nc_hashmap_size(map) != 600, "Hashmap size invalid after 400 removals");
 
         val = nc_hashmap_get(map, NC_HASH_KEY(302));
-        fail_if(val,
-                "Value should not be returned from hashmap after removal");
+        fail_if(val, "Value should not be returned from hashmap after removal");
 
         val = nc_hashmap_get(map, NC_HASH_KEY(802));
         fail_if(!val, "Value should be returned from hashmap for known key");
-        fail_if(NC_UNHASH_VALUE(val) != 802,
-                "Value returned from hashmap was incorrect");
+        fail_if(NC_UNHASH_VALUE(val) != 802, "Value returned from hashmap was incorrect");
 
         nc_hashmap_free(map);
         map = NULL;
 
-        fail_if(nc_hashmap_size(map) >= 0,
-                "Incorrect size returned for NULL hashmap");
+        fail_if(nc_hashmap_size(map) >= 0, "Incorrect size returned for NULL hashmap");
 }
 END_TEST
 
@@ -87,23 +81,19 @@ START_TEST(nc_hashmap_string_check)
 
         val = nc_hashmap_get(map, "John");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(NC_UNHASH_VALUE(val) != 12,
-                "Failed to get correct value from hashmap");
+        fail_if(NC_UNHASH_VALUE(val) != 12, "Failed to get correct value from hashmap");
 
         val = nc_hashmap_get(map, "Lucy");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(NC_UNHASH_VALUE(val) != 42,
-                "Failed to get correct value from hashmap");
+        fail_if(NC_UNHASH_VALUE(val) != 42, "Failed to get correct value from hashmap");
 
         val = nc_hashmap_get(map, "Bob");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(NC_UNHASH_VALUE(val) != 19012,
-                "Failed to get correct value from hashmap");
+        fail_if(NC_UNHASH_VALUE(val) != 19012, "Failed to get correct value from hashmap");
 
         val = nc_hashmap_get(map, "Sarah");
         fail_if(!val, "Failed to get known key from hashmap");
-        fail_if(NC_UNHASH_VALUE(val) != 83,
-                "Failed to get correct value from hashmap");
+        fail_if(NC_UNHASH_VALUE(val) != 83, "Failed to get correct value from hashmap");
 
         nc_hashmap_free(map);
 }
@@ -126,8 +116,7 @@ START_TEST(nc_hashmap_iter_check)
                 fail_if(!b, "Failed to insert key into hashmap");
         }
 
-        fail_if(nc_hashmap_size(map) != 5000,
-                "Invalid hashmap size after 5000 elements");
+        fail_if(nc_hashmap_size(map) != 5000, "Invalid hashmap size after 5000 elements");
 
         nc_hashmap_iter_init(map, &iter);
         while (nc_hashmap_iter_next(&iter, (void **)&key, (void **)&value)) {
@@ -149,13 +138,11 @@ START_TEST(nc_hashmap_iter_check)
                 unsigned int k = NC_UNHASH_KEY(key);
                 fail_if(NC_UNHASH_VALUE(value) != k,
                         "Mismatched post-removal key/value pair in iteration");
-                fail_if(k >= 2000 && k < 4000,
-                        "Key/value not removed from hashtable");
+                fail_if(k >= 2000 && k < 4000, "Key/value not removed from hashtable");
                 ++count;
         }
         fail_if(count != 3000, "Did not iterate all 2000 elements");
-        fail_if(nc_hashmap_size(map) != 3000,
-                "Invalid hashmap size after removals");
+        fail_if(nc_hashmap_size(map) != 3000, "Invalid hashmap size after removals");
 
         nc_hashmap_free(map);
 }
@@ -176,19 +163,14 @@ START_TEST(nc_hashmap_alloc_check)
         void *val = NULL;
         bool b;
 
-        map = nc_hashmap_new_full(nc_string_hash,
-                                  nc_string_compare,
-                                  free_helper,
-                                  NULL);
+        map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free_helper, NULL);
         fail_if(!map, "Failed to allocate new hashmap");
 
         fail_if(!(str = strdup("Key 1"), "Allocation problem"));
-        fail_if(!nc_hashmap_put(map, str, str),
-                "Failed to insert into hashmap");
+        fail_if(!nc_hashmap_put(map, str, str), "Failed to insert into hashmap");
 
         fail_if(!(str = strdup("Key 2"), "Allocation problem"));
-        fail_if(!nc_hashmap_put(map, str, str),
-                "Failed to insert into hashmap");
+        fail_if(!nc_hashmap_put(map, str, str), "Failed to insert into hashmap");
 
         val = nc_hashmap_get(map, "Key 1");
         fail_if(!val, "Failed to get known value from hashmap");

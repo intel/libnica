@@ -31,8 +31,7 @@ typedef struct NcList {
         uint64_t size;       /**<Size of list */
 } NcList;
 
-#define NC_LIST_FOREACH(list, elem)                                           \
-        for ((elem) = (list); (elem) != NULL; (elem) = (elem)->next)
+#define NC_LIST_FOREACH(list, elem) for ((elem) = (list); (elem) != NULL; (elem) = (elem)->next)
 
 /**
  * Append data to an existing list, or create a new list if NULL

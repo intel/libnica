@@ -68,10 +68,10 @@
  */
 typedef enum {
         NC_INI_ERROR_MIN = 0,
-        NC_INI_ERROR_FILE,      /**< File based error, check strerror(errno) */
-        NC_INI_ERROR_EMPTY_KEY, /**< Empty key in an assignment line */
-        NC_INI_ERROR_NOT_CLOSED, /**< Encountered section start that wasn't closed with a ']' */
-        NC_INI_ERROR_NO_SECTION, /**< Key assignment with no defined sections */
+        NC_INI_ERROR_FILE,         /**< File based error, check strerror(errno) */
+        NC_INI_ERROR_EMPTY_KEY,    /**< Empty key in an assignment line */
+        NC_INI_ERROR_NOT_CLOSED,   /**< Encountered section start that wasn't closed with a ']' */
+        NC_INI_ERROR_NO_SECTION,   /**< Key assignment with no defined sections */
         NC_INI_ERROR_INVALID_LINE, /**< Encountered an invalid line (syntax) */
         NC_INI_ERROR_MAX
 } NcIniError;

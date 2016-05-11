@@ -138,8 +138,7 @@ static inline int ncstrlen(nc_string *str)
  *
  * @return True if @str has the given suffix
  */
-static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix,
-                                              ssize_t len)
+static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix, ssize_t len)
 {
         if (!str || !suffix) {
                 return false;
@@ -159,8 +158,7 @@ static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix,
  *
  * @return True if @str has the given prefix
  */
-static inline bool nc_string_has_prefix_const(nc_string *str, char *prefix,
-                                              ssize_t len)
+static inline bool nc_string_has_prefix_const(nc_string *str, char *prefix, ssize_t len)
 {
         if (!str || !prefix) {
                 return false;
@@ -201,10 +199,8 @@ static inline char *nc_string_strip(nc_string *str)
 /**
  * To be used only with compile time constants.
  */
-#define nc_string_has_suffix(a, suff)                                         \
-        nc_string_has_suffix_const(a, suff, (sizeof(suff) - 1))
-#define nc_string_has_prefix(a, pref)                                         \
-        nc_string_has_prefix_const(a, pref, (sizeof(pref) - 1))
+#define nc_string_has_suffix(a, suff) nc_string_has_suffix_const(a, suff, (sizeof(suff) - 1))
+#define nc_string_has_prefix(a, pref) nc_string_has_prefix_const(a, pref, (sizeof(pref) - 1))
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
