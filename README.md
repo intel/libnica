@@ -4,7 +4,32 @@ libnica
 [![Build Status](https://travis-ci.org/ikeydoherty/libnica.svg?branch=master)](https://travis-ci.org/ikeydoherty/libnica)
 [![Coverage Status](https://coveralls.io/repos/github/ikeydoherty/libnica/badge.png?branch=master)](https://coveralls.io/github/ikeydoherty/libnica?branch=master)
 
+
+DISCLAIMER
+-----------
+
+This library is undergoing an active development cycle. It is currently being
+developed _in tandem_ with multiple projects, and as such the ABI and API should
+be considered currently unstable.
+
+Scheduled changes:
+
+ - Thread pool
+ - Timing tests on all data types (and relevant improvements)
+ - N-ary tree addition
+ - List API changes
+ - Move from C99 to C11
+ - Thread-safe APIs (Atomic)
+ - Improved file access functions
+ - mmap helpers (RAII based)
+ - Improved INI parser (lex-based w/ line continuation)
+ - Fold in cve-check-tool changes/additions
+ - Potential:
+        - Fold in the templating mini-lib from new cve-check-tool
+        - Simplified networking access (retaining underlying transparency)
+
 *Common C library functions*
+
 
 Lightweight library containing common functionality of typical "C utility libs".
 
