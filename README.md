@@ -25,8 +25,8 @@ Scheduled changes:
  - Improved INI parser (lex-based w/ line continuation)
  - Fold in cve-check-tool changes/additions
  - Potential:
-        - Fold in the templating mini-lib from new cve-check-tool
-        - Simplified networking access (retaining underlying transparency)
+   - Fold in the templating mini-lib from new cve-check-tool
+   - Simplified networking access (retaining underlying transparency)
 
 **Common C library functions**
 
