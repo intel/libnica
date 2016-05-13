@@ -28,7 +28,7 @@ Scheduled changes:
         - Fold in the templating mini-lib from new cve-check-tool
         - Simplified networking access (retaining underlying transparency)
 
-*Common C library functions*
+**Common C library functions**
 
 
 Lightweight library containing common functionality of typical "C utility libs".
