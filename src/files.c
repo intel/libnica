@@ -66,10 +66,14 @@ bool nc_mkdir_p(const char *path, mode_t mode)
 static int _rm_rf(const char *path, __attribute__((unused)) const struct stat *sb, int typeflag,
                   __attribute__((unused)) struct FTW *ftwbuf)
 {
-        if (typeflag == FTW_F) {
+        switch (typeflag) {
+        case FTW_F:
+        case FTW_SL:
+        case FTW_SLN:
                 return unlink(path);
+        default:
+                return rmdir(path);
         }
-        return rmdir(path);
 }
 
 bool nc_rm_rf(const char *path)
