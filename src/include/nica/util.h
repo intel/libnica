@@ -42,7 +42,16 @@ _nica_public_ void nc_dump_file_descriptor_leaks(void);
 
 _nica_public_ void *greedy_realloc(void **p, size_t *allocated, size_t need);
 
-#define streq(x, y) (strcmp(x, y) == 0 ? true : false)
+/**
+ * Test string equality of two null terminated strings
+ */
+__attribute__((always_inline)) static inline bool streq(const char *x, const char *y)
+{
+        if (!x || !y) {
+                return false;
+        }
+        return strcmp(x, y) == 0;
+}
 
 DEF_AUTOFREE(char, free)
 DEF_AUTOFREE(FILE, fclose)
