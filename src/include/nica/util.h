@@ -45,12 +45,15 @@ _nica_public_ void *greedy_realloc(void **p, size_t *allocated, size_t need);
 /**
  * Test string equality of two null terminated strings
  */
-__attribute__((always_inline)) static inline bool streq(const char *x, const char *y)
+__attribute__((always_inline)) static inline bool streq(const char *a, const char *b)
 {
-        if (!x || !y) {
+        if (a == b) {
+                return true;
+        }
+        if (!a || !b) {
                 return false;
         }
-        return strcmp(x, y) == 0;
+        return strcmp(a, b) == 0;
 }
 
 DEF_AUTOFREE(char, free)
