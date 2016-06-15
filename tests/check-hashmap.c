@@ -61,6 +61,49 @@ START_TEST(nc_hashmap_simple_check)
 }
 END_TEST
 
+START_TEST(nc_hashmap_dupe_check)
+{
+        NcHashmap *map = NULL;
+        void *val = NULL;
+
+        map = nc_hashmap_new(nc_simple_hash, nc_simple_compare);
+
+        fail_if(!nc_hashmap_put(map, "name", "not important"),
+                "Failed to put to hashmap first time!");
+        val = nc_hashmap_get(map, "name");
+        fail_if(!val, "Failed to get name!");
+        fail_if(!streq(val, "not important"), "Returned value does not match");
+        val = NULL;
+
+        fail_if(!nc_hashmap_put(map, "name", "ikey"), "Failed to replace with second value");
+        val = nc_hashmap_get(map, "name");
+        fail_if(!streq(val, "ikey"), "Second return doesn't match expectation");
+        nc_hashmap_free(map);
+}
+END_TEST
+
+START_TEST(nc_hashmap_dupe_alloc_check)
+{
+        NcHashmap *map = NULL;
+        void *val = NULL;
+        void *val2 = NULL;
+
+        map = nc_hashmap_new_full(nc_string_hash, nc_string_compare, free, free);
+
+        fail_if(!nc_hashmap_put(map, strdup("name"), strdup("not important")),
+                "Failed to put to hashmap first time!");
+        val = nc_hashmap_get(map, "name");
+        fail_if(!val, "Failed to get name!");
+        fail_if(!streq(val, "not important"), "Returned value does not match");
+
+        fail_if(!nc_hashmap_put(map, strdup("name"), strdup("ikey")),
+                "Failed to replace with second value");
+        val2 = nc_hashmap_get(map, "name");
+        fail_if(!streq(val2, "ikey"), "Second return doesn't match expectation");
+        nc_hashmap_free(map);
+}
+END_TEST
+
 START_TEST(nc_hashmap_string_check)
 {
         NcHashmap *map = NULL;
@@ -202,6 +245,8 @@ static Suite *nc_hashmap_suite(void)
         tcase_add_test(tc, nc_hashmap_string_check);
         tcase_add_test(tc, nc_hashmap_iter_check);
         tcase_add_test(tc, nc_hashmap_alloc_check);
+        tcase_add_test(tc, nc_hashmap_dupe_check);
+        tcase_add_test(tc, nc_hashmap_dupe_alloc_check);
         suite_add_tcase(s, tc);
 
         return s;
