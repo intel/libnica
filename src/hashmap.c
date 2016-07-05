@@ -122,7 +122,7 @@ static inline unsigned nc_hashmap_get_hash(NcHashmap *self, const void *key)
 static bool nc_hashmap_insert_bucket(NcHashmap *self, NcHashmapEntry *buckets, int n_buckets,
                                      unsigned hash, const void *key, void *value)
 {
-        NcHashmapEntry *row = &(buckets[hash % n_buckets]);
+        NcHashmapEntry *row = &(buckets[hash % (unsigned)n_buckets]);
         NcHashmapEntry *head = NULL;
         NcHashmapEntry *parent = head = row;
         NcHashmapEntry *tomb = NULL;
@@ -197,7 +197,7 @@ static NcHashmapEntry *nc_hashmap_get_entry(NcHashmap *self, const void *key)
         }
 
         unsigned hash = nc_hashmap_get_hash(self, key);
-        NcHashmapEntry *row = &(self->buckets[hash % self->n_buckets]);
+        NcHashmapEntry *row = &(self->buckets[hash % (unsigned)self->n_buckets]);
 
         while (row) {
                 if (self->compare(row->hash, key)) {
@@ -342,7 +342,7 @@ static bool nc_hashmap_resize(NcHashmap *self)
         new_size = old_size = self->n_buckets;
         new_size *= INCREASE_FACTOR;
 
-        new_buckets = calloc(new_size, sizeof(NcHashmapEntry));
+        new_buckets = calloc((size_t)new_size, sizeof(NcHashmapEntry));
         if (!new_buckets) {
                 return false;
         }

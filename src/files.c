@@ -90,7 +90,7 @@ bool nc_copy_file(const char *src, const char *dst, mode_t mode, bool remove_tar
         int dest_fd = -1;
         bool ret = true;
         char buffer[COPY_BUFFER_SIZE] = { 0 };
-        int r = 0;
+        ssize_t r = 0;
 
         if (remove_target) {
                 if (nc_file_exists(dst) && unlink(dst) < 0) {

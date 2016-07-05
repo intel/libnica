@@ -41,11 +41,11 @@ const char *nc_ini_error(NcIniError error)
 /**
  * Strip leading whitespace from string (left)
  */
-static char *lstrip(char *str, size_t len, size_t *out_len)
+static char *lstrip(char *str, ssize_t len, ssize_t *out_len)
 {
-        size_t skip_len = 0;
+        ssize_t skip_len = 0;
 
-        for (size_t i = 0; i < len; i++) {
+        for (ssize_t i = 0; i < len; i++) {
                 if (str[i] == ' ' || str[i] == '\t') {
                         ++skip_len;
                         continue;
@@ -64,11 +64,11 @@ static char *lstrip(char *str, size_t len, size_t *out_len)
 /**
  * Strip trailing whitespace from string (right)
  */
-static char *rstrip(char *str, size_t len, size_t *out_len)
+static char *rstrip(char *str, ssize_t len, ssize_t *out_len)
 {
-        size_t skip_len = 0;
+        ssize_t skip_len = 0;
 
-        for (int i = len; i > 0; i--) {
+        for (ssize_t i = len; i > 0; i--) {
                 if (str[i] == ' ' || str[i] == '\t') {
                         ++skip_len;
                         continue;
@@ -135,9 +135,9 @@ static char *string_chew_terminated(char *inp)
 /**
  * Munch both ends of the string
  */
-static char *string_strip(char *str, size_t len, size_t *out_len)
+static char *string_strip(char *str, ssize_t len, ssize_t *out_len)
 {
-        size_t mylen = len;
+        ssize_t mylen = len;
 
         char *c = lstrip(str, len, &mylen);
         c = rstrip(c, mylen, &mylen);
@@ -199,7 +199,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
 
         while ((r = getline(&buf, &sn, file)) != -1) {
                 char *ch = NULL;
-                size_t str_len = r;
+                ssize_t str_len = r;
 
                 /* Fix newline */
                 if (buf[r - 1] == '\n') {
@@ -256,7 +256,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                         goto fail;
                 }
 
-                int offset = ch - buf;
+                long int offset = ch - buf;
 
                 /* Grab the key->value from this assignment line */
                 char *value = strdup((buf + offset) + 1);

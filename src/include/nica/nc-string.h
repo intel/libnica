@@ -93,7 +93,7 @@ static inline bool nc_string_equal(nc_string *a, nc_string *b)
         if (!a->str || !b->str) {
                 return false;
         }
-        return strncmp(a->str, b->str, a->len) == 0;
+        return strncmp(a->str, b->str, (size_t)a->len) == 0;
 }
 
 /**
@@ -113,7 +113,7 @@ static inline bool nc_string_const_equal(nc_string *a, const char *b)
         if (!a->str) {
                 return false;
         }
-        return strncmp(a->str, b, a->len) == 0;
+        return strncmp(a->str, b, (size_t)a->len) == 0;
 }
 
 /**
@@ -146,7 +146,7 @@ static inline bool nc_string_has_suffix_const(nc_string *str, char *suffix, ssiz
         if (len > str->len || len <= 0) {
                 return false;
         }
-        return (strncmp(str->str + (str->len - (len)), suffix, len) == 0);
+        return (strncmp(str->str + (str->len - (len)), suffix, (size_t)len) == 0);
 }
 
 /**
@@ -166,7 +166,7 @@ static inline bool nc_string_has_prefix_const(nc_string *str, char *prefix, ssiz
         if (len > str->len || len <= 0) {
                 return false;
         }
-        return (strncmp(str->str, prefix, len) == 0);
+        return (strncmp(str->str, prefix, (size_t)len) == 0);
 }
 
 /**

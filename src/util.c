@@ -38,7 +38,7 @@ void nc_dump_file_descriptor_leaks(void)
         while ((entry = readdir(dir)) != NULL) {
                 autofree(char) *filename = NULL;
                 char buffer[PATH_MAX + 1] = { 0 };
-                size_t size;
+                ssize_t size;
 
                 if (streq(entry->d_name, ".")) {
                         continue;
