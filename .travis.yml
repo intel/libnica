@@ -14,8 +14,6 @@ language: c
 
 addons:
     apt:
-        sources:
-            - ubuntu-toolchain-r-test
         packages:
             - check
             - valgrind
@@ -26,8 +24,8 @@ before_install:
 
 script:
     - lcov --version | grep "1.10"
+    - export CC="gcc"
     - ./configure --enable-coverage && make && make check && make distcheck && make check-valgrind
-
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
