@@ -44,7 +44,9 @@ if COVERAGE
 coverage:
 	mkdir -p coverage
 	lcov --compat-libtool --directory . --capture --output-file coverage/report
+	lcov --remove coverage/report 'tests/*' '/usr/*' --output-file coverage/report
 	genhtml -o coverage/ coverage/report
+
 AM_CFLAGS += --coverage
 endif
 
