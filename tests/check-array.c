@@ -140,6 +140,55 @@ START_TEST(nc_array_check)
 }
 END_TEST
 
+static int sort_strings(const void *a, const void *b)
+{
+        return strcmp(*(char **)a, *(char **)b);
+}
+
+static int sort_strings_reverse(const void *a, const void *b)
+{
+        return strcmp(*(char **)b, *(char **)a);
+}
+
+START_TEST(nc_array_sort_check)
+{
+        NcArray *array = NULL;
+
+        array = nc_array_new();
+        fail_if(!array, "Failed to allocate memory for NcArray");
+
+        fail_if(!nc_array_add(array, "gamma"), "Failed to add to array");
+        fail_if(!nc_array_add(array, "delta"), "Failed to add to array");
+        fail_if(!nc_array_add(array, "beta"), "Failed to add to array");
+        fail_if(!nc_array_add(array, "alpha"), "Failed to add to array");
+
+        fail_if(array->len != 4, "Array length invalid");
+
+        fail_if(!streq(nc_array_get(array, 0), "gamma"), "Invalid ordering in array #1");
+        fail_if(!streq(nc_array_get(array, 1), "delta"), "Invalid ordering in array #2");
+        fail_if(!streq(nc_array_get(array, 2), "beta"), "Invalid ordering in array #3");
+        fail_if(!streq(nc_array_get(array, 3), "alpha"), "Invalid ordering in array #4");
+
+        /* Alpha sort them */
+        nc_array_qsort(array, sort_strings);
+
+        fail_if(!streq(nc_array_get(array, 0), "alpha"), "Invalid sort ordering in array #1");
+        fail_if(!streq(nc_array_get(array, 1), "beta"), "Invalid sort ordering in array #2");
+        fail_if(!streq(nc_array_get(array, 2), "delta"), "Invalid sort ordering in array #3");
+        fail_if(!streq(nc_array_get(array, 3), "gamma"), "Invalid sort ordering in array #4");
+
+        /* Flip them back now */
+        nc_array_qsort(array, sort_strings_reverse);
+        fail_if(!streq(nc_array_get(array, 0), "gamma"), "Invalid reverse ordering in array #1");
+        fail_if(!streq(nc_array_get(array, 1), "delta"), "Invalid reverse ordering in array #2");
+        fail_if(!streq(nc_array_get(array, 2), "beta"), "Invalid reverse ordering in array #3");
+        fail_if(!streq(nc_array_get(array, 3), "alpha"), "Invalid reverse ordering in array #4");
+
+        nc_array_free(&array, NULL);
+        fail_if(array != NULL, "Failed to free NcArray");
+}
+END_TEST
+
 int main(void)
 {
         int number_failed;
@@ -154,6 +203,7 @@ int main(void)
         tcase_add_test(tc, nc_array_add_check);
         tcase_add_test(tc, nc_array_get_check);
         tcase_add_test(tc, nc_array_check);
+        tcase_add_test(tc, nc_array_sort_check);
         suite_add_tcase(s, tc);
 
         sr = srunner_create(s);

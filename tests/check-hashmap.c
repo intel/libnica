@@ -54,6 +54,9 @@ START_TEST(nc_hashmap_simple_check)
         fail_if(!val, "Value should be returned from hashmap for known key");
         fail_if(NC_UNHASH_VALUE(val) != 802, "Value returned from hashmap was incorrect");
 
+        fail_if(!nc_hashmap_steal(map, NC_HASH_KEY(802)), "Failed to steal key/value");
+        fail_if(nc_hashmap_contains(map, NC_HASH_KEY(802)), "Stolen key still exists");
+
         nc_hashmap_free(map);
         map = NULL;
 
