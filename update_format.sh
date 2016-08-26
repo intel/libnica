@@ -1,5 +1,6 @@
 #!/bin/bash
+set -e
 clang-format -i $(find . -name '*.[ch]')
 
 # Look for typos
-misspell `find . -name "*.c"  -or -name "*.h"` || exit 1
+misspell -error `find . -name "*.c"  -or -name "*.h"`
