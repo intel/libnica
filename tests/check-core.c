@@ -39,7 +39,7 @@ START_TEST(nc_memory_test)
         {
                 autofree(memtestchar) *tmp = NULL;
 
-                if (!asprintf(&tmp, "Allocation test")) {
+                if (asprintf(&tmp, "Allocation test") < 0) {
                         fail("Unable to allocate memory");
                 }
         }
