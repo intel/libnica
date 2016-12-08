@@ -39,6 +39,29 @@ AM_CPPFLAGS = \
 
 AUTOMAKE_OPTIONS = color-tests parallel-tests
 
+NICA_SOURCE_FILES = \
+	src/array.c \
+	src/hashmap.c \
+	src/files.c \
+	src/inifile.c \
+	src/list.c \
+	src/nc-string.c \
+	src/util.c
+
+
+# Allows integrating nica as a submodule..
+if NICA_SUBMODULE
+
+noinst_LTLIBRARIES = libnica.la
+
+libnica_la_SOURCES = $(NICA_SOURCE_FILES)
+libnica_la_CFLAGS = $(AM_CFLAGS)
+libnica_la_LDFLAGS = $(AM_LDFLAGS) -export-dynamic
+
+else
+
+# Standard build, as a shared library
+
 if COVERAGE
 coverage:
 	mkdir -p coverage
@@ -78,13 +101,7 @@ nicainstdir = $(includedir)/nica
 
 # Main library
 libnica_la_SOURCES = \
-	src/array.c \
-	src/hashmap.c \
-	src/files.c \
-	src/inifile.c \
-	src/list.c \
-	src/nc-string.c \
-	src/util.c
+	$(NICA_SOURCE_FILES)
 
 libnica_la_CFLAGS = \
 	$(AM_CFLAGS) \
@@ -161,3 +178,5 @@ check_list_LDADD = \
 	$(CHECK_LIBS)
 
 @VALGRIND_CHECK_RULES@
+
+endif

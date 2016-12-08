@@ -31,6 +31,8 @@ if test "x$enable_coverage" = "xyes" ; then
 fi
 
 AM_CONDITIONAL([COVERAGE], [test "$have_coverage" = "yes"])
+# Disable submodule support
+AM_CONDITIONAL([NICA_SUBMODULE], false)
 
 AC_CONFIG_FILES([data/nica.pc
                  Makefile])
