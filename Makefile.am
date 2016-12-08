@@ -1,19 +1,19 @@
 ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = ${top_srcdir}/README.md \
-	     ${top_srcdir}/LICENSE.LGPL2.1 \
-	     ${top_srcdir}/HACKING \
-	     ${top_srcdir}/findstatic.pl \
-	     ${top_srcdir}/data/nica.pc.in \
-	     ${top_srcdir}/tests/ini/wellformed.ini \
-	     ${top_srcdir}/tests/ini/valid_padding.ini \
-	     ${top_srcdir}/tests/ini/sectionless.ini \
-	     ${top_srcdir}/tests/ini/empty_key.ini \
-	     ${top_srcdir}/tests/ini/just_assign.ini \
-	     ${top_srcdir}/tests/ini/broken_section_start.ini \
-	     ${top_srcdir}/tests/ini/broken_section_end.ini \
-	     ${top_srcdir}/current_symbols \
-	     ${top_srcdir}/abi.sh
+EXTRA_DIST = ${srcdir}/README.md \
+	     ${srcdir}/LICENSE.LGPL2.1 \
+	     ${srcdir}/HACKING \
+	     ${srcdir}/findstatic.pl \
+	     ${srcdir}/data/nica.pc.in \
+	     ${srcdir}/tests/ini/wellformed.ini \
+	     ${srcdir}/tests/ini/valid_padding.ini \
+	     ${srcdir}/tests/ini/sectionless.ini \
+	     ${srcdir}/tests/ini/empty_key.ini \
+	     ${srcdir}/tests/ini/just_assign.ini \
+	     ${srcdir}/tests/ini/broken_section_start.ini \
+	     ${srcdir}/tests/ini/broken_section_end.ini \
+	     ${srcdir}/current_symbols \
+	     ${srcdir}/abi.sh
 
 NULL =
 CLEANFILES =
@@ -32,10 +32,10 @@ AM_CFLAGS = \
 	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 AM_CPPFLAGS = \
-	-I $(top_srcdir)/src \
-	-I $(top_srcdir)/src/include \
-	-I $(top_srcdir)/src/include/nica \
-	-DTOP_DIR=\"$(abs_top_srcdir)\"
+	-I $(srcdir)/src \
+	-I $(srcdir)/src/include \
+	-I $(srcdir)/src/include/nica \
+	-DTOP_DIR=\"$(srcdir)\"
 
 AUTOMAKE_OPTIONS = color-tests parallel-tests
 
@@ -50,7 +50,7 @@ AM_CFLAGS += --coverage
 endif
 
 install-exec-hook:
-	eval bash "$(top_srcdir)/abi.sh" "$(top_srcdir)" "$(top_builddir)"
+	eval bash "$(srcdir)/abi.sh" "$(srcdir)" "$(builddir)"
 
 lib_LTLIBRARIES = libnica.la
 
