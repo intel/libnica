@@ -29,8 +29,7 @@ AM_CFLAGS = \
 	-Werror-implicit-function-declaration \
 	-Wformat -Wformat-security -Werror=format-security \
 	-Wconversion -Wunused-variable -Wunreachable-code \
-	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11 \
-	-DLIBNICA_INTERNAL
+	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 AM_CPPFLAGS = \
 	-I $(top_srcdir)/src \

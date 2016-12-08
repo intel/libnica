@@ -22,10 +22,6 @@
 
 #pragma once
 
-#ifndef LIBNICA_INTERNAL
-#error You should only include <nica.h>
-#endif
-
 #define _GNU_SOURCE
 
 #include <stdbool.h>

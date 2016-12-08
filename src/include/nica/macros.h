@@ -11,10 +11,6 @@
 
 #pragma once
 
-#ifndef LIBNICA_INTERNAL
-#error You should only include <nica.h>
-#endif
-
 #define _GNU_SOURCE
 
 #define _nica_public_ __attribute__((visibility("default")))

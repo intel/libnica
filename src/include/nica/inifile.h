@@ -11,10 +11,6 @@
 
 #pragma once
 
-#ifndef LIBNICA_INTERNAL
-#error You should only include <nica.h>
-#endif
-
 #include <nica/hashmap.h>
 #include <nica/macros.h>
 #include <nica/util.h>

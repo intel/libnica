@@ -12,10 +12,6 @@
 #ifndef _NICA_H_
 #define _NICA_H_
 
-#ifndef LIBNICA_INTERNAL
-#define LIBNICA_INTERNAL
-#endif
-
 #include <nica/array.h>
 #include <nica/files.h>
 #include <nica/hashmap.h>

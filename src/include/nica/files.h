@@ -11,10 +11,6 @@
 
 #pragma once
 
-#ifndef LIBNICA_INTERNAL
-#error You should only include <nica.h>
-#endif
-
 #include <nica/macros.h>
 #include <stdarg.h>
 #include <stdbool.h>
