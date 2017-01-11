@@ -2,7 +2,7 @@
 #
 # This file is part of libnica.
 #
-# Copyright (C) 2016 Intel Corporation
+# Copyright © 2016-2017 Intel Corporation
 #
 # libnica is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
