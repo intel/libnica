@@ -45,6 +45,7 @@ NICA_SOURCE_FILES = \
 	src/files.c \
 	src/inifile.c \
 	src/list.c \
+	src/log.c \
 	src/nc-string.c \
 	src/util.c \
 	src/writer.c
@@ -86,6 +87,7 @@ nicainst_HEADERS = \
 	src/include/nica/macros.h \
 	src/include/nica/inifile.h \
 	src/include/nica/list.h \
+	src/include/nica/log.h \
 	src/include/nica/nc-string.h \
 	src/include/nica/util.h \
 	src/include/nica/writer.h

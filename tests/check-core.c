@@ -17,6 +17,7 @@
 
 #include "util.h"
 
+#include "log.c"
 #include "nc-string.c"
 #include "writer.c"
 
@@ -131,6 +132,24 @@ START_TEST(nc_writer_test)
 }
 END_TEST
 
+/**
+ * This is a very trivial test, which will basically either segfault or not.
+ */
+START_TEST(nc_log_test)
+{
+        setenv("NC_DEBUG", "1", 1);
+        nc_log_init(NULL);
+        NC_LOG_DEBUG("Starting tests");
+        NC_LOG_INFO("Info message");
+        NC_LOG_ERROR("Error message");
+        NC_LOG_FATAL("Fatal message");
+        NC_LOG_SUCCESS("Success message");
+        unsetenv("NC_DEBUG");
+        nc_log_init(NULL);
+        NC_LOG_DEBUG("This should never be seen");
+}
+END_TEST
+
 static Suite *core_suite(void)
 {
         Suite *s = NULL;
@@ -141,6 +160,7 @@ static Suite *core_suite(void)
         tcase_add_test(tc, nc_memory_test);
         tcase_add_test(tc, nc_string_test);
         tcase_add_test(tc, nc_writer_test);
+        tcase_add_test(tc, nc_log_test);
         suite_add_tcase(s, tc);
 
         return s;
