@@ -31,7 +31,8 @@ END_TEST
 START_TEST(nc_inifile_good_test)
 {
         const char *wellformed[] = { TOP_DIR "/tests/ini/wellformed.ini",
-                                     TOP_DIR "/tests/ini/valid_padding.ini" };
+                                     TOP_DIR "/tests/ini/valid_padding.ini",
+                                     TOP_DIR "/tests/ini/escaped_chars.ini" };
 
         for (size_t i = 0; i < sizeof(wellformed) / sizeof(wellformed[0]); i++) {
                 autofree(NcHashmap) *f = NULL;
@@ -56,6 +57,10 @@ START_TEST(nc_inifile_good_test)
 
                 ret = nc_hashmap_get(nc_hashmap_get(f, "Bob"), "Random");
                 fail_if(ret, "Got unexpected section");
+
+                ret = nc_hashmap_get(nc_hashmap_get(f, "Barry"), "slogan");
+                fail_if(!ret, "Failed to get known value from INI file");
+                fail_if(!streq(ret, "Hello World"), "Incorrect value in INI file #3");
         }
 }
 END_TEST
