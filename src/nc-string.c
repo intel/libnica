@@ -61,6 +61,34 @@ end:
         return st;
 }
 
+nc_string *nc_string_append_printf(nc_string *st, const char *ptn, ...)
+{
+        char *newstr;
+        char *newstr2;
+        int ret;
+
+        if (!ptn) {
+                return NULL;
+        }
+
+        va_list va;
+        va_start(va, ptn);
+
+        ret = vasprintf(&newstr, ptn, va);
+        if (ret <= 0) {
+                newstr = strdup("");
+        }
+
+        st->len = asprintf(&newstr2, "%s%s", st->str, newstr);
+        free(st->str);
+        st->str = newstr2;
+        free(newstr);
+        va_end(va);
+
+        return st;
+}
+
+
 bool nc_string_cat(nc_string *s, const char *append)
 {
         char *p = NULL;

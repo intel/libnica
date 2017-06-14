@@ -38,6 +38,10 @@ typedef struct nc_string_t {
 _nica_public_ nc_string *nc_string_dup_printf(const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
+
+_nica_public_ nc_string *nc_string_append_printf(nc_string *st, const char *ptn, ...)
+	__attribute__((format(printf, 2, 3)));
+
 /**
  * Duplicate a string into a new NUL-terminated nc_string
  *
