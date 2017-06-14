@@ -110,6 +110,9 @@ START_TEST(nc_string_test)
         fail_if(!nc_string_append_printf(str, "append"), "Failed to append formatted string");
         fail_if(ncstrlen(str) != 20, "Incorrect string length after formatted append");
 
+        fail_if(!nc_string_prepend(str, "prepend"), "Failed to prepend string");
+        fail_if(ncstrlen(str) != 27, "Incorrect string length after prepend");
+
         nc_string_free(str);
 }
 END_TEST

@@ -76,6 +76,9 @@ static inline void nc_string_free(nc_string *str)
  */
 _nica_public_ bool nc_string_cat(nc_string *str, const char *append);
 
+_nica_public_ bool nc_string_prepend(nc_string *s, const char *prepend);
+
+
 /**
  * Determine if string A is equal to string B
  *
