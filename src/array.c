@@ -88,7 +88,7 @@ void nc_array_free(NcArray **array, array_free_func free_method)
         *array = NULL;
 }
 
-void nc_array_qsort(NcArray *self, __compar_fn_t func)
+void nc_array_qsort(NcArray *self, nc_array_compare_func func)
 {
         qsort(self->data, self->len, sizeof(void *), func);
 }

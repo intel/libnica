@@ -31,6 +31,11 @@ typedef struct NcArray {
 typedef void (*array_free_func)(void *p);
 
 /**
+ * A __compar_fn_t style comparator, declared for portability.
+ */
+typedef int (*nc_array_compare_func)(const void *, const void *);
+
+/**
  * Create a new NcArray
  * @returns NcArray a newly allocated NcArray
  */
@@ -67,7 +72,7 @@ _nica_public_ void *nc_array_get(NcArray *array, uint16_t index)
  * @param array valid NcArray reference
  * @param cmp a comparison_fn_t pointer
  */
-_nica_public_ void nc_array_qsort(NcArray *array, __compar_fn_t cmp);
+_nica_public_ void nc_array_qsort(NcArray *array, nc_array_compare_func cmp);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
