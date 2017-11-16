@@ -17,7 +17,9 @@
 #include <nica/hashmap.h>
 #include <nica/inifile.h>
 #include <nica/list.h>
+#include <nica/log.h>
 #include <nica/nc-string.h>
 #include <nica/util.h>
+#include <nica/writer.h>
 
 #endif /* _NICA_H_ */

@@ -17,7 +17,9 @@
 
 #include "util.h"
 
+#include "log.c"
 #include "nc-string.c"
+#include "writer.c"
 
 /**
  * Ensure scope based management is functional
@@ -106,6 +108,48 @@ START_TEST(nc_string_test)
 }
 END_TEST
 
+START_TEST(nc_writer_test)
+{
+        autofree(NcWriter) *writer = NC_WRITER_INIT;
+        const char *exp = "This is string one\nThis is: string two\n";
+
+        fail_if(!nc_writer_open(writer), "Failed to open NcWriter for writing");
+
+        nc_writer_append(writer, "This is string one\n");
+        nc_writer_append_printf(writer, "This is: %s\n", "string two");
+
+        fail_if(nc_writer_error(writer) != 0, "Writer should not have an error set");
+        nc_writer_close(writer);
+
+        fail_if(!streq(writer->buffer, exp), "Buffer does not match expected contents");
+
+        /* Should definitely fail to write to a closed buffer */
+        nc_writer_append(writer, "Another string: one");
+        nc_writer_append_printf(writer, "Another string: %s", "two");
+
+        fail_if(nc_writer_error(writer) != EBADF, "Writer did not close when requested");
+        fail_if(!streq(writer->buffer, exp), "Buffer was modified after close");
+}
+END_TEST
+
+/**
+ * This is a very trivial test, which will basically either segfault or not.
+ */
+START_TEST(nc_log_test)
+{
+        setenv("NC_DEBUG", "1", 1);
+        nc_log_init(NULL);
+        NC_LOG_DEBUG("Starting tests");
+        NC_LOG_INFO("Info message");
+        NC_LOG_ERROR("Error message");
+        NC_LOG_FATAL("Fatal message");
+        NC_LOG_SUCCESS("Success message");
+        unsetenv("NC_DEBUG");
+        nc_log_init(NULL);
+        NC_LOG_DEBUG("This should never be seen");
+}
+END_TEST
+
 static Suite *core_suite(void)
 {
         Suite *s = NULL;
@@ -115,6 +159,8 @@ static Suite *core_suite(void)
         tc = tcase_create("nc_core_functions");
         tcase_add_test(tc, nc_memory_test);
         tcase_add_test(tc, nc_string_test);
+        tcase_add_test(tc, nc_writer_test);
+        tcase_add_test(tc, nc_log_test);
         suite_add_tcase(s, tc);
 
         return s;
