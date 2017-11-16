@@ -22,13 +22,14 @@
 /**
  * Mapping of @NcIniError to static strings
  */
-static const char *_errors[] =
-    {[NC_INI_ERROR_FILE] = "",
-     [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
-     [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
-     [NC_INI_ERROR_NO_SECTION] = "Encountered key=value mapping without a valid section",
-     [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation",
-     [NC_INI_ERROR_INTERNAL] = "A fatal internal error was encountered" };
+static const char *_errors[] = { [NC_INI_ERROR_FILE] = "",
+                                 [NC_INI_ERROR_EMPTY_KEY] = "Encountered empty key",
+                                 [NC_INI_ERROR_NOT_CLOSED] = "Expected closing \']\' for section",
+                                 [NC_INI_ERROR_NO_SECTION] =
+                                     "Encountered key=value mapping without a valid section",
+                                 [NC_INI_ERROR_INVALID_LINE] = "Expected key=value notation",
+                                 [NC_INI_ERROR_INTERNAL] =
+                                     "A fatal internal error was encountered" };
 
 const char *nc_ini_error(NcIniError error)
 {

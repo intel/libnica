@@ -100,7 +100,7 @@ START_TEST(nc_string_test)
         fail_if(nc_string_const_equal(NULL, NULL), "const_equal on NULL string");
 
         /* Forced empty ->str tests */
-        nc_string st = {.len = 0 };
+        nc_string st = { .len = 0 };
         fail_if(nc_string_equal(&st, &st), "equal on NULL ->str");
         fail_if(nc_string_const_equal(&st, "TEST"), "const_equal on NULL ->str");
 }

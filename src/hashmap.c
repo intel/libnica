@@ -397,7 +397,9 @@ void nc_hashmap_iter_init(NcHashmap *map, NcHashmapIter *citer)
         }
         iter = (_NcHashmapIter *)citer;
         _NcHashmapIter it = {
-                .bucket = -1, .map = map, .item = NULL,
+                .bucket = -1,
+                .map = map,
+                .item = NULL,
         };
         *iter = it;
 }
