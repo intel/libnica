@@ -116,6 +116,7 @@ libnica_la_LDFLAGS = \
 TESTS = \
 	check_core \
 	check_array \
+	check_files \
 	check_hashmap \
 	check_inifile \
 	check_list
@@ -142,6 +143,17 @@ check_array_CFLAGS = \
 	$(AM_CFLAGS)
 
 check_array_LDADD = \
+	$(CHECK_LIBS)
+
+# Test file
+check_files_SOURCES = \
+	tests/check-files.c
+
+check_files_CFLAGS = \
+	$(CHECK_CFLAGS) \
+	$(AM_CFLAGS)
+
+check_files_LDADD = \
 	$(CHECK_LIBS)
 
 # Test hashmap

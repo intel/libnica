@@ -78,7 +78,7 @@ static int _rm_rf(const char *path, __attribute__((unused)) const struct stat *s
 
 bool nc_rm_rf(const char *path)
 {
-        bool ret = nftw(path, _rm_rf, 35, FTW_DEPTH) == 0;
+        bool ret = nftw(path, _rm_rf, 35, FTW_DEPTH | FTW_PHYS) == 0;
 
         sync();
         return ret;
