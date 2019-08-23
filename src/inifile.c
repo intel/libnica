@@ -33,7 +33,7 @@ static const char *_errors[] = { [NC_INI_ERROR_FILE] = "",
 
 const char *nc_ini_error(NcIniError error)
 {
-        int j = abs(error);
+        int j = abs((int)error);
         if (j < NC_INI_ERROR_FILE || j >= NC_INI_ERROR_MAX) {
                 return "[Unknown Error]";
         }
