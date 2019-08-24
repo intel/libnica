@@ -156,18 +156,15 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                 if (!root) {
                         root = strdup(p);
                 } else {
-                        sav = strdup(root);
-
                         if (asprintf(&t, "%s/%s", root, p) < 0) {
                                 fprintf(stderr,
                                         "nc_build_case_correct_path_va: Out "
                                         "of memory\n");
                                 va_end(ap);
-                                if (sav) {
-                                        free(sav);
-                                }
+                                free(root);
                                 return NULL;
                         }
+                        sav = strdup(root);
                         free(root);
                         root = t;
                         t = NULL;
@@ -203,6 +200,8 @@ char *nc_build_case_correct_path_va(const char *c, va_list ap)
                                                         "nc_build_case_"
                                                         "correct_path_va: Out "
                                                         "of memory\n");
+                                                free(sav);
+                                                free(root);
                                                 return NULL;
                                         }
                                         free(root);
