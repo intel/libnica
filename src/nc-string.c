@@ -61,6 +61,34 @@ end:
         return st;
 }
 
+nc_string *nc_string_append_printf(nc_string *st, const char *ptn, ...)
+{
+        char *newstr;
+        char *newstr2;
+        int ret;
+
+        if (!ptn) {
+                return NULL;
+        }
+
+        va_list va;
+        va_start(va, ptn);
+
+        ret = vasprintf(&newstr, ptn, va);
+        if (ret <= 0) {
+                newstr = strdup("");
+        }
+
+        st->len = asprintf(&newstr2, "%s%s", st->str, newstr);
+        free(st->str);
+        st->str = newstr2;
+        free(newstr);
+        va_end(va);
+
+        return st;
+}
+
+
 bool nc_string_cat(nc_string *s, const char *append)
 {
         char *p = NULL;
@@ -73,6 +101,27 @@ bool nc_string_cat(nc_string *s, const char *append)
                 return false;
         }
         len = asprintf(&p, "%s%s", s->str, append);
+        if (!p || len < s->len) {
+                return false;
+        }
+        free(s->str);
+        s->str = p;
+        s->len = len;
+        return true;
+}
+
+bool nc_string_prepend(nc_string *s, const char *prepend)
+{
+        char *p = NULL;
+        int len = 0;
+
+        if (!s || !prepend) {
+                return false;
+        }
+        if (!s->str) {
+                return false;
+        }
+        len = asprintf(&p, "%s%s", prepend, s->str);
         if (!p || len < s->len) {
                 return false;
         }

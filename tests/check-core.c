@@ -103,6 +103,17 @@ START_TEST(nc_string_test)
         nc_string st = { .len = 0 };
         fail_if(nc_string_equal(&st, &st), "equal on NULL ->str");
         fail_if(nc_string_const_equal(&st, "TEST"), "const_equal on NULL ->str");
+
+        str = nc_string_dup_printf("Test String #%d", 3);
+        fail_if(!str, "Failed to allocate string");
+        fail_if(ncstrlen(str) != 14, "Incorrect string length");
+        fail_if(!nc_string_append_printf(str, "append"), "Failed to append formatted string");
+        fail_if(ncstrlen(str) != 20, "Incorrect string length after formatted append");
+
+        fail_if(!nc_string_prepend(str, "prepend"), "Failed to prepend string");
+        fail_if(ncstrlen(str) != 27, "Incorrect string length after prepend");
+
+        nc_string_free(str);
 }
 END_TEST
 

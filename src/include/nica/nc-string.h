@@ -38,6 +38,10 @@ typedef struct nc_string_t {
 _nica_public_ nc_string *nc_string_dup_printf(const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
+
+_nica_public_ nc_string *nc_string_append_printf(nc_string *st, const char *ptn, ...)
+	__attribute__((format(printf, 2, 3)));
+
 /**
  * Duplicate a string into a new NUL-terminated nc_string
  *
@@ -71,6 +75,9 @@ static inline void nc_string_free(nc_string *str)
  * @return a boolean value indicating success
  */
 _nica_public_ bool nc_string_cat(nc_string *str, const char *append);
+
+_nica_public_ bool nc_string_prepend(nc_string *s, const char *prepend);
+
 
 /**
  * Determine if string A is equal to string B

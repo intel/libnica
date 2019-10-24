@@ -149,6 +149,40 @@ static char *string_strip(char *str, ssize_t len, ssize_t *out_len)
         return c;
 }
 
+/* eat \s */
+static char *string_unescape(char *str)
+{
+        char *c, *c1, *c2, *c3;;
+
+        if (!str) {
+                return NULL;
+        }
+
+        c = calloc(strlen(str) + 1, 1);
+        c1 = c;
+
+        c2 = str;
+        while (c2 && *c2 != 0) {
+                c3 = c2 + 1;
+                if (*c2 == '\\') {
+                        if (*c3 == 's') {
+                                *c = ' ';
+                                c++;
+                                c2 += 2;
+                        } else {
+                                c2++;
+                        }
+                } else {
+                        *c = *c2;
+                        c++;
+                        c2++;
+                }
+        }
+
+        free(str);
+        return c1;
+}
+
 NcHashmap *nc_ini_file_parse(const char *path)
 {
         NcHashmap *ret = NULL;
@@ -268,6 +302,7 @@ int nc_ini_file_parse_full(const char *path, NcHashmap **out_map, int *error_lin
                 key = strdup(buf);
                 key = string_chew_terminated(key);
                 value = string_chew_terminated(value);
+                value = string_unescape(value);
 
                 if (streq(key, "")) {
                         err_ret = NC_INI_ERROR_EMPTY_KEY;
